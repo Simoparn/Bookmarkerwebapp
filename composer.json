@@ -1,0 +1,16 @@
+{
+    "name": "800038769/puutarhaliike-neilikka",
+    "description": "web app experiment for Finnish web programming course",
+    "type": "project",
+    "license": "BSD-3 Clause License",
+    "authors": [
+        {
+            "name": "Simo Pärnänen"
+        }
+    ],
+    "require": {
+        "phpmailer/phpmailer": "^6.6",
+        "sendgrid/sendgrid": "^8.0",
+        "vlucas/phpdotenv": "^5.5"
+    }
+}
