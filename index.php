@@ -63,14 +63,14 @@
     if(isset($_GET['currentpage'])){
         switch($_GET['currentpage']){
 
-            case 'categories':
+            case 'frontpage':
                 require_once('Graphics/Notifications/Notifications_frontpage.php');
                 require_once('Graphics/frontpage.php');       
                 break;
             
-            case 'tuotteet':
+            case 'categories':
                 require_once('Graphics/Notifications/Notifications_categories.php');
-                require_once('Graphics/Categories.php');
+                require_once('Graphics/categories.php');
                 break;
             
             case 'categorypage_1':

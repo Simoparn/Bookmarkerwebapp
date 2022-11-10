@@ -10,7 +10,7 @@
 
 ENGLISH: Experimental browser bookmarking web application service. Part of Omnia's web programming (Web-ohjelmointi) course (autumn 2022).
 
-Part of the Omnian web programming course (autumn 2022-spring 2023). Server platform [XAMPP](https://www.apachefriends.org/). Utilizes PHPMailer library and [Twilio Sendgrid-](https://app.sendgrid.com/) or [Mailtrap](https://mailtrap.io) services for contact emails and password changes with SMTP, SendGrid can send the email to the real SMTP server. Database MySQL/MariaDB.
+Part of the Omnia web programming course (autumn 2022-spring 2023). Server platform [XAMPP](https://www.apachefriends.org/). Utilizes PHPMailer library and [Twilio Sendgrid-](https://app.sendgrid.com/) or [Mailtrap](https://mailtrap.io) services for contact emails and password changes with SMTP, SendGrid can send the email to the real SMTP server. Database MySQL/MariaDB.
 
 ## Operating principle
 ### Kredentiaalit

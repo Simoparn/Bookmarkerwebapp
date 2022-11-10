@@ -8,7 +8,7 @@
 $servername = "localhost";
 $username = $DOTENVDATA['DATABASEUSERNAME'];
 $password = $DOTENVDATA['DATABASEPASSWORD'];
-$db="puutarhaneilikka";
+$db="bookmarkerwebapp";
 
 if(!isset($_SESSION)){
     session_start();
@@ -19,13 +19,13 @@ $connection = new mysqli($servername, $username, $password, $db);
 $tietokantakysely = new mysqli_stmt($connection);
 // Tarkista connect_database
 if ($connection->connect_error) {
-    die("connect_database epäonnistui: " . $connection->connect_error);
+    die("connecting to database failed: " . $connection->connect_error);
 } 
 
 ?>
 
 <?php
-/* ETÄVERSIO
+/* REMOTE VERSION
 ob_start();
 
 $servername = "localhost";
@@ -35,7 +35,7 @@ $db="sakila";
 
 
 
-// Luo connect_database
+
 $connection = new db.connect($servername, $username, $password, $db);
 
 } 

@@ -2,8 +2,8 @@
 
 -- countries 
 CREATE TABLE country (
-  countryname VARCHAR(45) NOT NULL,
-  PRIMARY KEY (countryname)
+  country_name VARCHAR(45) NOT NULL,
+  PRIMARY KEY (country_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- addresses, both customers and staff
@@ -16,36 +16,36 @@ CREATE TABLE address (
     province VARCHAR(40) NOT NULL,
     state VARCHAR(30),
     PRIMARY KEY(address_id),
-    FOREIGN KEY (country) REFERENCES country (name)
+    FOREIGN KEY (country) REFERENCES country (country_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
 -- product categories
 CREATE TABLE productcategory (
-  name VARCHAR(50) NOT NULL,
+  product_name VARCHAR(50) NOT NULL,
   creation_date DATETIME NOT NULL,
   last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (nimi)
+  PRIMARY KEY (product_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- products
 CREATE TABLE product (
   product_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  name VARCHAR(50) NOT NULL,
+  product_name VARCHAR(50) NOT NULL,
   price DECIMAL(5,2) NOT NULL,
   description VARCHAR(2000) NOT NULL,
   creation_date DATETIME NOT NULL,
   last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   product_category VARCHAR(50),
-  PRIMARY KEY (tuote_id),
-  FOREIGN KEY (product_category) REFERENCES productcategory (name)
+  PRIMARY KEY (product_id),
+  FOREIGN KEY (product_category) REFERENCES productcategory (product_name)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
 -- orders
-CREATE TABLE order (
+CREATE TABLE orders (
   order_id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
   ordered_amount VARCHAR(50) NOT NULL,
   order_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,

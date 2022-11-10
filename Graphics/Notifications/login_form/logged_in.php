@@ -1,3 +1,3 @@
 <?php
-    echo "<br><span class=\"errormessage\">Olette jo kirjautuneet, login_formtta ei voida näyttää, kirjautukaa ensin ulos <a href=\"./index.php?page=frontpage\">Return to frontpage</a></span>";
+    echo "<br><span class=\"errormessage\">You have already logged in, login form ei cannot be opened, please logoff first <a href=\"./index.php?page=frontpage\">Return to frontpage</a></span>";
 ?>

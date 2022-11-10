@@ -25,7 +25,7 @@ if(isset($_POST["käyttäjänimi"]) && isset($_POST["salasana"]) && isset($_POST
         $annettumaa=$_POST['maa'];
         $annettumaakunta=$_POST['maakunta'];
         $annettuosavaltio=$_POST['osavaltio'];
-        $annettukäyttäjänimi=$_POST['käyttäjänimi'];
+        $annettukäyttäjänimi=$_POST['username'];
         $annettusalasana=$_POST['salasana'];
         $annettusalasanahash=password_hash($annettusalasana, PASSWORD_DEFAULT);
         

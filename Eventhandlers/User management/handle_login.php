@@ -36,7 +36,7 @@ try{
                 if($annettukäyttäjänimi==$käyttäjänimi && $oikeasalasana==true){
                     //TODO: tulee varoitusviesti että sessio on jo käynnissä, ei tarvita?
                     //session_start();
-                    $_SESSION['käyttäjänimi']=$käyttäjänimi;
+                    $_SESSION['username']=$käyttäjänimi;
                     
                     if(isset($_POST["rememberme"])){
                         require_once('create_authentication_token.php');

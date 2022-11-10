@@ -21,16 +21,13 @@
 
 <div id="pagecontent">
   <p>
-  Puutarhaliike Neilikka on vuonna 1990 perustettu puutarhanhoitoon ja huonekasveihin erikoistunut myymäläketju. Ensimmäinen myymälämme perustettiin Helsingin Fabianinkadulle, ja toukokuussa 1997 perustimme ketjun toisen myymälän Espooseen.
-  </p>
-  <p>
-  Meiltä löydät kattavan valikoiman sisä- ja ulkokasveja sekä tietysti kaikki categorypage_3 ja muut tarvikkeet niiden hoitoon. Osaava ja puutarhanhoidosta innostunut henkilökuntamme on aina valmiina auttamaan sinua valitsemaan juuri sinulle sopivimmat tuotteet.
+  NanparenSoft is a Finnish ICT start up company with a particular interest towards solutions that empower individual agency. 
   </p>
   <p>
     <span id="contactinfo">
-    Yhteystiedot
-    <br>Puh.nro: +358123456789
-    <br>Sähköposti Puutarhaliikeneilikka@gmail.com
+    
+    <br>Tel: +358123456789
+    <br>Email: nanparensoft@gmail.com
     </span>  
   </p>
 </div>

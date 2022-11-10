@@ -1,10 +1,10 @@
 
     <footer>
-    <p><span>Alatunniste
-    Puutarhaliike Neilikka® 2005-2022</span>
+    <p><span>
+    NanparenSoft 2022</span>
         <span>
-        <br>Puh.nro: +358123456789
-        <br>Sähköposti: Puutarhaliikeneilikka@gmail.com</span>
+        <br>Tel: +358000000
+        <br>Email: simoparnanen@nanparensoft.com</span>
     </p>
     </footer>
     

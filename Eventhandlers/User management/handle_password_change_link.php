@@ -6,8 +6,8 @@
 if(isset($_GET['sähköposti'])){
     $linkinsähköpostihash=$_GET['sähköposti'];
 }
-if(isset($_GET['käyttäjänimi'])){
-    $linkinkäyttäjänimihash=$_GET['käyttäjänimi'];
+if(isset($_GET['username'])){
+    $linkinkäyttäjänimihash=$_GET['username'];
 }
 
 

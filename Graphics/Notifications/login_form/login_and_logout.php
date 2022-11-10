@@ -2,7 +2,7 @@
 
 if(isset($_GET["login_status"])){            
     if($_GET["login_status"] =="no"){ 
-        echo "<br><span class=\"errormessage\">Kirjautuminen epäonnistui, väärä käyttäjänimi tai salasana<a href=\"./index.php?page=login_form\">Refresh page</a></span>";
+        echo "<br><span class=\"errormessage\">Login failed, wrong username or password<a href=\"./index.php?page=login_form\">Refresh page</a></span>";
     }
     elseif($_GET['login_status'] =='tuntematonvirhe'){
         echo "<br><span class=\"errormessage\">Sisäänkirjautuminen epäonnistui, tuntematon virhe, yritä uudestaan <a href=\"./index.php?page=login_form\">Refresh page</a></span>";
