@@ -1,5 +1,5 @@
 
-    -- countryt
+    -- countries
     INSERT INTO country VALUES ('Afghanistan');
     INSERT INTO country VALUES ('Albania');
     INSERT INTO country VALUES ('Algeria');
@@ -146,7 +146,7 @@
 
     
 
-    -- osoitteet
+    -- Addresses
     INSERT INTO address VALUES(1,'Esimerkkikatu 8 E','84958','Keuruu','Finland','Keski-Suomi',NULL);
     INSERT INTO address VALUES(2,'Ullakuja 13 U','19218','Savonlinna','Finland','Etelä-Savo',NULL);
     INSERT INTO address VALUES(3,'Ollilakuja 8 H','38495','Savonlinna','Finland','Etelä-Savo',NULL);

@@ -3,28 +3,7 @@
 
 
 <div id="pagecontent">
-<?php
-  
-  
-  if(isset($_GET["maitaeihaettuvirhe"])){
-    echo "<br><span class=\"errormessage\">database_error, maita ei saatu haettua, <a href=\"index.php?page=registration_form.php\">Refresh page</a></span>";
-  }
-  if(isset($_GET['rekisteröintionnistui'])){
-    if($_GET['rekisteröintionnistui']=="yes"){
-      echo "<br><span class=\"successmessage\">Käyttäjän luonti onnistui <a href=\"index.php?page=registration_form\">Refresh page</a></span>";
-    }
-    elseif($_GET['rekisteröintionnistui']=="käyttäjäonjoolemassa"){
-      echo "<br><span class=\"errormessage\">Käyttäjän luonti epäonnistui, käyttäjä on jo olemassa <a href=\"index.php?page=registration_form\">Refresh page</a></span>";
-    }
-    elseif($_GET['rekisteröintionnistui']=="salasanateivättäsmää"){
-      echo "<br><span class=\"errormessage\">Käyttäjän luonti epäonnistui, salasanat eivät täsmää <a href=\"index.php?page=registration_form\">Refresh page</a></span>";
-    }
-    else{
-      echo "<br><span class=\"errormessage\">Tuntematon virhe käyttäjän luonnissa <a href=\"index.php?page=registration_form\">Refresh page</a></span>";
-    }
-  }
 
-?>
    <p>
       <form method="post" action="./Eventhandlers/User management/register_user.php">
       <br><b>Etunimi (vähintään 2 kirjainta)</b><input type="text" name="etunimi" id="etunimi" pattern="[a-öA-Ö]{2,}$"required><br>

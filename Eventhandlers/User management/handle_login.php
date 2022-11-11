@@ -14,54 +14,54 @@ try{
 
 
     require_once('../connect_database.php');
-    //Jos kirjaudutaan normaalisti
-    if(isset($_POST["käyttäjänimi"]) && isset($_POST["salasana"])){
-        //$sahkopostiregex="/^.{16,}";
-        $annettukäyttäjänimi=$_POST["käyttäjänimi"];
-        $annettusalasana=$_POST["salasana"];
+    //If logged in normally
+    if(isset($_POST["username"]) && isset($_POST["password"])){
+        //$email_regex="/^.{16,}";
+        $given_username=$_POST["username"];
+        $given_password=$_POST["password"];
         
         
         
-        $tietokantakysely->prepare("SELECT kayttajanimi, salasanahash FROM kayttajatili WHERE kayttajanimi=?");
-        $tietokantakysely->bind_param("s",$annettukäyttäjänimi);
-        if ($tietokantakysely->execute()){
+        $database_query->prepare("SELECT username, password_hash FROM userprofile WHERE username=?");
+        $database_query->bind_param("s",$given_username);
+        if ($database_query->execute()){
 
-            $tietokantakysely->bind_result($käyttäjänimi, $salasanahash);
-            while($tietokantakysely->fetch()){
-                //echo "Sisäänkirjautumisen tietokantakyselyn tulokset:".$käyttäjänimi." ". $salasanahash;
+            $database_query->bind_result($username, $password_hash);
+            while($database_query->fetch()){
+                //echo "Login database query results:".$username." ". $password_hash;
                 //exit();
-                $oikeasalasana=password_verify($annettusalasana, $salasanahash);
+                $actual_password=password_verify($given_password, $password_hash);
                             
                 
-                if($annettukäyttäjänimi==$käyttäjänimi && $oikeasalasana==true){
-                    //TODO: tulee varoitusviesti että sessio on jo käynnissä, ei tarvita?
+                if($given_username==$username && $actual_password==true){
+                    //TODO: notification message that the session is already active, not needed?
                     //session_start();
-                    $_SESSION['username']=$käyttäjänimi;
+                    $_SESSION['username']=$username;
                     
                     if(isset($_POST["rememberme"])){
                         require_once('create_authentication_token.php');
                     }
                 
 
-                    //Uudelleenohjataan frontpagelle jos oikeat tunnukset löytyivät           
-                    header('Location: ../../index.php?page=frontpage&login_status=kyllä');
+                    //Redirected to frontpage if the right credentials were found           
+                    header('Location: ../../index.php?page=frontpage&login_status=no');
                     exit();
                 }
             }
                 
         
-                //Jos oikeita tunnuksia ei löytynyt, uudelleenohjataan takaisin
-                header('Location: ../../index.php?page=login_form&login_status=ei');
+                //If the right credentials were not found, redirected back
+                header('Location: ../../index.php?page=login_form&login_status=no');
                 
         
         }
     }
                
 }catch(Exception $e){
-    //database_error
+    //database error
     //echo $e;
     //exit();
-    header('Location: ../../index.php?page=login_form&login_status=tuntematonvirhe');
+    header('Location: ../../index.php?page=login_form&login_status=unknown_error');
 }
 
 

@@ -19,10 +19,10 @@ if(isset($_GET['send_password_change_link_status'])){
                 echo "<br><span class=\"errormessage\">Sending change link for forgotten password failed, user email not found <a href=\"./index.php?page=forgotten_password_form\">Refresh page</a></span>";
             }  
             elseif($_GET['error'] == 'database_error'){
-                echo "<br><span class=\"errormessage\">Unohtuneen salasanan lähetys sähköpostiosoitteeseen epäonnistui, database_error <a href=\"./index.php?page=forgotten_password_form\">Refresh page</a></span>";
+                echo "<br><span class=\"errormessage\">Sending the change link of the forgotten password failed, database_error <a href=\"./index.php?page=forgotten_password_form\">Refresh page</a></span>";
             } 
-            elseif($_GET['error'] == 'email_service_not_found'){
-                echo "<br><span class=\"errormessage\">Palautteen lähetys epäonnistui, palvelimella määritettyä sähköpostipalvelua ei ole olemassa! <a href=\"./index.php?page=contact\">Refresh page</a></span>";
+            elseif($_GET['error'] == 'mailservice_not_found'){
+                echo "<br><span class=\"errormessage\">Sending the change link of the forgotten password failed, the mail service configured on the server does not exist! <a href=\"./index.php?page=contact\">Refresh page</a></span>";
             }
         }
     }

@@ -14,10 +14,10 @@ if(!isset($_SESSION)){
     session_start();
 }
 
-// Luo connect_database
+// Create database connection
 $connection = new mysqli($servername, $username, $password, $db);
-$tietokantakysely = new mysqli_stmt($connection);
-// Tarkista connect_database
+$database_query = new mysqli_stmt($connection);
+// Check database connection
 if ($connection->connect_error) {
     die("connecting to database failed: " . $connection->connect_error);
 } 
@@ -31,7 +31,7 @@ ob_start();
 $servername = "localhost";
 $username = $DATABASEUSERNAME;
 $password = $DATABASEPASSWORD;
-$db="sakila";
+$db="bookmarkerwebapp";
 
 
 

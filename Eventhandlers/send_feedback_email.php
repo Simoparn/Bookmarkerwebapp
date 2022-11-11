@@ -2,7 +2,7 @@
   
 
 
-   //Tarvitaan dotenv-, PHPmailer- ja Sendgrid-kirjastoille:
+//Needed for dotenv, PHPmailer and Sendgrid libraries:
   require '../vendor/autoload.php';
   
 
@@ -17,16 +17,16 @@
 
 
   if(isset($_POST["name"])){
-  $sendername=$_POST["name"];
+  $sender_name=$_POST["name"];
   }
   if(isset($_POST["email"])){
-  $lähettäjänsähköposti=strtolower(trim($_POST["email"]));
+  $sender_email=strtolower(trim($_POST["email"]));
   }
   if(isset($_POST["feedbacktopic"])){
-  $palauteaihe=$_POST["feedbacktopic"];
+  $feedback_topic=$_POST["feedbacktopic"];
   }
   if(isset($_POST["feddbackmessage"])){
-  $palauteviesti=$_POST["feedbackmessage"];
+  $feedback_message=$_POST["feedbackmessage"];
   }
 
 	$email_found=false;
@@ -35,7 +35,7 @@
   
     
     
-    //testattu lähetys, credentials.php-tiedostosta:
+    //not tested
     if($DOTENVDATA['MAILSERVICE']=="mailtrap"){
     require_once('../vendor/phpmailer/phpmailer/src/PHPMailer.php');
     require_once('../vendor/phpmailer/phpmailer/src/PHPMailer.php');
@@ -59,30 +59,30 @@
 			
       
       $mail->IsHTML(true);
-      $mail->AddAddress($DOTENVDATA['MAILTRAPHOSTDOMAIN'], "Puutarhaliike Neilikka");
-      $mail->SetFrom($lähettäjänsähköposti, utf8_decode($lähettäjännimi));
-      $mail->AddReplyTo($lähettäjänsähköposti, utf8_decode($lähettäjännimi));
-      $mail->AddCC($lähettäjänsähköposti, utf8_decode($lähettäjännimi));
-      $mail->Subject = utf8_decode($palauteaihe);
-      $content = utf8_decode($palauteviesti);
+      $mail->AddAddress($DOTENVDATA['MAILTRAPHOSTDOMAIN'], "Bookmarker web application");
+      $mail->SetFrom($sender_email, utf8_decode($sender_name));
+      $mail->AddReplyTo($sender_email, utf8_decode($sender_name));
+      $mail->AddCC($sender_email, utf8_decode($sender_name));
+      $mail->Subject = utf8_decode($feedback_topic);
+      $content = utf8_decode($feedback_message);
 
       $mail->MsgHTML($content); 
       if(!$mail->Send()) {
         
-        //echo "Virhe sähköpostin lähetyksessä Mailtrap-palvelun kautta.<br>{$mail->ErrorInfo}<br>";
+        //echo "Error in sending email through Mailtrap.<br>{$mail->ErrorInfo}<br>";
         //var_dump($mail);
         //exit();
-        header("Location: ../index.php?page=contact&palautteenlähetysonnistui=ei&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']);
+        header("Location: ../index.php?page=contact&send_feedback_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']);
       } else {
-        //echo "Palautesähköpostin lähetys Mailtrap-palvelun kautta onnistui.<br>";
+        //echo "Sending feedback email through Mailtrap succeeded.<br>";
         //var_dump($mail);
         //exit();
-        header("Location: ../index.php?page=contact&palautteenlähetysonnistui=kyllä&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']);
-        //echo "Sähköposti lähetetty onnistuneesti Mailtrap-palvelun kautta.";
+        header("Location: ../index.php?page=contact&send_feedback_status=yes&mailservice=".$DOTENVDATA['MAILSERVICE']);
+        
       }
 
     }
-    //testattu, jos setFrom:n senderidentitya ei ole SendGridissa sähköpostille, sähköpostia ei lähetetä.
+    //not tested, if setFrom sender identity doesn't exist in SendGrid, email is not sent.
     elseif($DOTENVDATA['MAILSERVICE']=="sendgrid"){
 			
       require_once('../vendor/sendgrid/sendgrid/sendgrid-php.php');
@@ -90,10 +90,10 @@
 
 
       $email = new \SendGrid\Mail\Mail();
-      $email->setFrom($lähettäjänsähköposti, urldecode($lähettäjännimi));
-      $email->setSubject(utf8_decode($palauteaihe));
+      $email->setFrom($sender_email, urldecode($sender_name));
+      $email->setSubject(utf8_decode($feedback_topic));
       $email->addTo($DOTENVDATA['SENDGRIDRECEIVERIDENTITY'], "Simo P");
-      $email->addContent("text/plain", utf8_decode($palauteviesti));
+      $email->addContent("text/plain", utf8_decode($feedback_message));
 
       $sendgrid = new \SendGrid($DOTENVDATA['SENDGRIDHOSTPASSWORD']);
 
@@ -104,21 +104,21 @@
           print $response->body() . "\n";
           if($response->statusCode()==202){
           //exit();
-          header("Location: ../index.php?page=contact&palautteenlähetysonnistui=kyllä&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']);
+          header("Location: ../index.php?page=contact&send_feedback_status=yes&mailservice=".$DOTENVDATA['MAILSERVICE']);
           }
           else{
-            header("Location: ../index.php?page=contact&palautteenlähetysonnistui=ei&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']."&virhe=sendgrididentitypuuttuu");
+            header("Location: ../index.php?page=contact&send_feedback_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=sendgrid_sender_identity_missing");
           }
       } catch (Exception $e) {
-          header("Location: ../index.php?page=contact&palautteenlähetysonnistui=ei&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']);
-          //echo 'Virhe lähetettäessä sähköpostia SendGrid-kirjastolla: '. $e->getMessage() ."\n";
+          header("Location: ../index.php?page=contact&send_feedback_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']);
+          //echo 'Error when sending email with SendGrid: '. $e->getMessage() ."\n";
           //exit();
       }
     }
 
   
     else{
-      header("Location: ../index.php?page=forgotten_password_form&salasananlähetysonnistui=ei&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']."&virhe=sähköpostipalveluaeilöytynyt");
+      header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=mailservice_not_found");
     }
 
 			

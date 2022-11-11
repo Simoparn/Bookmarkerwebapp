@@ -10,44 +10,44 @@ require_once('../connect_database.php');
 
 
 
-if(isset($_POST["käyttäjänimi"]) && isset($_POST["salasana"]) && isset($_POST["vahvistasalasana"])){
-    if($_POST["vahvistasalasana"]==$_POST["salasana"]){
+if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["confirm_password"])){
+    if($_POST["confirm_password"]==$_POST["password"]){
         //foreach($_POST as $key => $value){
         //echo ' '.$value;
         //}
-        $annettuetunimi=$_POST['etunimi'];
-        $annettusukunimi=$_POST['sukunimi'];
-        $annettupuhelinnumero=$_POST['puhelinnumero'];
-        $annettusähköposti=strtolower(trim($_POST['sähköposti']));
-        $annettuosoite=$_POST['osoite'];
-        $annettupostinumero=$_POST['postinumero'];
-        $annettupostitoimipaikka=$_POST['postitoimipaikka'];
-        $annettumaa=$_POST['maa'];
-        $annettumaakunta=$_POST['maakunta'];
-        $annettuosavaltio=$_POST['osavaltio'];
-        $annettukäyttäjänimi=$_POST['username'];
-        $annettusalasana=$_POST['salasana'];
-        $annettusalasanahash=password_hash($annettusalasana, PASSWORD_DEFAULT);
+        $given_first_name=$_POST['first_name'];
+        $given_surname=$_POST['surname'];
+        $given_phone_number=$_POST['phone_number'];
+        $given_email=strtolower(trim($_POST['email']));
+        $given_address=$_POST['address'];
+        $given_postal_code=$_POST['postal_code'];
+        $given_municipality=$_POST['municipality'];
+        $given_country=$_POST['country'];
+        $given_province=$_POST['province'];
+        $given_state=$_POST['state'];
+        $given_username=$_POST['username'];
+        $given_password=$_POST['password'];
+        $given_password_hash=password_hash($given_password, PASSWORD_DEFAULT);
         
-        $käyttäjäonjoolemassa=false;
-        $osoitteenid="";
-        $osoiteonjoolemassa=false;
+        $user_already_exists=false;
+        $address_id="";
+        $address_already_exists=false;
 
         
-        $käyttäjäjoolemassakysely=$connection->prepare("SELECT kayttajanimi, sahkoposti FROM kayttajatili WHERE kayttajanimi=? OR sahkoposti=?");
-        $käyttäjäjoolemassakysely->bind_param("ss",$annettukäyttäjänimi, $annettusähköposti);
+        $user_already_exists_query=$connection->prepare("SELECT username, email FROM userprofile WHERE username=? OR email=?");
+        $user_already_exists_query->bind_param("ss",$given_username, $given_email);
 
-        if($käyttäjäjoolemassakysely->execute()){
-            $käyttäjäjoolemassakysely->store_result();
-            while($käyttäjäjoolemassakysely->fetch()){
-                $käyttäjäjoolemassakysely->bind_result($käyttäjänimi,$sähköposti);
+        if($user_already_exists_query->execute()){
+            $user_already_exists_query->store_result();
+            while($user_already_exists_query->fetch()){
+                $user_already_exists_query->bind_result($username,$sähköposti);
                    
                 
-                if($annettukäyttäjänimi==$käyttäjänimi || $annettusähöposti==$sähköposti){
-                //Uudelleenohjataan epäonnistumisella jos tunnukset tai sähköposti on jo olemassa
+                if($given_username==$username || $annettusähöposti==$sähköposti){
+                //Redirect with a failure if the credentials or the email already exist
   
-                    header('Location: ../../index.php?page=registration_form&rekisteröintionnistui=käyttäjäonjoolemassa');
-                    $käyttäjäonjoolemassa=true;
+                    header('Location: ../../index.php?page=registration_form&registration_status=user_already_exists');
+                    $user_already_exists=true;
                     
                     break;
                     
@@ -55,98 +55,98 @@ if(isset($_POST["käyttäjänimi"]) && isset($_POST["salasana"]) && isset($_POST
                 
                 
             }
-            if($käyttäjäonjoolemassa==false){
-                //echo '<br>Annettu käyttäjä:'.$annettukäyttäjänimi.' Haettu käyttäjä: '.$haettukäyttäjänimi.' Salasana on jo olemassa:'.$salasanajoolemassa.' rivit käyttäjäkyselysilumkassa:'.$rivit;
+            if($user_already_exists==false){
+                //echo '<br>Given user:'.$given_username.' Retrieved user: '.$retrieved_user.' password already exists:'.$password_already_exists' lines in the user query loop:'.$lines;
                 
-                //Osoite on luotava ensin koska käyttäjässä on viiteavain osoitetauluun
-                //Tarkistetaan ensin annetun osoitteen olemassaolo
-                $osoitekysely=$connection->prepare("SELECT osoite_id, osoite FROM osoite WHERE osoite=?");
-                $osoitekysely->bind_param("s",$annettuosoite);
-                if($osoitekysely->execute()){
-                    $osoitekysely->bind_result($osoitteenid, $osoite);
-                    while($osoitekysely->fetch()){
+                //Address must be created first because the user table has a foreign key pointing to the address table
+                //First check that the given address exists
+                $address_query=$connection->prepare("SELECT address_id, address FROM address WHERE address=?");
+                $address_query->bind_param("s",$given_address);
+                if($address_query->execute()){
+                    $address_query->bind_result($address_id, $address);
+                    while($address_query->fetch()){
                         
-                        echo $osoitteenid.' '.$osoite;
-                        if($osoite==$annettuosoite){
-                            $osoitteenid=$osoitteenid;
-                            $osoiteonjoolemassa=true;
+                        echo $address_id.' '.$address;
+                        if($address==$given_address){
+                            $address_id=$address_id;
+                            $address_already_exists=true;
                             break;
                         }
                     }
                 }
-                if($osoiteonjoolemassa==false){
+                if($address_already_exists==false){
                     
-                    //Jos osavaltio on tyhjä, erillinen kysely
-                    if($annettuosavaltio=="" || $annettuosavaltio==NULL){
-                        $asetaosoitetietokantakysely=$connection->prepare("INSERT INTO osoite (osoite,postinumero,postitoimipaikka,maa,maakunta,osavaltio) VALUES(?,?,?,?,?,NULL)");
-                        $asetaosoitetietokantakysely->bind_param("sssss",$annettuosoite,$annettupostinumero,$annettupostitoimipaikka,$annettumaa,$annettumaakunta);
+                    //If state is empty, separate query
+                    if($given_state=="" || $given_state==NULL){
+                        $set_address_query=$connection->prepare("INSERT INTO address (address,postalcode,municipality,country,province,state) VALUES(?,?,?,?,?,NULL)");
+                        $set_address_query->bind_param("sssss",$given_address,$given_postal_code,$given_municipality,$given_country,$given_province);
                     }
                     else{
-                        $asetaosoitetietokantakysely=$connection->prepare("INSERT INTO osoite (osoite,postinumero,postitoimipaikka,maa,maakunta,osavaltio) VALUES(?,?,?,?,?,?)"); 
-                        $asetaosoitetietokantakysely->bind_param("ssssss",$annettuosoite,$annettupostinumero,$annettupostitoimipaikka,$annettumaa,$annettumaakunta,$annettuosavaltio);
+                        $set_address_query=$connection->prepare("INSERT INTO address (address,postalcode,municipality,country,province,state) VALUES(?,?,?,?,?,?)"); 
+                        $set_address_query->bind_param("ssssss",$given_address,$given_postal_code,$given_municipality,$given_country,$given_province,$given_state);
                     }
-                    if($asetaosoitetietokantakysely->execute()){                  
-                            $asetaosoitetietokantakysely->store_result();
-                            //Jos osoitteen luonti onnistui, haetaan uuden osoitteen id, luodaan käyttäjätili ja uudelleenohjataan onnistumisella
-                            $haeosoitteenidkysely=$connection->prepare("SELECT MAX(osoite_id) FROM osoite");
-                            if($haeosoitteenidkysely->execute()){
-                                $haeosoitteenidkysely->store_result();
-                                $haeosoitteenidkysely->bind_result($osoitteenid);
-                                while($haeosoitteenidkysely->fetch()){
-                                    echo '<br>'.$osoitteenid; 
-                                    $nykypäivämäärä=(string)(date_format(date_create(), 'Y-m-d H:i:s'));
-                                    //TODO: Tarvitaan ehtotarkistukset työntekijän määrittämiseksi, jos uutta käyttäjää yritetään luoda ylläpitäjäksi kirjautuneena
-                                    $luokäyttäjäkysely=$connection->prepare("INSERT INTO kayttajatili VALUES (?,?,?,?,?,?,?,TRUE,FALSE,?,NULL)");
-                                    $luokäyttäjäkysely->bind_param("ssssssid",$annettukäyttäjänimi,$annettusalasanahash,$annettuetunimi,$annettusukunimi,$annettupuhelinnumero,$annettusähköposti,$osoitteenid,$nykypäivämäärä);
+                    if($set_address_query->execute()){                  
+                            $set_address_query->store_result();
+                            //If retrieving address succeeded, retrieve the id of the new address, create the user account and redirect with a success
+                            $get_address_id_query=$connection->prepare("SELECT MAX(address_id) FROM address");
+                            if($get_address_id_query->execute()){
+                                $get_address_id_query->store_result();
+                                $get_address_id_query->bind_result($address_id);
+                                while($get_address_id_query->fetch()){
+                                    echo '<br>'.$address_id; 
+                                    $current_date=(string)(date_format(date_create(), 'Y-m-d H:i:s'));
+                                    //TODO: Need checks for defining user as staff, if user creation is attempted when logged in as an admin
+                                    $create_user_query=$connection->prepare("INSERT INTO userprofile VALUES (?,?,?,?,?,?,?,TRUE,FALSE,?,NULL)");
+                                    $create_user_query->bind_param("ssssssid",$given_username,$given_password_hash,$given_first_name,$given_surname,$given_phone_number,$given_email,$address_id,$current_date);
                                 }
                                 try{
-                                    if($luokäyttäjäkysely->execute()){
-                                        header('Location: ../../index.php?page=registration_form&rekisteröintionnistui=kyllä');
+                                    if($create_user_query->execute()){
+                                        header('Location: ../../index.php?page=registration_form&registration_status=yes');
                                     }
                                 }catch(Exception $e){
-                                    header('Location: ../../index.php?page=registration_form&rekisteröintionnistui=ei');
+                                    header('Location: ../../index.php?page=registration_form&registration_status=no');
                                 }
-                                $haeosoitteenidkysely->free_result();
+                                $get_address_id_query->free_result();
                             }
-                            $asetaosoitetietokantakysely->free_result();
+                            $set_address_query->free_result();
                     }
                 }
                 else{
-                    $nykypäivämäärä=(string)(date_format(date_create(), 'Y-m-d H:i:s'));
-                    //TODO: Tarvitaan ehtotarkistukset työntekijän määrittämiseksi, jos uutta käyttäjää yritetään luoda ylläpitäjäksi kirjautuneena
-                    $luokäyttäjäkysely=$connection->prepare("INSERT INTO kayttajatili VALUES (?,?,?,?,?,?,?,TRUE,FALSE,?,NULL)");
-                    $luokäyttäjäkysely->bind_param("ssssssid",$annettukäyttäjänimi,$annettusalasanahash,$annettuetunimi,$annettusukunimi,$annettupuhelinnumero,$annettusähköposti,$osoitteenid,$nykypäivämäärä);
+                    $current_date=(string)(date_format(date_create(), 'Y-m-d H:i:s'));
+                    //TODO: Need checks for defining user as staff, if user creation is attempted when logged in as an admin
+                    $create_user_query=$connection->prepare("INSERT INTO userprofile VALUES (?,?,?,?,?,?,?,TRUE,FALSE,?,NULL)");
+                    $create_user_query->bind_param("ssssssid",$given_username,$given_password_hash,$given_first_name,$given_surname,$given_phone_number,$given_email,$address_id,$current_date);
                     try{
-                        if($luokäyttäjäkysely->execute()){
+                        if($create_user_query->execute()){
                             
-                            header('Location: ../../index.php?page=registration_form&rekisteröintionnistui=kyllä');
+                            header('Location: ../../index.php?page=registration_form&registration_status=yes');
                             
                         }
                     }catch(Exception $e){
-                        header('Location: ../../index.php?page=registration_form&rekisteröintionnistui=ei');
+                        header('Location: ../../index.php?page=registration_form&registration_status=no');
                     }
                 }
             }
               
             else{
-                //Uudelleenohjataan epäonnistumisella jos käyttäjä on jo olemassa
-                header('Location: ../../index.php?page=registration_form&rekisteröintionnistui=käyttäjäonjoolemassa');             
+                //Redirected with a failure if the user already exists
+                header('Location: ../../index.php?page=registration_form&registration_status=user_already_exists');             
             }          
         
-            $käyttäjäjoolemassakysely->free_result();
+            $user_already_exists_query->free_result();
         }       
         else {
-            echo "database_error: käyttäjänimen etsintäkysely epäonnistui ".$connection->error;
+            echo "Database error: username retrieval failed ".$connection->error;
         }
     }
     else {
-        //salasana ja salasanan vahvistus eivät täsmää
-        header('Location: ../../index.php?page=registration_form&rekisteröintionnistui=salasanateivättäsmää');
+        //password and password confirm do not match
+        header('Location: ../../index.php?page=registration_form&registration_status=passwords_dont_match');
     }
           
 }
 else{
-    header('Location: ../../index.php?page=registration_form&rekisteröintionnistui=ei');
+    header('Location: ../../index.php?page=registration_form&registration_status=no');
 }
     
 ?>

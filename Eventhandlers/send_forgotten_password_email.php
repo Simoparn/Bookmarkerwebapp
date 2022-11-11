@@ -2,7 +2,7 @@
   
 
 
-   //Tarvitaan dotenv-, PHPmailer- ja Sendgrid-kirjastoille:
+   //Needed for dotenv, PHPmailer and Sendgrid packages:
   require '../vendor/autoload.php';
   
 
@@ -16,25 +16,25 @@
   
 
   
-  if(isset($_POST["nimi"])){
-  $lähettäjännimi=$_POST["nimi"];
+  if(isset($_POST["name"])){
+  $sender_name=$_POST["name"];
   }
-  if(isset($_POST["sähköposti"])){
-  $lähettäjänsähköposti=strtolower(trim($_POST["sähköposti"]));
+  if(isset($_POST["email"])){
+  $sender_email=strtolower(trim($_POST["email"]));
   }
-  if(isset($_POST["palauteaihe"])){
-  $palauteaihe=$_POST["palauteaihe"];
+  if(isset($_POST["feedback_topic"])){
+  $feedback_topic=$_POST["feedback_topic"];
   }
-  if(isset($_POST["palauteviesti"])){
-  $palauteviesti=$_POST["palauteviesti"];
+  if(isset($_POST["feedback_message"])){
+  $feedback_message=$_POST["feedback_message"];
   }
 
-	$sähköpostilöydetty=false;
+	$email_found=false;
 
  
     
     
-    //testattu lähetys
+    //not tested
     if($DOTENVDATA['MAILSERVICE']=="mailtrap"){
 
       require_once('../vendor/phpmailer/phpmailer/src/PHPMailer.php');
@@ -42,7 +42,7 @@
       require_once('../vendor/phpmailer/phpmailer/src/SMTP.php');
 
       
-      //$palauteviesti=$_POST["palauteviesti"];
+      //$feedback_message=$_POST["feedback_message"];
 
 
 
@@ -61,19 +61,19 @@
       $mail->Password = $DOTENVDATA['MAILTRAPHOSTPASSWORD'];
 
       try{
-        $haesähköpostikysely=$connection->prepare("SELECT sahkoposti, kayttajanimi, etunimi, sukunimi FROM kayttajatili WHERE LCASE(TRIM(sahkoposti))=?");
-        $haesähköpostikysely->bind_param("s",$lähettäjänsähköposti);
-        if($haesähköpostikysely->execute()){
-        	$haesähköpostikysely->bind_result($sähköposti, $käyttäjänimi, $etunimi, $sukunimi);
-        	while($haesähköpostikysely->fetch()){
-          	//echo $sähköposti.''.$käyttäjänimi;
-          	if($lähettäjänsähköposti==$sähköposti){
-							$sähköpostilöydetty=true;
-							$haettuetunimi=$etunimi;
-							$haettusukunimi=$sukunimi;
-            	//koodataan tietoturvallista uusintalinkkiä varten
-            	$koodattulähettäjänsähköposti=password_hash($sähköposti, PASSWORD_DEFAULT);
-            	$koodattucustomerusername=password_hash($käyttäjänimi, PASSWORD_DEFAULT);
+        $retrieve_email_query=$connection->prepare("SELECT email, username, first_name, surname FROM userprofile WHERE LCASE(TRIM(email))=?");
+        $retrieve_email_query->bind_param("s",$sender_email);
+        if($retrieve_email_query->execute()){
+        	$retrieve_email_query->bind_result($email, $username, $first_name, $surname);
+        	while($retrieve_email_query->fetch()){
+          	//echo $email.''.$username;
+          	if($sender_email==$email){
+							$email_found=true;
+							$retrieved_first_name=$first_name;
+							$retrieved_surname=$surname;
+            	//hashed for a secure change link
+            	$hashed_sender_email=password_hash($email, PASSWORD_DEFAULT);
+            	$hashed_customer_username=password_hash($username, PASSWORD_DEFAULT);
             	break;
           	}
         	}
@@ -82,106 +82,106 @@
       	}
       }catch(Exception $e){
         //echo $e;
-        header("Location: ../index.php?page=forgotten_password_form&salasananlähetysonnistui=ei&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']."&virhe=database_error");
+        header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=database_error");
         exit();
       }
 
-			if($sähköpostilöydetty==true){
-        //echo "Sähköposti löydetty mailtrapilla!";
+			if($email_found==true){
+        //echo "email found with mailtrap!";
         //exit();
 				$mail->IsHTML(true);
-				$mail->AddAddress($lähettäjänsähköposti, urldecode($haettuetunimi).' '.urldecode($haettusukunimi));
-				$mail->SetFrom($DOTENVDATA['MAILTRAPHOSTDOMAIN'], 'Puutarhaliike Neilikka ');
-				$mail->AddReplyTo($DOTENVDATA['MAILTRAPHOSTDOMAIN'], "Puutarhaliike Neilikka");
-				$mail->AddCC($DOTENVDATA['MAILTRAPHOSTDOMAIN'], "Puutarhaliike Neilikka");
-				$mail->Subject = "Käyttäjätilin unohtuneen salasanan uusintalinkki";
-				$content = "Automaattinen viesti, älkää vastatko tähän viestiin. \nTälle sähköpostille on pyydetty salasanan uusintaa. Neilikan käyttäjän uusintalomakelinkki: http://localhost/Omnia-repositoryt/Puutarhaliike-Neilikka/index.php?page=set_new_password_form&sähköposti=$koodattulähettäjänsähköposti&käyttäjänimi=$koodattucustomerusername";
+				$mail->AddAddress($sender_email, urldecode($retrieved_first_name).' '.urldecode($retrieved_surname));
+				$mail->SetFrom($DOTENVDATA['MAILTRAPHOSTDOMAIN'], 'Bookmarker web application ');
+				$mail->AddReplyTo($DOTENVDATA['MAILTRAPHOSTDOMAIN'], "Bookmarker web application");
+				$mail->AddCC($DOTENVDATA['MAILTRAPHOSTDOMAIN'], "Bookmarker web application");
+				$mail->Subject = "Change link for user profile's forgotten password";
+				$content = "Automaatic message, do not reply to this message. \nUser password change link has been requested for this email. Please remove the link from your browser's history after successfully changing your password: http://localhost/Omnia-repositoryt/Bookmarkerwebapp/index.php?page=set_new_password_form&email=$hashed_sender_email&username=$hashed_customer_username";
 				
 
 				$mail->MsgHTML($content); 
 				if(!$mail->Send()) {
-					//echo "Virhe sähköpostin lähetyksessä Mailtrap-palvelun kautta.<br>{$mail->ErrorInfo}<br>";
+					//echo "Error in sending email through Mailtrap<br>{$mail->ErrorInfo}<br>";
 					//var_dump($mail);
-          header("Location: ../index.php?page=forgotten_password_form&salasananlähetysonnistui=ei&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']."&virhe=sähköpostivirhe");
+          header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_error");
 				} else {
-					header("Location: ../index.php?page=forgotten_password_form&salasananlähetysonnistui=kyllä&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']);
-					//echo "Sähköposti lähetetty onnistuneesti Mailtrap-palvelun kautta.";
+					header("Location: ../index.php?page=forgotten_password_form&password_sent_status=yes&mailservice=".$DOTENVDATA['MAILSERVICE']);
+					//echo "Email sent successfully through Mailtrap.";
 				}
 			}
 			else{
-				header("Location: ../index.php?page=forgotten_password_form&salasananlähetysonnistui=ei&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']."&virhe=sähköpostiaeilöytynyt");
+				header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_not_found");
 			}
 
     }
 
-  //testattu lähetys
+  //not tested
     elseif($DOTENVDATA['MAILSERVICE']=="sendgrid"){
 
       require_once('../vendor/sendgrid/sendgrid/sendgrid-php.php');
  
       try{
-        $haesähköpostikysely=$connection->prepare("SELECT sahkoposti, kayttajanimi, etunimi, sukunimi FROM kayttajatili WHERE LCASE(TRIM(sahkoposti))=?");
-        $haesähköpostikysely->bind_param("s",$lähettäjänsähköposti);
-				if($haesähköpostikysely->execute()){     
-					$haesähköpostikysely->bind_result($sähköposti, $käyttäjänimi, $etunimi, $sukunimi);
-          while($haesähköpostikysely->fetch()){
-            if($lähettäjänsähköposti==$sähköposti){
+        $retrieve_email_query=$connection->prepare("SELECT email, username, first_name, surname FROM userprofile WHERE LCASE(TRIM(email))=?");
+        $retrieve_email_query->bind_param("s",$sender_email);
+				if($retrieve_email_query->execute()){     
+					$retrieve_email_query->bind_result($email, $username, $first_name, $surname);
+          while($retrieve_email_query->fetch()){
+            if($sender_email==$email){
               
-              $haettuetunimi=$etunimi;
-              $haettusukunimi=$sukunimi;
-							$sähköpostilöydetty=true;
-              //koodataan tietoturvallista uusintalinkkiä varten
-              $koodattulähettäjänsähköposti=password_hash($lähettäjänsähköposti, PASSWORD_DEFAULT);
-              $koodattucustomerusername=password_hash($lähettäjänsähköposti, PASSWORD_DEFAULT);
+              $retrieved_first_name=$first_name;
+              $retrieved_surname=$surname;
+							$email_found=true;
+              //hashed for a secure change link
+              $hashed_sender_email=password_hash($sender_email, PASSWORD_DEFAULT);
+              $hashed_customer_username=password_hash($sender_email, PASSWORD_DEFAULT);
               break;
             }
           }
           
         }
       }catch(Exception $e){
-					echo "database_error:".$e;
+					echo "Database error:".$e;
           //exit();
-          header("Location: ../index.php?page=forgotten_password_form&salasananlähetysonnistui=ei&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']."&virhe=database_error");
+          header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=database_error");
           
         }
 
-        if($sähköpostilöydetty==true){
+        if($email_found==true){
           try{
             
             $email = new \SendGrid\Mail\Mail();
-            $email->setFrom($DOTENVDATA['SENDGRIDSENDERIDENTITY'], 'Puutarhaliike Neilikka');
-            $email->setSubject('Puutarhaliike Neilikka, käyttäjätilin unohtuneen salasanan uusintalinkki');
-            $email->addTo($lähettäjänsähköposti, urldecode($haettuetunimi).' '.urldecode($haettusukunimi) );
-            $email->addContent("text/plain", "Automaattinen viesti, älkää vastatko tähän viestiin. \nTälle sähköpostille on pyydetty salasanan uusintaa. Neilikan käyttäjän uusintalomakelinkki: http://localhost/Omnia-repositoryt/Puutarhaliike-Neilikka/index.php?page=set_new_password_form&salasananlähetysonnistui=kylla&sähköposti=".$koodattulähettäjänsähköposti."&käyttäjänimi=".$koodattucustomerusername);
+            $email->setFrom($DOTENVDATA['SENDGRIDSENDERIDENTITY'], 'Bookmarker web application');
+            $email->setSubject("Bookmarker web application, Change link for user profile's forgotten password");
+            $email->addTo($sender_email, urldecode($retrieved_first_name).' '.urldecode($retrieved_surname) );
+            $email->addContent("text/plain", "Automaatic message, don't reply to this message. \nUser password change link has been requested for this email. Please remove the link from your browser's history after successfully changing your password: http://localhost/Omnia-repositoryt/Bookmarkerwebapp/index.php?page=set_new_password_form&password_sent_status=yes&email=".$hashed_sender_email."&username=".$hashed_customer_username);
             
             $sendgrid = new \SendGrid($DOTENVDATA['SENDGRIDHOSTPASSWORD']);
   
           
             $response = $sendgrid->send($email);
-            header("Location: ../index.php?page=forgotten_password_form&salasananlähetysonnistui=kyllä&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']);
+            header("Location: ../index.php?page=forgotten_password_form&password_sent_status=yes&mailservice=".$DOTENVDATA['MAILSERVICE']);
             print $response->statusCode() . "\n";
             print_r($response->headers());
             print $response->body() . "\n";
             //exit();
             
           } catch (Exception $e) {
-            //echo "Sähköpostivirhe sendGrid-kirjastolla: ".$e;
+            //echo "Email error with SendGrid package: ".$e;
             //exit();
-            header("Location: ../index.php?page=forgotten_password_form&salasananlähetysonnistui=ei&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']."&virhe=sähköpostivirhe");
+            header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_error");
             
-            //echo "Virhe lähetettäessä sähköpostia SendGrid-kirjastolla: ". $e->getMessage() ."\n";
+            //echo "Error while sending email with SendGrid: ". $e->getMessage() ."\n";
           }
         }
         else{
-          //echo "sähköpostia ei löytynyt";
+          //echo "Email not found";
           //exit();
-          header("Location: ../index.php?page=forgotten_password_form&salasananlähetysonnistui=ei&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']."&virhe=sähköpostiaeilöytynyt");
+          header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_not_found");
         }
 				
     }
 
     else{
-      header("Location: ../index.php?page=forgotten_password_form&salasananlähetysonnistui=ei&sähköpostipalvelu=".$DOTENVDATA['MAILSERVICE']."&virhe=sähköpostipalveluaeilöytynyt");
+      header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=mailservice_not_found");
     }
 			
 		

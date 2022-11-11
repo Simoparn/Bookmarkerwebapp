@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => '800038769/puutarhaliike-neilikka',
+        'name' => '800038769/Bookmarkerwebapp',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
         'reference' => '19b7c4fd7c35feebaa6907e8d1dca7942ded8312',
@@ -10,7 +10,7 @@
         'dev' => true,
     ),
     'versions' => array(
-        '800038769/puutarhaliike-neilikka' => array(
+        '800038769/Bookmarkerwebapp' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
             'reference' => '19b7c4fd7c35feebaa6907e8d1dca7942ded8312',

@@ -10,7 +10,7 @@
 
 ENGLISH: Experimental browser bookmarking web application service. Part of Omnia's web programming (Web-ohjelmointi) course (autumn 2022).
 
-Part of the Omnia web programming course (autumn 2022-spring 2023). Server platform [XAMPP](https://www.apachefriends.org/). Utilizes PHPMailer library and [Twilio Sendgrid-](https://app.sendgrid.com/) or [Mailtrap](https://mailtrap.io) services for contact emails and password changes with SMTP, SendGrid can send the email to the real SMTP server. Database MySQL/MariaDB.
+Part of the Omnia web programming course (autumn 2022-spring 2023). Server platform is [XAMPP](https://www.apachefriends.org/). Utilizes PHPMailer library and [Twilio Sendgrid-](https://app.sendgrid.com/) or [Mailtrap](https://mailtrap.io) services for contact emails and password changes with SMTP, SendGrid can send the email to the real SMTP server. Database MySQL/MariaDB. Database handling with mySQLi.
 
 ## Operating principle
 ### Kredentiaalit
@@ -149,7 +149,7 @@ https://kayttajanimi.azurewebsites.net
 Configuration ->
 
 Avaa PHPMyAdmin ja suorita seuraava SQL-komento: SET PASSWORD FOR 'root'@'localhost' = PASSWORD ('haluttusalasana')
-Salasana tämän jälkeen tiedostoon -> XAMPP Control Panel -> config.inc.php
+Salasana tämän jälkeen tiedostoon -> XAMPP Control Panel -> config.inc.php, jotta PHPMyAdmin saadaan avattua jatkossa.
 
 Luo testikäyttäjiä lisäämällä ne tiedostoon data.sql seuraavassa muodossa:
     INSERT INTO kayttajatili VALUES('kayttajatahan','salasanahashtahan','etunimi','sukunimi','puhelinnumero','sähköposti',osoitteenid,onkotiliaktiivinenboolean,onkokayttajahenkilokuntaaboolean,'2022-01-01 12:00:00',NULL)

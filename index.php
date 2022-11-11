@@ -58,10 +58,10 @@
     foreach($_SESSION as $key => $value){
         echo "<br><h5>$key : $value</h5>";
     }*/
-    
+    require_once('Eventhandlers/parse_page_from_url.php');
     require_once('Graphics/navigation_panel.php');
-    if(isset($_GET['currentpage'])){
-        switch($_GET['currentpage']){
+    if(isset($_GET['page'])){
+        switch($_GET['page']){
 
             case 'frontpage':
                 require_once('Graphics/Notifications/Notifications_frontpage.php');
@@ -69,27 +69,27 @@
                 break;
             
             case 'categories':
-                require_once('Graphics/Notifications/Notifications_categories.php');
+                require_once('Graphics/Notifications/categories/Notifications_categories.php');
                 require_once('Graphics/categories.php');
                 break;
             
             case 'categorypage_1':
-                require_once('Graphics/Notifications/Notifications_categorypage_1.php');
+                require_once('Graphics/Notifications/categories/Notifications_categorypage_1.php');
                 require_once('Graphics/categorypage_1.php');
                 break;
             
             case 'categorypage_2':
-                require_once('Graphics/Notifications/Notifications_categorypage_2.php');
+                require_once('Graphics/Notifications/categories/Notifications_categorypage_2.php');
                 require_once('Graphics/categorypage_2.php');
                 break;
             
             case 'categorypage_3':
-                require_once('Graphics/Notifications/Notifications_categorypage_3.php');
+                require_once('Graphics/Notifications/categories/Notifications_categorypage_3.php');
                 require_once('Graphics/categorypage_3.php');
                 break;
             
             case 'categorypage_4':
-                require_once('Graphics/Notifications/Notifications_categorypage_4.php');
+                require_once('Graphics/Notifications/categories/Notifications_categorypage_4.php');
                 require_once('Graphics/categorypage_4.php');
                 break;
             
@@ -156,7 +156,7 @@
 
                         if(isset($_GET['password_change_status'])){
                             if($_GET['password_change_status']=="yes"){
-                                echo "<br><span class=\"successmessage\">Salasanan vaihto onnistui <a href=\"./index.php?page=frontpage\">Refresh page</a></span>";
+                                echo "<br><span class=\"successmessage\">Password change succeeded <a href=\"./index.php?page=frontpage\">Refresh page</a></span>";
                                 session_destroy();
                             }
                             elseif($_GET['password_change_status']=="no"){
@@ -173,13 +173,13 @@
                             }
                         }
                             
-                        /*echo "<h1>set_new_password_form, GET-muuttujat:</h1>";
-                        foreach($_GET as $avain => $arvo){
-                            echo "<br><h2>$avain : $arvo</h2>";
+                        /*echo "<h1>set_new_password_form, GET variables:</h1>";
+                        foreach($_GET as $key => $value){
+                            echo "<br><h2>$key : $value</h2>";
                         }
-                        echo "<h1>set_new_password_form, SESSION-muuttujat:</h1>";
-                        foreach($_SESSION as $avain => $arvo){
-                            echo "<br><h2>$avain : $arvo</h2>";
+                        echo "<h1>set_new_password_form, SESSION variables:</h1>";
+                        foreach($_SESSION as $key => $value){
+                            echo "<br><h2>$key : $value</h2>";
                         }*/ 
                         unset($_SESSION['change_password_link_open_status']);
                     }
@@ -195,6 +195,10 @@
                 require_once('Graphics/Notifications/Notifications_registration_form.php');
                 require_once('Graphics/registration_form.php');
                 break;
+            case 'privacy_policy':
+                require_once('Graphics/privacy_policy.php');
+            
+            
             default:
                 require_once('Graphics/frontpage.php');
         }

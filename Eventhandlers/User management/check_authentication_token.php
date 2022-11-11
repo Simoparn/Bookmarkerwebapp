@@ -15,49 +15,49 @@ if ($token && token_is_valid($token)) {
     }
 }*/
 
-if(!isset($_SESSION["käyttäjänimi"]) && isset($_COOKIE["autentikaatiotoken"])){
-    $autentikaatiotoken=filter_input(INPUT_COOKIE,"autentikaatiotoken",FILTER_SANITIZE_STRING);
-    $selektorijavalidaattori=explode(".",$autentikaatiotoken);
-    $selektori=$selektorijavalidaattori[0];
-    $validaattori=$selektorijavalidaattori[1];
+if(!isset($_SESSION["username"]) && isset($_COOKIE["authentication_token"])){
+    $authenticationtoken=filter_input(INPUT_COOKIE,"authentication_token",FILTER_SANITIZE_STRING);
+    $selector_and_validator=explode(".",$authentication_token);
+    $selector=$selector_and_validator[0];
+    $validator=$selector_and_validator[1];
     
-    $check_authentication_tokenkysely=$connection->prepare("SELECT kayttajanimi, selektori, validaattorihash, umpeutumisaika FROM kayttajantoken WHERE selektori = ? and umpeutumisaika > NOW()");
-    $check_authentication_tokenkysely->bind_param("s",$selektori);
+    $check_authentication_token_query=$connection->prepare("SELECT username, selector, validator_hash, expiration_date FROM kayttajantoken WHERE selector = ? and expiration_date > NOW()");
+    $check_authentication_token_query->bind_param("s",$selector);
     try{
-        if($check_authentication_tokenkysely->execute()){
-            $check_authentication_tokenkysely->bind_result($käyttäjänimi,$selektori,$validaattorihash,$umpeutumisaika);
-            while($check_authentication_tokenkysely->fetch()){
-                echo $käyttäjänimi;
-                if(password_verify($validaattori,$validaattorihash)==true){
+        if($check_authentication_token_query->execute()){
+            $check_authentication_token_query->bind_result($username,$selector,$validator_hash,$expiration_date);
+            while($check_authentication_token_query->fetch()){
+                echo $username;
+                if(password_verify($validator,$validator_hash)==true){
                     session_start();
-                    $_SESSION["käyttäjänimi"]=$käyttäjänimi;
-                    require_once('Eventhandlers/User management/käsitteleautomaattinensisäänkirjautuminen.php');
-                    //Uudelleenohjataan jos oikea token löytyi   
-                    header('Location: ./index.php?page=frontpage&automaattinenlogin_status=kyllä');
+                    $_SESSION["username"]=$username;
+                    require_once('Eventhandlers/User management/handle_automatic_login.php');
+                    //Redirected if the right token was found   
+                    header('Location: ./index.php?page=frontpage&automatic_nlogin_status=yes');
                     exit();
                 }
             }
-            //Jos voimassaolevaa autentikaatiotokenia ei löytynyt tietokannasta vaikka tokeneväste on selainpuolella, 
-            // tulee vähintään poistaa evästeet selainpuolelta, tietokantapoiston voi hoitaa seuraavilla evästeettömillä sivuavauksilla
+            //If an active authentication token is not found from the database when a token cookie is in browser, 
+            //remove the cookies from browser, database removal can be handled with subsequent non-cookie page openings
             if(isset($_COOKIE['rememberme'])){
                 unset($_COOKIE['rememberme']);
                 setcookie('rememberme', null, -1);
             }
-            if(isset($_COOKIE['autentikaatiotoken'])){
-                unset($_COOKIE['autentikaatiotoken']);
-                setcookie('autentikaatiotoken', null, -1);
+            if(isset($_COOKIE['authentication_token'])){
+                unset($_COOKIE['authentication_token']);
+                setcookie('authentication_token', null, -1);
             }
 
             
 
-            header('Location: ../../index.php?page=frontpage&automaattinenlogin_status=ei');
+            header('Location: ../../index.php?page=frontpage&automaatic_login_status=no');
         }
        
         
 
     }catch(Exception $e){
-        //database_error
-        header('Location: ../../index.php?page=frontpage&database_error=kyllä');
+        //database error
+        header('Location: ../../index.php?page=frontpage&database_error=yes');
     }
 
 }

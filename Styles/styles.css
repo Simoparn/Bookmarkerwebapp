@@ -88,20 +88,21 @@ Definitions are in the following order:
     margin-top:3%;
     margin-left:3%;
     padding-bottom:0.5em;
-    padding-right:21.5em;
-    height:4em;
-  }
-
-  footer > *{
-    margin-left:4%;
-  }
-
-  footer > div
-  {
-    float:left;
-    margin-right: 10%;
+    height:auto;
     
   }
+
+  footer > img{
+    height:auto;
+    margin-left:4em;
+    max-width:25%;
+  }
+
+  footer > span{
+    margin-left:4%;
+    
+  }
+
 
   iframe
   {
@@ -360,7 +361,7 @@ Definitions are in the following order:
   #pagecontent
   {
     background-color:lightgrey;
-    color:green;
+    color:black;
     font-size:80%;
     font-weight:bold;
     margin-left:2%;
@@ -387,7 +388,7 @@ Definitions are in the following order:
   #pagelogo
   {
     
-    background-image:url("https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Dianthus_caryophyllus_L_%28Clove_pink%29.JPG/800px-Dianthus_caryophyllus_L_%28Clove_pink%29.JPG");
+    background-image:url("");
     background-repeat:no-repeat;
     background-size:contain;
     height:10em;
@@ -483,7 +484,6 @@ Definitions are in the following order:
     margin-top:3%;
     margin-left:5%;
     padding-bottom:0.5em;
-    padding-right:21.5em;
     height:auto;
     
   }
@@ -494,14 +494,12 @@ Definitions are in the following order:
     
   }
 
-  
-  footer > div
-  {
-    float:left;
-    width:50%;
-    max-width:20%;
-    max-height:20%;
+  footer > img {
+    height:auto;
+    margin-left:4em;
+    max-width:25%;
   }
+
 
   iframe
   {
@@ -689,8 +687,8 @@ Definitions are in the following order:
 
   #pagecontent
   {
-    background-color:lightgreen;
-    color:green;
+    background-color:lightgrey;
+    color:black;
     font-size:80%;
     font-weight:bold;
     margin-left:2%;
@@ -717,7 +715,7 @@ Definitions are in the following order:
   #pagelogo
   {
     
-    background-image:url("https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Dianthus_caryophyllus_L_%28Clove_pink%29.JPG/800px-Dianthus_caryophyllus_L_%28Clove_pink%29.JPG");
+    background-image:url("");
     background-repeat:no-repeat;
     background-size:contain;
     height:10em;

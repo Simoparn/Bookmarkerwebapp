@@ -1,51 +1,51 @@
 <?php
 require_once('../connect_database.php');
-//TODO: Session already started- varoitus, ei tarvita täällä?
+//TODO: Session already started warning, not needed here?
 //session_start();
-$annettusähköposti=$_POST["sähköposti"];
-$uusisalasana=$_POST["uusisalasana"];
-$annettusalasananvahvistus=$_POST["vahvistauusisalasana"];
+$given_email=$_POST["email"];
+$new_password=$_POST["new_password"];
+$given_password_confirm=$_POST["confirm_new_password"];
 
 
 
-$haekäyttäjiensähköpostitkysely=$connection->prepare("SELECT sahkoposti FROM kayttajatili");
-$uusisalasanakysely=$connection->prepare("UPDATE kayttajatili SET salasanahash=? WHERE sahkoposti=?");
+$get_user_emails_query=$connection->prepare("SELECT sahkoposti FROM kayttajatili");
+$new_password_query=$connection->prepare("UPDATE kayttajatili SET password_hash=? WHERE sahkoposti=?");
 
 
 try{
-    if($haekäyttäjiensähköpostitkysely->execute()){
-        $haekäyttäjiensähköpostitkysely->store_result();
-        $haekäyttäjiensähköpostitkysely->bind_result($sähköposti);
-        while($haekäyttäjiensähköpostitkysely->fetch()){
-            if(password_verify($annettusähköposti, $sähköpostihash)){
-                if($uusisalasana == $annettusalasananvahvistus){
-                    $salasanahash=password_hash($uusisalasana, PASSWORD_DEFAULT);
-                    //päivitä jos sekä vaihtolomakkeella annettu sähköposti että uudet salasanat ovat oikein
-                    $uusisalasanakysely->bind_param("ss",$salasanahash,$sähköposti);
-                    if($uusisalasanakysely->execute()){
-                        header('Location: ../../index.php?page=set_new_password_form&password_change_status=kyllä&oikeasähköposti=kyllä');
+    if($get_user_emails_query->execute()){
+        $get_user_emails_query->store_result();
+        $get_user_emails_query->bind_result($email);
+        while($get_user_emails_query->fetch()){
+            if(password_verify($given_email, $email_hash)){
+                if($new_password == $given_password_confirm){
+                    $password_hash=password_hash($new_password, PASSWORD_DEFAULT);
+                    //update if both the email given in the change form and the new passwords are correct
+                    $new_password_query->bind_param("ss",$password_hash,$email);
+                    if($new_password_query->execute()){
+                        header('Location: ../../index.php?page=set_new_password_form&password_change_status=yes&correct_email=yes');
                         exit();
                     }
                 }
                 else{
-                    //Jos uusi salasana ja uuden salasanan vahvistus eivät täsmää 
+                    //If the new password and new password confirm dont match 
 
-                    header('Location: ../../index.php?page=set_new_password_form&password_change_status=ei&oikeasähköposti=kyllä');
+                    header('Location: ../../index.php?page=set_new_password_form&password_change_status=no&correct_email=yes');
                     exit();
                     
                 }
             }
         }
-        $haekäyttäjiensähköpostitkysely->free_result();
+        $get_user_emails_query->free_result();
         
-            header('Location: ../../index.php?page=set_new_password_form&password_change_status=ei&oikeasähköposti=ei');
+            header('Location: ../../index.php?page=set_new_password_form&password_change_status=no&correct_email=no');
     }
         
     
 }catch(Exception $e){
-    echo "database_error: ".$e;  
+    echo "Database error: ".$e;  
     exit();             
-    header('Location: ../../index.php?page=set_new_password_form&password_change_status=ei&database_error=kyllä');
+    header('Location: ../../index.php?page=set_new_password_form&password_change_status=no&database_error=yes');
     exit();
 }
 ?>

@@ -42,7 +42,7 @@ if(isset($_GET['mailservice'])){
         }
     }
     else{
-        echo "<br><span class=\"errormessage\">Palautteen lähetys epäonnistui, palvelimella määritettyä sähköpostipalvelua ei ole olemassa! <a href=\"./index.php?page=contact\">Refresh page</a></span>";
+        echo "<br><span class=\"errormessage\">Sending feedback failed, The email service configured on the server doest not exist! <a href=\"./index.php?page=contact\">Refresh page</a></span>";
     }
 }
 
