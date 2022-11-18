@@ -6,8 +6,8 @@
 
 
 $servername = "localhost";
-$username = $DOTENVDATA['DATABASEUSERNAME'];
-$password = $DOTENVDATA['DATABASEPASSWORD'];
+$db_username = $DOTENVDATA['DATABASEUSERNAME'];
+$db_password = $DOTENVDATA['DATABASEPASSWORD'];
 $db="bookmarkerwebapp";
 
 if(!isset($_SESSION)){
@@ -15,13 +15,14 @@ if(!isset($_SESSION)){
 }
 
 // Create database connection
-$connection = new mysqli($servername, $username, $password, $db);
+$connection = new mysqli($servername, $db_username, $db_password, $db);
 $database_query = new mysqli_stmt($connection);
 // Check database connection
 if ($connection->connect_error) {
     die("connecting to database failed: " . $connection->connect_error);
 } 
 
+//echo "Database character set: ".$connection->character_set_name();
 ?>
 
 <?php

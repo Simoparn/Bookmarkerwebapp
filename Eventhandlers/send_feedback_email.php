@@ -104,7 +104,7 @@
           print $response->body() . "\n";
           if($response->statusCode()==202){
           //exit();
-          header("Location: ../index.php?page=contact&send_feedback_status=yes&mailservice=".$DOTENVDATA['MAILSERVICE']);
+            header("Location: ../index.php?page=contact&send_feedback_status=yes&mailservice=".$DOTENVDATA['MAILSERVICE']);
           }
           else{
             header("Location: ../index.php?page=contact&send_feedback_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=sendgrid_sender_identity_missing");
@@ -118,7 +118,7 @@
 
   
     else{
-      header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=mailservice_not_found");
+      header("Location: ../index.php?page=forgotten_password_form&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=mailservice_not_found");
     }
 
 			

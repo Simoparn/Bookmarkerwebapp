@@ -82,7 +82,7 @@
       	}
       }catch(Exception $e){
         //echo $e;
-        header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=database_error");
+        header("Location: ../index.php?page=forgotten_password_form&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=database_error");
         exit();
       }
 
@@ -102,14 +102,14 @@
 				if(!$mail->Send()) {
 					//echo "Error in sending email through Mailtrap<br>{$mail->ErrorInfo}<br>";
 					//var_dump($mail);
-          header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_error");
+          header("Location: ../index.php?page=forgotten_password_form&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_error");
 				} else {
-					header("Location: ../index.php?page=forgotten_password_form&password_sent_status=yes&mailservice=".$DOTENVDATA['MAILSERVICE']);
+					header("Location: ../index.php?page=forgotten_password_form&mailservice=".$DOTENVDATA['MAILSERVICE']);
 					//echo "Email sent successfully through Mailtrap.";
 				}
 			}
 			else{
-				header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_not_found");
+				header("Location: ../index.php?page=forgotten_password_form&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_not_found");
 			}
 
     }
@@ -132,7 +132,7 @@
 							$email_found=true;
               //hashed for a secure change link
               $hashed_sender_email=password_hash($sender_email, PASSWORD_DEFAULT);
-              $hashed_customer_username=password_hash($sender_email, PASSWORD_DEFAULT);
+              $hashed_customer_username=password_hash($username, PASSWORD_DEFAULT);
               break;
             }
           }
@@ -141,7 +141,7 @@
       }catch(Exception $e){
 					echo "Database error:".$e;
           //exit();
-          header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=database_error");
+          header("Location: ../index.php?page=forgotten_password_form&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=database_error");
           
         }
 
@@ -152,22 +152,27 @@
             $email->setFrom($DOTENVDATA['SENDGRIDSENDERIDENTITY'], 'Bookmarker web application');
             $email->setSubject("Bookmarker web application, Change link for user profile's forgotten password");
             $email->addTo($sender_email, urldecode($retrieved_first_name).' '.urldecode($retrieved_surname) );
-            $email->addContent("text/plain", "Automaatic message, don't reply to this message. \nUser password change link has been requested for this email. Please remove the link from your browser's history after successfully changing your password: http://localhost/Omnia-repositoryt/Bookmarkerwebapp/index.php?page=set_new_password_form&password_sent_status=yes&email=".$hashed_sender_email."&username=".$hashed_customer_username);
+            $email->addContent("text/plain", "Automatic message, don't reply to this message. \nUser password change link has been requested for this email. Please remove the link from your browser's history after successfully changing your password: http://localhost/Omnia-repositoryt/Bookmarkerwebapp/index.php?page=set_new_password_form&email=".$hashed_sender_email."&username=".$hashed_customer_username);
             
             $sendgrid = new \SendGrid($DOTENVDATA['SENDGRIDHOSTPASSWORD']);
   
           
             $response = $sendgrid->send($email);
-            header("Location: ../index.php?page=forgotten_password_form&password_sent_status=yes&mailservice=".$DOTENVDATA['MAILSERVICE']);
+            if($response->statusCode()==202){
+              header("Location: ../index.php?page=forgotten_password_form&send_password_change_link_status=yes&mailservice=".$DOTENVDATA['MAILSERVICE']);
+            }
+            else{
+              header("Location: ../index.php?page=contact&send_password_change_link_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=sendgrid_sender_identity_missing");
+            }
             print $response->statusCode() . "\n";
             print_r($response->headers());
             print $response->body() . "\n";
-            //exit();
+            
             
           } catch (Exception $e) {
             //echo "Email error with SendGrid package: ".$e;
             //exit();
-            header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_error");
+            header("Location: ../index.php?page=forgotten_password_form&send_password_change_link_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=user_email_error");
             
             //echo "Error while sending email with SendGrid: ". $e->getMessage() ."\n";
           }
@@ -175,13 +180,13 @@
         else{
           //echo "Email not found";
           //exit();
-          header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_not_found");
+          header("Location: ../index.php?page=forgotten_password_form&send_password_change_link_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=user_email_not_found");
         }
 				
     }
 
     else{
-      header("Location: ../index.php?page=forgotten_password_form&password_sent_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=mailservice_not_found");
+      header("Location: ../index.php?page=forgotten_password_form&send_password_change_link_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=mailservice_not_found");
     }
 			
 		

@@ -3,8 +3,11 @@
 require_once('Eventhandlers/connect_database.php');
 
 try{
-//If the window is opened again, trying automaatic login with Remember me and authentication token cookies
+//If the window is opened again, trying automatic login with Remember me and authentication token cookies
     if(isset($_COOKIE['rememberme']) && isset($_COOKIE['authentication_token'])){
+        if(isset($_SESSION["previously_logged_out"])){
+            unset($_SESSION["previously_logged_out"]);
+        }
         $selector_and_validator=explode('.',$_COOKIE['authentication_token']);
         $selector=$selector_and_validator[0];
         $token_user_query=$connection->prepare("SELECT username FROM userprofile WHERE username= (SELECT username FROM usertoken WHERE selector=?)");
@@ -25,13 +28,13 @@ try{
         }
     }
     else{
-        //If isername and password are not set. This is not needed in principle, required attribute in login form protects from this case
+        //If tokens are not set.
         header('Location: ./index.php?page=login_form&automatic_login_status=no');
     }
                 
 }catch(Exception $e){
     //database error
-    header('Location: ./index.php?page=login_form&login_status=unknown_error');
+    header('Location: ./index.php?page=login_form&automatic_login_status=unknown_error');
 }
 
 

@@ -10,24 +10,24 @@
         </th>
         <tr>
           <td>
-          <p><span class="paragraphtitle">Nimi</span></p>
+          <p><span class="paragraphtitle">Name</span></p>
           </td>
         <td>
-          <p><span class="paragraphtitle" >Hinta (sis. Alv)</span></p>
+          <p><span class="paragraphtitle" >Price (inc. VAT)</span></p>
         </td>
         <td>
-          <p><span class="paragraphtitle">Kuvaus</span></p>
+          <p><span class="paragraphtitle">Description</span></p>
         </td>
         </tr>
         <tr>
           <td>
-            Puutarhasakset
+            Garden scissors
           </td>
           <td>
-            17,00 euroa
+            17,00 e
           </td>
           <td>
-            Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus
+            description description description description description description description description description description description description description description description description description description description
           </td>
         </tr>
       </table>
@@ -41,24 +41,24 @@
           </th>
           <tr>
             <td>
-            <p><span class="paragraphtitle">Nimi</span></p>
+            <p><span class="paragraphtitle">Name</span></p>
             </td>
           <td>
-            <p><span class="paragraphtitle" >Hinta (sis. Alv)</span></p>
+            <p><span class="paragraphtitle" >Price (inc. VAT)</span></p>
           </td>
           <td>
-            <p><span class="paragraphtitle">Kuvaus</span></p>
+            <p><span class="paragraphtitle">Description</span></p>
           </td>
           </tr>
           <tr>
             <td>
-              Puutarhalapio
+              Garden shovel
             </td>
             <td>
               22 e
             </td>
             <td>
-              Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus
+              description description description description description description description description description description description description description description description description description description description
             </td>
           </tr>
         </table>

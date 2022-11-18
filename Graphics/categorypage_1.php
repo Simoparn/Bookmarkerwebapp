@@ -13,7 +13,7 @@
           <p><span class="paragraphtitle">Name</span></p>
           </td>
         <td>
-          <p><span class="paragraphtitle" >Price (sis. Alv)</span></p>
+          <p><span class="paragraphtitle" >Price (inc. VAT)</span></p>
         </td>
         <td>
           <p><span class="paragraphtitle">Description</span></p>
@@ -21,13 +21,13 @@
         </tr>
         <tr>
           <td>
-            Vehkakasvi
+            Aroid
           </td>
           <td>
             24,00 euroa
           </td>
           <td>
-            Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus
+            description description description description description description description description description description description description description description description description description description description
           </td>
         </tr>
       </table>
@@ -42,7 +42,7 @@
             <p><span class="paragraphtitle">Name</span></p>
             </td>
           <td>
-            <p><span class="paragraphtitle" >Price (sis. Alv)</span></p>
+            <p><span class="paragraphtitle" >Price (inc. VAT)</span></p>
           </td>
           <td>
             <p><span class="paragraphtitle">Description</span></p>
@@ -50,13 +50,13 @@
           </tr>
           <tr>
             <td>
-              Kirjorönsylilja
+              Spider plant
             </td>
             <td>
-              28,00 euroa
+              28,00 e
             </td>
             <td>
-              Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus
+              description description description description description description description description description description description description description description description description description description description
             </td>
           </tr>
         </table>
@@ -71,21 +71,21 @@
               <p><span class="paragraphtitle">Nimi</span></p>
               </td>
             <td>
-              <p><span class="paragraphtitle" >Hinta (sis. Alv)</span></p>
+              <p><span class="paragraphtitle" >Price (inc. VAT)</span></p>
             </td>
             <td>
-              <p><span class="paragraphtitle">Kuvaus</span></p>
+              <p><span class="paragraphtitle">description</span></p>
             </td>
             </tr>
             <tr>
               <td>
-                Rahapuu
+                Jade plant
               </td>
               <td>
-                34 euroa
+                34 e
               </td>
               <td>
-                Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus
+                description description description description description description description description description description description description description description description description description description description
               </td>
             </tr>
           </table>

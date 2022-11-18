@@ -98,9 +98,14 @@ Definitions are in the following order:
     max-width:25%;
   }
 
+
   footer > span{
     margin-left:4%;
     
+  }
+
+  footer > span > ul > li{
+    list-style-type:none;
   }
 
 
@@ -498,6 +503,15 @@ Definitions are in the following order:
     height:auto;
     margin-left:4em;
     max-width:25%;
+  }
+
+  footer > span{
+    margin-left:4%;
+    
+  }
+
+  footer > span > ul > li{
+    list-style-type:none;
   }
 
 

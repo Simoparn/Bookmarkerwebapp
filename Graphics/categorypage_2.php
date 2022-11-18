@@ -8,13 +8,13 @@
       </th>
       <tr>
         <td>
-        <p><span class="paragraphtitle">Nimi</span></p>
+        <p><span class="paragraphtitle">Name</span></p>
         </td>
       <td>
-        <p><span class="paragraphtitle" >Hinta (sis. Alv)</span></p>
+        <p><span class="paragraphtitle" >Price (inc. VAT)</span></p>
       </td>
       <td>
-        <p><span class="paragraphtitle">Kuvaus</span></p>
+        <p><span class="paragraphtitle">Description</span></p>
       </td>
       </tr>
       <tr>
@@ -22,10 +22,10 @@
           Petunia
         </td>
         <td>
-          8,00 euroa
+          8,00 e
         </td>
         <td>
-          Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus
+          Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description
         </td>
       </tr>
     </table>
@@ -37,24 +37,24 @@
         </th>
         <tr>
           <td>
-          <p><span class="paragraphtitle">Nimi</span></p>
+          <p><span class="paragraphtitle">Name</span></p>
           </td>
         <td>
-          <p><span class="paragraphtitle" >Hinta (sis. Alv)</span></p>
+          <p><span class="paragraphtitle" >Price (inc. VAT)</span></p>
         </td>
         <td>
-          <p><span class="paragraphtitle">Kuvaus</span></p>
+          <p><span class="paragraphtitle">Description</span></p>
         </td>
         </tr>
         <tr>
           <td>
-            Neilikka
+            Dianthus
           </td>
           <td>
-            4,00 euroa
+            4,00 e
           </td>
           <td>
-            Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus
+            Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description
           </td>
         </tr>
       </table>
@@ -66,13 +66,13 @@
           </th>
           <tr>
             <td>
-            <p><span class="paragraphtitle">Nimi</span></p>
+            <p><span class="paragraphtitle">Name</span></p>
             </td>
           <td>
-            <p><span class="paragraphtitle" >Hinta (sis. Alv)</span></p>
+            <p><span class="paragraphtitle" >Price (inc. VAT)</span></p>
           </td>
           <td>
-            <p><span class="paragraphtitle">Kuvaus</span></p>
+            <p><span class="paragraphtitle">Description</span></p>
           </td>
           </tr>
           <tr>
@@ -80,10 +80,10 @@
               Petunia 2
             </td>
             <td>
-              12,00 euroa
+              12,00 e
             </td>
             <td>
-              Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus Kuvaus
+              Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description Description
             </td>
           </tr>
         </table>

@@ -1,13 +1,13 @@
-<!-- Tätä ei renderöidä  ellei unohtuneen salasanan vaihtolinkissä olevat käyttäjänimi- ja sähköpostihashit täsmää jonkin tietokannan rivin tietojen kanssa
-, väärinkäyttäjän pitäisi siis tietää sekä uhrin käyttäjänimi että sähköposti sopivan toimivan vaihtolinkin keksimiseksi ja silloinkin tarvittaisiin vielä vanha salasana-->
+<!-- Not rendered if the username and email hashes included in the forgotten password change link do not match some database record
+, misuser must know both the username and the email to forge a functional change link and even then the old password is needed-->
 <div id="pagecontent">
 
-<b>Uuden salasanan asetus</b>
-    <form method="post" action=".\Eventhandlers\User management\set_new_password.php">
-        <br><b>Käyttäjän sähköposti</b><input type="password"  name="sähköposti" id="sähköposti" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"required>
-        <br><b>Uusi salasana(sisällettävä ainakin yksi numero ja yhteensä vähintään 8 merkkiä)</b><input type="password"  name="uusisalasana" id="uusisalasana" pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"required>
-        <br><b>Vahvista uusi salasana(sisällettävä ainakin yksi numero ja yhteensä vähintään 8 merkkiä)</b><input type="password"  name="vahvistauusisalasana" id="vahvistauusisalasana" pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"required>
-        <br><b><input type="submit" name="uusisalasanaasetettu" value="Aseta uusi salasana"/></b>
+<b>Setting a new password</b>
+    <form method="post" action=".\Eventhandlers\User_management\set_new_password.php">
+        <br><b>User email address</b><input type="text"  name="email" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"required>
+        <br><b>New password (must include at least one number and at least 8 characters in total)</b><input type="password"  name="new_password" id="new_password" pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"required>
+        <br><b>Confirm new password (must include at least one number and at least 8 characters in total)</b><input type="password"  name="confirm_new_password" id="confirm_new_password" pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"required>
+        <br><b><input type="submit" name="new_password_has_been_set" value="Set a new password"/></b>
     </form>
 
 </div>

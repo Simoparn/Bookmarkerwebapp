@@ -14,37 +14,42 @@ try{
 
 
     require_once('../connect_database.php');
+    
     //If logged in normally
-    if(isset($_POST["username"]) && isset($_POST["password"])){
+    if(isset($_POST["username_or_email"]) && isset($_POST["password"])){
+        if(isset($_SESSION["previously_logged_out"])){
+            unset($_SESSION["previously_logged_out"]);
+        }
         //$email_regex="/^.{16,}";
-        $given_username=$_POST["username"];
+        $given_username_or_email=$_POST["username_or_email"];
         $given_password=$_POST["password"];
         
         
         
-        $database_query->prepare("SELECT username, password_hash FROM userprofile WHERE username=?");
-        $database_query->bind_param("s",$given_username);
+        $database_query->prepare("SELECT username, email, password_hash FROM userprofile WHERE username=? OR email=?");
+        $database_query->bind_param("ss",$given_username_or_email, $given_username_or_email);
         if ($database_query->execute()){
-
-            $database_query->bind_result($username, $password_hash);
+            //echo "Database query executed.";
+            //exit();
+            $database_query->bind_result($username, $email, $password_hash);
             while($database_query->fetch()){
                 //echo "Login database query results:".$username." ". $password_hash;
                 //exit();
-                $actual_password=password_verify($given_password, $password_hash);
+                $password_correct=password_verify($given_password, $password_hash);
                             
                 
-                if($given_username==$username && $actual_password==true){
-                    //TODO: notification message that the session is already active, not needed?
-                    //session_start();
+                if(($given_username_or_email==$username || $given_username_or_email==$email) && $password_correct==true){
+                    //TODO: notification message that the session is already active, session_start() not needed here?
                     $_SESSION['username']=$username;
-                    
+                    //echo "Correct username and password!";
+                    //exit();
                     if(isset($_POST["rememberme"])){
                         require_once('create_authentication_token.php');
                     }
                 
 
                     //Redirected to frontpage if the right credentials were found           
-                    header('Location: ../../index.php?page=frontpage&login_status=no');
+                    header('Location: ../../index.php?page=frontpage&login_status=yes');
                     exit();
                 }
             }
@@ -59,8 +64,8 @@ try{
                
 }catch(Exception $e){
     //database error
-    //echo $e;
-    //exit();
+    echo $e;
+    exit();
     header('Location: ../../index.php?page=login_form&login_status=unknown_error');
 }
 

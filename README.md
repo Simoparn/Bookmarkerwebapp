@@ -19,7 +19,7 @@ katso tiedoston rakenteen kuvaus asennusohjeista.
 ### Navigointi
 Sivulla ei ikinä poistuta index.php-tiedostosta, näytettävä grafiikka luodaan require-lauseilla ja linkin kyselymuuttujien perusteella.
 Sivun navigointipalkki näyttää nykyisen sivun värittämällä kyseisen linkin eriväriseksi.
-### User management
+### User_management
 Sivulla vierailija voi luoda uuden käyttäjätilin. Käyttäjätilien käyttäjänimien täytyy olla ainutlaatuisia. Sovellus ei myöskään salli
 käyttäjän luontia jos annettu sähköposti on jo tietokannassa. Käyttäjillä saa olla sama osoite (perheenjäsenet yms.). Salasanat on tallennettu tietokantaan hash-muodossa.
 #### Unohtuneen salasanan palautus
@@ -124,10 +124,10 @@ Käytä .env tunnuksia
 #### Repositorion asetus
 Dashboard -> App Service -> Deployment Center -> Source: Github -> Authorize
 #### PHP-version konfiguraatio
-App Service -> Settings -> Configuration -> PHP 7.4
+App Service -> Settings -> Configuration -> General settings -> PHP 7.4
 #### Unitilan ehkäisy
-Configuration -> Always on
-#### Tietokannan tuonti
+Settings -> Configuration -> General settings ->  Always on
+#### Tietokannan tuonti Azureen
 Avaa Paikallisen projektin PHPMyAdmin -> Vie/Export
 App Service -> MySQL In App -> Manage-komento avaa pilviversion PHPMyAdmin:n selaimeen -> Tuo/Import
 
@@ -145,7 +145,9 @@ Advanced tools tai Development tools->console
 #### Azure-version PHP-tiedot näkyviin
 https://kayttajanimi.azurewebsites.net
 
-#### MYSQL-tietokannan konfiguraatio
+#### Valmiin Azure-sivun tarkistus
+Deployment center -> Browse
+### MYSQL-tietokannan konfiguraatio
 Configuration ->
 
 Avaa PHPMyAdmin ja suorita seuraava SQL-komento: SET PASSWORD FOR 'root'@'localhost' = PASSWORD ('haluttusalasana')
@@ -160,7 +162,7 @@ Luo testikäyttäjiä lisäämällä ne tiedostoon data.sql seuraavassa muodossa
 ### navigointi ja navigointipalkin modularisointi 
     -Saadaanko kaikki virheviestit pois index.php:stä hajottamatta sivun toimintalogiikkaa?
 
-### User management
+### User_management
     -Remember me (autentikointi-token/eväste että säilyy kirjautuneena vaikka selainikkuna suljetaan) ->
         -vielä ei saada näytettyä automaattisen kirjautumisen epäonnistumisen tapauksessa virheviestiä
         -Jos selaineväste on voimassa, kirjaudutaan sisään automaattisesti heti ulokirjautumisen jälkeen

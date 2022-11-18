@@ -1,15 +1,20 @@
 <?php
+
+require dirname(dirname((__DIR__))).'/vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(dirname(__DIR__)));
+$DOTENVDATA=$dotenv->load();
+
 require_once('../connect_database.php');
 //TODO: Session already started warning, not needed here?
 //session_start();
 $given_email=$_POST["email"];
 $new_password=$_POST["new_password"];
-$given_password_confirm=$_POST["confirm_new_password"];
+$confirm_new_password=$_POST["confirm_new_password"];
 
 
 
-$get_user_emails_query=$connection->prepare("SELECT sahkoposti FROM kayttajatili");
-$new_password_query=$connection->prepare("UPDATE kayttajatili SET password_hash=? WHERE sahkoposti=?");
+$get_user_emails_query=$connection->prepare("SELECT email FROM userprofile");
+$new_password_query=$connection->prepare("UPDATE userprofile SET password_hash=? WHERE email=?");
 
 
 try{
@@ -17,8 +22,8 @@ try{
         $get_user_emails_query->store_result();
         $get_user_emails_query->bind_result($email);
         while($get_user_emails_query->fetch()){
-            if(password_verify($given_email, $email_hash)){
-                if($new_password == $given_password_confirm){
+            if($given_email == $email){
+                if($new_password == $confirm_new_password){
                     $password_hash=password_hash($new_password, PASSWORD_DEFAULT);
                     //update if both the email given in the change form and the new passwords are correct
                     $new_password_query->bind_param("ss",$password_hash,$email);

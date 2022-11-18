@@ -9,7 +9,7 @@ if(isset($_SESSION["username"])){
     //echo "$current_date";
     //echo "<br>$expiration_date";
     //exit();
-    $database_query->prepare("INSERT INTO kayttajantoken (selector,validator_hash,kayttajanimi,expiration_date) VALUES (?,?,?, NOW()+ INTERVAL 2 MINUTE)");
+    $database_query->prepare("INSERT INTO usertoken (selector,validator_hash,username,expiration_date) VALUES (?,?,?, NOW()+ INTERVAL 2 MINUTE)");
     $database_query->bind_param("sss",$selector,$validator_hash,$username);
     try{
         if($database_query->execute($create_authentication_tokenkysely)){

@@ -24,6 +24,9 @@ if(isset($_GET['send_password_change_link_status'])){
             elseif($_GET['error'] == 'mailservice_not_found'){
                 echo "<br><span class=\"errormessage\">Sending the change link of the forgotten password failed, the mail service configured on the server does not exist! <a href=\"./index.php?page=contact\">Refresh page</a></span>";
             }
+            elseif($_GET['error'] == 'sendgrid_sender_identity_missing'){
+                echo "<br><span class=\"errormessage\">Sending the change link of the forgotten password through SendGrid failed, no acceptable sender identity configured in the email service <a href=\"./index.php?page=contact\">Refresh page</a></span>";
+            }
         }
     }
 

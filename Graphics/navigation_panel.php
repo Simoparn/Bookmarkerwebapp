@@ -25,7 +25,7 @@
 
 <?php          
           if(isset($_SESSION['username'])){
-            echo "<li>Käyttäjä: ".$_SESSION['username']."</li>";
+            echo "<li>User: ".$_SESSION['username']."</li>";
           }
           else{
             echo "<li style=\"color:grey; list-style-type:none\">Not logged in</li>";
@@ -41,7 +41,7 @@
             }
           }
           else{
-            echo "<li><a href=\"Eventhandlers/User management/handle_logout.php?logout=yes\">Log out</a></li>";
+            echo "<li><a href=\"Eventhandlers/User_management/handle_logout.php?logout=yes\">Log out</a></li>";
           }
           if($currentpage=="registration_form"){
              echo "<li><a href=\"index.php?page=registration_form\" id=\"here\">Sign up</a></li>";

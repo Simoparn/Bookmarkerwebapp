@@ -5,36 +5,36 @@
 <div id="pagecontent">
 
    <p>
-      <form method="post" action="./Eventhandlers/User management/register_user.php">
-      <br><b>Etunimi (vähintään 2 kirjainta)</b><input type="text" name="etunimi" id="etunimi" pattern="[a-öA-Ö]{2,}$"required><br>
-      <br><b>Sukunimi (vähintään 2 kirjainta)</b><input type="text" name="sukunimi" id="sukunimi" pattern="[a-öA-Ö]{2,}$"required><br>
-      <br><b>Puhelinnumero (pelkkiä numeroita, vähintään 8)</b><input type="text" name="puhelinnumero" id="puhelinnumero" pattern="[0-9]{8,}$"required><br>
-      <br><b>Sähköposti (oltava muotoa nimi@osoite.com)</b><input type="text" name="sähköposti" id="sähköposti" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"required><br>
-      <br><b>Osoite (vähintään 8 kirjainta, välilyönti ja 1-3 numeroa perässä)</b><input type="text" name="osoite" id="osoite" pattern="[a-öA-Ö]\w{8,}.[0-9]{1,3}$"required><br>
-      <br><b>Postinumero (vähintään 5 numeroa)</b><input type="text" name="postinumero" id="postinumero" pattern="[0-9]{5,}$"required><br>
-      <br><b>Postitoimipaikka (iso alkukirjain ja vähintään 4 kirjainta, välilyönnit sallittu)</b><input type="text" name="postitoimipaikka" id="postitoimipaikka" pattern="[A-Z]{1,1}.[a-zA-Z\ ]{3,}$"required><br>
+      <form method="post" action="./Eventhandlers/User_management/register_user.php">
+      <br><b>First name (at least 2 letters)</b><input type="text" name="first_name" id="first_name" pattern="[a-öA-Ö]{2,}$"required><br>
+      <br><b>Surname (at least 2 letters)</b><input type="text" name="surname" id="surname" pattern="[a-öA-Ö]{2,}$"required><br>
+      <br><b>Phone number (only) numbers, atleast 8)</b><input type="text" name="phone_number" id="phone_number" pattern="[0-9]{8,}$"required><br>
+      <br><b>Email (must be of the form name@address.com)</b><input type="text" name="email" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"required><br>
+      <br><b>Address (at least 8 letters, space and 1-3 numbers at the end)</b><input type="text" name="address" id="address" pattern="[a-öA-Ö]\w{8,}.[0-9]{1,3}$"required><br>
+      <br><b>Postal code (at least 5 numbers)</b><input type="text" name="postal_code" id="postal_code" pattern="[0-9]{5,}$"required><br>
+      <br><b>Municipality (Capitalized initial letter, at least 4 letters total, spaces allowed)</b><input type="text" name="postitoimipaikka" id="postitoimipaikka" pattern="[A-Z]{1,1}.[a-zA-Z\ ]{3,}$"required><br>
       <select name="maa">
 <?php
-      $maakysely="SELECT nimi FROM maa";
-      if($kyselyntulos = $connection->query($maakysely)){
-        while(list($nimi)=$kyselyntulos->fetch_row()){
-          echo "<br><option value=\"$nimi\">$nimi</option>";
+      $country_query="SELECT country_name FROM country";
+      if($query_Result = $connection->query($country_query)){
+        while(list($name)=$query_result->fetch_row()){
+          echo "<br><option value=\"$name\">$name</option>";
           
       }
 
       }
       else{
 
-        header('Location: ./index.php?page=registration_form.php?maitaeihaettuvirhe=true');
+        header('Location: ./index.php?page=registration_form.php?countries_not_retrieved_error=true');
       }
 
 ?>
       </select>
-      <br><b>Maakunta (iso alkukirjain ja vähintään neljä kirjainta, välilyönnit sallittu)</b><input type="text" name="maakunta" id="maakunta" pattern="[A-Z]{1,1}.[a-zA-Z\ ]{3,}$"required><br>
-      <br><b>Osavaltio (saa olla tyhjä)</b><input type="text" name="osavaltio" id="osavaltio"><br>
-      <br><b>Käyttäjänimi (sisällettävä vähintään 8 merkkiä)</b> <input type="text" name="käyttäjänimi" id="käyttäjänimi" pattern="[a-öA-Ö0-9-]{8,}$"required>  <br>   
-      <br><b>Salasana (sisällettävä ainakin yksi numero ja yhteensä vähintään 8 merkkiä)</b> <input type="password" name="salasana" id="salasana" pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"required>
-      <br><b>Vahvista salasana</b> <input type="password" name="vahvistasalasana" id="vahvistasalasana" pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"required>
+      <br><b>Province (capitalized initial letter and atleast four letters in total, spaces allowed)</b><input type="text" name="maakunta" id="maakunta" pattern="[A-Z]{1,1}.[a-zA-Z\ ]{3,}$"required><br>
+      <br><b>State (can be empty)</b><input type="text" name="state" id="state"><br>
+      <br><b>Username (at least 8 characters)</b> <input type="text" name="username" id="username" pattern="[a-öA-Ö0-9-]{8,}$"required>  <br>   
+      <br><b>Password (at least one number and 8 characters in total)</b> <input type="password" name="salasana" id="salasana" pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"required>
+      <br><b>Confirm password</b> <input type="password" name="confirm_password" id="confirm_password" pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"required>
       <input type="submit" name="register_user" id="register_user" value="Luo käyttäjä" onClick="buttonpressedtext=window.document.getElementById('buttonpressedtext'); buttonpressedtext.innerHTML='Odottakaa, käyttäjän rekisteröintiä käsitellään, tai korjatkaa virheet';">
       <span id="buttonpressedtext"></span>
       </form>

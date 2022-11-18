@@ -2,26 +2,23 @@
     require './vendor/autoload.php';
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
     $DOTENVDATA=$dotenv->load();
-    //foreach($DOTENVDATA as $key => $value){
-    //    echo $key.' '.$value;
-    //}
     
-    //foreach($_ENV as $key => $value){
-    //   echo '<br>'.$key.' '.$value;
-    //}
-
-    //exit();
     
     require_once('Eventhandlers/connect_database.php');
     
     
-    //Remember me- eväste
-    if(isset($_COOKIE['rememberme'])){
-        require_once('Eventhandlers/User management/check_authentication_token.php');
+    //Remember me cookie, checking that the user is not trying to log out
+    if(!isset($_SESSION["previously_logged_out"])){
+        if(isset($_COOKIE['rememberme'])){
+            echo "Remember me cookie set, checking the authentication token";
+            require_once('Eventhandlers/User_management/check_authentication_token.php');
+            }        
     }
-    else{
-        require_once('Eventhandlers/User management/remove_old_authentication_tokens.php');
-    }
+    
+
+     require_once('Eventhandlers/User_management/remove_old_authentication_tokens_from_database.php');
+        
+
     
 ?>
 <!DOCTYPE html>
@@ -47,17 +44,16 @@
 <?php
 
 
-    if(isset($_COOKIE['rememberme'])){
-        echo "Remember me-cookie set, checking the authentication token";
-    }
-    /*echo "<h3> COOKIE variables:</h3>";
+    
+
+    echo "<h3> COOKIE variables:</h3>";
     foreach($_COOKIE as $key => $value){
         echo "<br><h5>$key : $value</h5>";
     }
     echo "<h3> SESSION variables:</h3>";
     foreach($_SESSION as $key => $value){
         echo "<br><h5>$key : $value</h5>";
-    }*/
+    }
     require_once('Eventhandlers/parse_page_from_url.php');
     require_once('Graphics/navigation_panel.php');
     if(isset($_GET['page'])){
@@ -136,19 +132,22 @@
                         if(isset($_GET['email']) && isset($_GET['username'])){
                         
                             
-                            require_once('Eventhandlers/User management/handle_password_change_link.php');
+                            require_once('Eventhandlers/User_management/handle_password_change_link.php');
                         }
-                        if(isset($_SESSION['change_password_link_open_status'])){                        
+                        if(isset($_SESSION['change_password_link_open_status'])){ 
+                            
+                            
+                                                  
                             if($_SESSION['change_password_link_open_status']==true){
                                 if(isset($_SESSION["old_password_email"])){
-                                    require_once('Graphics/Notifications/set_new_password_form/change_password_link_open_status.php');
+                                    require_once('Graphics/Notifications/set_new_password_form/change_password_link_open_succeeded.php');
                                     require_once('Graphics/set_new_password_form.php');
                                     
                                 }
                             }
                             elseif($_SESSION['change_password_link_open_status']==false){
                                 require_once('Graphics/Notifications/set_new_password_form/change_password_link_open_failed.php');
-                                session_destroy();
+                                //session_destroy();
                             }
                             unset($_SESSION['change_password_link_open_status']);
                             
@@ -157,18 +156,18 @@
                         if(isset($_GET['password_change_status'])){
                             if($_GET['password_change_status']=="yes"){
                                 echo "<br><span class=\"successmessage\">Password change succeeded <a href=\"./index.php?page=frontpage\">Refresh page</a></span>";
-                                session_destroy();
+                                //session_destroy();
                             }
                             elseif($_GET['password_change_status']=="no"){
                                 if(!isset($_GET['database_error'])){
-                                    if(isset($_GET['real_email'])){
+                                    if(isset($_GET['correct_email'])){
                                         require_once('Graphics/Notifications/set_new_password_form/set_new_password_failed_email.php');
-                                        session_destroy();
+                                        //session_destroy();
                                     }
                                 }
                                 else{
                                     require_once('Graphics/Notifications/set_new_password_form/set_new_password_failed_database_error.php');
-                                    session_destroy();
+                                    //session_destroy();
                                 }
                             }
                         }
@@ -180,8 +179,8 @@
                         echo "<h1>set_new_password_form, SESSION variables:</h1>";
                         foreach($_SESSION as $key => $value){
                             echo "<br><h2>$key : $value</h2>";
-                        }*/ 
-                        unset($_SESSION['change_password_link_open_status']);
+                        }*/
+                        
                     }
                     else{
                         require_once('Graphics/Notifications/set_new_password_form/cannot_open_directly.php');
@@ -196,14 +195,18 @@
                 require_once('Graphics/registration_form.php');
                 break;
             case 'privacy_policy':
+                require_once('Graphics/Notifications/notifications_privacy_policy.php');
                 require_once('Graphics/privacy_policy.php');
+                break;
             
             
             default:
                 require_once('Graphics/frontpage.php');
         }
     }
+    else{
     require_once('Graphics/frontpage.php');
+    }
 ?>
 
 </body>
