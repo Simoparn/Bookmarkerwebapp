@@ -7,7 +7,7 @@
     require_once('Eventhandlers/connect_database.php');
     
     
-    //Remember me cookie, checking that the user is not trying to log out
+    //Remember me cookie, checking that the user has not previously logged out to avoid
     if(!isset($_SESSION["previously_logged_out"])){
         if(isset($_COOKIE['rememberme'])){
             echo "Remember me cookie set, checking the authentication token";
@@ -130,13 +130,9 @@
                         require_once('Graphics/Notifications/set_new_password_form/logout.php');
                         
                         if(isset($_GET['email']) && isset($_GET['username'])){
-                        
-                            
                             require_once('Eventhandlers/User_management/handle_password_change_link.php');
                         }
                         if(isset($_SESSION['change_password_link_open_status'])){ 
-                            
-                            
                                                   
                             if($_SESSION['change_password_link_open_status']==true){
                                 if(isset($_SESSION["old_password_email"])){
@@ -147,7 +143,7 @@
                             }
                             elseif($_SESSION['change_password_link_open_status']==false){
                                 require_once('Graphics/Notifications/set_new_password_form/change_password_link_open_failed.php');
-                                //session_destroy();
+                                session_destroy();
                             }
                             unset($_SESSION['change_password_link_open_status']);
                             
@@ -172,14 +168,7 @@
                             }
                         }
                             
-                        /*echo "<h1>set_new_password_form, GET variables:</h1>";
-                        foreach($_GET as $key => $value){
-                            echo "<br><h2>$key : $value</h2>";
-                        }
-                        echo "<h1>set_new_password_form, SESSION variables:</h1>";
-                        foreach($_SESSION as $key => $value){
-                            echo "<br><h2>$key : $value</h2>";
-                        }*/
+                        
                         
                     }
                     else{

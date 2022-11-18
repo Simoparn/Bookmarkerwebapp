@@ -16,13 +16,13 @@
     <form method="post" action=".\Eventhandlers\send_feedback_email.php">
     Name<input type="text" name="name" id="name">
     <br>Email<input type="email" name="email" id="email" pattern="^[\w._%+-]+@[\w.-]+\.[a-z]{2,}$"required>  <br>   
-    <select name="feedbacktopic" id="feedbacktopic">
+    <select name="feedback_topic" id="feedback_topic">
       <option value="Quesiton about products">Question about products</option>
       <option value="Order">Order</option>
       <option value="Contact request">Contact request</option>
       <option value="Other">Other</option>
     </select>
-    <br>Message<input type="text" name="feedbackmessage" id="feedbackmessage">
+    <br>Message<input type="text" name="feedback_message" id="feedback_message">
     I wish to order the company's newsletter: 
     <br><input type="radio" name="newsletter" id="newsletter-yes" value="yes" class="customradio">
     <label for="newsletter-yes">Yes</label>

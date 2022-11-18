@@ -22,11 +22,11 @@
   if(isset($_POST["email"])){
   $sender_email=strtolower(trim($_POST["email"]));
   }
-  if(isset($_POST["feedbacktopic"])){
-  $feedback_topic=$_POST["feedbacktopic"];
+  if(isset($_POST["feedback_topic"])){
+  $feedback_topic=$_POST["feedback_topic"];
   }
-  if(isset($_POST["feddbackmessage"])){
-  $feedback_message=$_POST["feedbackmessage"];
+  if(isset($_POST["feedback_message"])){
+  $feedback_message=$_POST["feedback_message"];
   }
 
 	$email_found=false;
@@ -35,7 +35,7 @@
   
     
     
-    //not tested
+    //tested
     if($DOTENVDATA['MAILSERVICE']=="mailtrap"){
     require_once('../vendor/phpmailer/phpmailer/src/PHPMailer.php');
     require_once('../vendor/phpmailer/phpmailer/src/PHPMailer.php');
@@ -71,7 +71,8 @@
         
         //echo "Error in sending email through Mailtrap.<br>{$mail->ErrorInfo}<br>";
         //var_dump($mail);
-        //exit();
+        //echo "CONTENT:".$content;
+        exit();
         header("Location: ../index.php?page=contact&send_feedback_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']);
       } else {
         //echo "Sending feedback email through Mailtrap succeeded.<br>";
@@ -82,7 +83,7 @@
       }
 
     }
-    //not tested, if setFrom sender identity doesn't exist in SendGrid, email is not sent.
+    //tested, if setFrom sender identity doesn't exist in SendGrid, email is not sent.
     elseif($DOTENVDATA['MAILSERVICE']=="sendgrid"){
 			
       require_once('../vendor/sendgrid/sendgrid/sendgrid-php.php');
@@ -91,9 +92,10 @@
 
       $email = new \SendGrid\Mail\Mail();
       $email->setFrom($sender_email, urldecode($sender_name));
-      $email->setSubject(utf8_decode($feedback_topic));
+      $email->setSubject($feedback_topic);
       $email->addTo($DOTENVDATA['SENDGRIDRECEIVERIDENTITY'], "Simo P");
-      $email->addContent("text/plain", utf8_decode($feedback_message));
+      //utf8_decode not needed for SendGrid
+      $email->addContent("text/plain", $feedback_message);
 
       $sendgrid = new \SendGrid($DOTENVDATA['SENDGRIDHOSTPASSWORD']);
 
@@ -102,13 +104,14 @@
           print $response->statusCode() . "\n";
           print_r($response->headers());
           print $response->body() . "\n";
-          if($response->statusCode()==202){
           //exit();
+          if($response->statusCode()==202){
             header("Location: ../index.php?page=contact&send_feedback_status=yes&mailservice=".$DOTENVDATA['MAILSERVICE']);
           }
-          else{
+          elseif($response->statusCode()==403){
             header("Location: ../index.php?page=contact&send_feedback_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=sendgrid_sender_identity_missing");
           }
+          exit();
       } catch (Exception $e) {
           header("Location: ../index.php?page=contact&send_feedback_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']);
           //echo 'Error when sending email with SendGrid: '. $e->getMessage() ."\n";

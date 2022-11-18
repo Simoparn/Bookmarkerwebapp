@@ -32,11 +32,13 @@ if(isset($_GET['mailservice'])){
                 }         
 
             else{
-                if(!isset($_GET['sendgrid_sender_identity_missing'])){
+                if(!isset($_GET['error'])){
                     echo "<br><span class=\"errormessage\">Sending feedback failed, the email service may be temporarily unavailable <a href=\"./index.php?page=contact\">Refresh page</a></span>";
                 }
                 else{
-                    echo "<br><span class=\"errormessage\">Sending feedback failed, no acceptable sender identity configured in the email service <a href=\"./index.php?page=contact\">Refresh page</a></span>";
+                    if($_GET['error']=="sendgrid_sender_identity_missing"){
+                        echo "<br><span class=\"errormessage\">Sending feedback failed, the email is not an acceptable sender identity configured in the email service <a href=\"./index.php?page=contact\">Refresh page</a></span>";
+                    }
                 }
             }
         }

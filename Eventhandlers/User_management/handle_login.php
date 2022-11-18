@@ -39,7 +39,6 @@ try{
                             
                 
                 if(($given_username_or_email==$username || $given_username_or_email==$email) && $password_correct==true){
-                    //TODO: notification message that the session is already active, session_start() not needed here?
                     $_SESSION['username']=$username;
                     //echo "Correct username and password!";
                     //exit();

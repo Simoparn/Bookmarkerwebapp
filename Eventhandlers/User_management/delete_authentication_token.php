@@ -33,8 +33,8 @@ try{
 
 }catch(Exception $e){
     //database error
-    echo $e;
-    exit();
+    //echo $e;
+    //exit();
     header('Location: ../../index.php?page=frontpage&database_error=yes');
 }
 

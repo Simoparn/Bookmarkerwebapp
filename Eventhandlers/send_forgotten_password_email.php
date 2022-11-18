@@ -34,7 +34,7 @@
  
     
     
-    //not tested
+    //tested
     if($DOTENVDATA['MAILSERVICE']=="mailtrap"){
 
       require_once('../vendor/phpmailer/phpmailer/src/PHPMailer.php');
@@ -82,7 +82,7 @@
       	}
       }catch(Exception $e){
         //echo $e;
-        header("Location: ../index.php?page=forgotten_password_form&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=database_error");
+        header("Location: ../index.php?page=forgotten_password_form&send_password_change_link_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=database_error");
         exit();
       }
 
@@ -95,26 +95,26 @@
 				$mail->AddReplyTo($DOTENVDATA['MAILTRAPHOSTDOMAIN'], "Bookmarker web application");
 				$mail->AddCC($DOTENVDATA['MAILTRAPHOSTDOMAIN'], "Bookmarker web application");
 				$mail->Subject = "Change link for user profile's forgotten password";
-				$content = "Automaatic message, do not reply to this message. \nUser password change link has been requested for this email. Please remove the link from your browser's history after successfully changing your password: http://localhost/Omnia-repositoryt/Bookmarkerwebapp/index.php?page=set_new_password_form&email=$hashed_sender_email&username=$hashed_customer_username";
+				$content = "Automatic message, do not reply to this message. \nUser password change link has been requested for this email. Please remove the link from your browser's history after successfully changing your password: http://localhost/Omnia-repositoryt/Bookmarkerwebapp/index.php?page=set_new_password_form&email=$hashed_sender_email&username=$hashed_customer_username";
 				
 
 				$mail->MsgHTML($content); 
 				if(!$mail->Send()) {
 					//echo "Error in sending email through Mailtrap<br>{$mail->ErrorInfo}<br>";
 					//var_dump($mail);
-          header("Location: ../index.php?page=forgotten_password_form&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_error");
+          header("Location: ../index.php?page=forgotten_password_form&send_password_change_link_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_error");
 				} else {
-					header("Location: ../index.php?page=forgotten_password_form&mailservice=".$DOTENVDATA['MAILSERVICE']);
+					header("Location: ../index.php?page=forgotten_password_form&send_password_change_link_status=yes&mailservice=".$DOTENVDATA['MAILSERVICE']);
 					//echo "Email sent successfully through Mailtrap.";
 				}
 			}
 			else{
-				header("Location: ../index.php?page=forgotten_password_form&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=email_not_found");
+				header("Location: ../index.php?page=forgotten_password_form&send_password_change_link_status=no&mailservice=".$DOTENVDATA['MAILSERVICE']."&error=user_email_not_found");
 			}
 
     }
 
-  //not tested
+  //tested
     elseif($DOTENVDATA['MAILSERVICE']=="sendgrid"){
 
       require_once('../vendor/sendgrid/sendgrid/sendgrid-php.php');

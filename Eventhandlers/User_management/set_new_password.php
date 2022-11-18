@@ -5,8 +5,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(dirname(dirname(__DIR__)));
 $DOTENVDATA=$dotenv->load();
 
 require_once('../connect_database.php');
-//TODO: Session already started warning, not needed here?
-//session_start();
+
 $given_email=$_POST["email"];
 $new_password=$_POST["new_password"];
 $confirm_new_password=$_POST["confirm_new_password"];

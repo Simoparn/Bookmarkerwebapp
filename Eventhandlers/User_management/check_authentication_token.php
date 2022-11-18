@@ -30,7 +30,6 @@ if(!isset($_SESSION["username"]) && isset($_COOKIE["authentication_token"])){
             while($check_authentication_token_query->fetch()){
                 echo $username;
                 if(password_verify($validator,$validator_hash)==true){
-                    session_start();
                     $_SESSION["username"]=$username;
                     //Redirected if the right token was found
                     require_once('Eventhandlers/User_management/handle_automatic_login.php');
@@ -41,12 +40,12 @@ if(!isset($_SESSION["username"]) && isset($_COOKIE["authentication_token"])){
             //If an active authentication token is not found from the database when a token cookie is in browser, 
             //remove the cookies from browser, database removal can be handled with subsequent non-cookie page openings
             if(isset($_COOKIE['rememberme'])){
-                unset($_COOKIE['rememberme']);
                 setcookie('rememberme', null, -1);
+                unset($_COOKIE['rememberme']);
             }
             if(isset($_COOKIE['authentication_token'])){
-                unset($_COOKIE['authentication_token']);
                 setcookie('authentication_token', null, -1);
+                unset($_COOKIE['authentication_token']);
             }
 
             
