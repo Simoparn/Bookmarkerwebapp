@@ -48,11 +48,11 @@
 
     echo "<h3> COOKIE variables:</h3>";
     foreach($_COOKIE as $key => $value){
-        echo "<br><h5>$key : $value</h5>";
+        echo "<br>$key : $value";
     }
     echo "<h3> SESSION variables:</h3>";
     foreach($_SESSION as $key => $value){
-        echo "<br><h5>$key : $value</h5>";
+        echo "<br>$key : $value";
     }
     require_once('Eventhandlers/parse_page_from_url.php');
     require_once('Graphics/navigation_panel.php');
@@ -143,7 +143,7 @@
                             }
                             elseif($_SESSION['change_password_link_open_status']==false){
                                 require_once('Graphics/Notifications/set_new_password_form/change_password_link_open_failed.php');
-                                session_destroy();
+                                //session_destroy();
                             }
                             unset($_SESSION['change_password_link_open_status']);
                             
@@ -187,8 +187,33 @@
                 require_once('Graphics/Notifications/notifications_privacy_policy.php');
                 require_once('Graphics/privacy_policy.php');
                 break;
-            
-            
+                
+            case 'user_profile':
+                if(!isset($_SESSION['username'])){
+                    require_once('Graphics/Notifications/user_profile/not_logged_in.php');
+                }
+                else{
+                    require_once('Graphics/user_profile.php'); 
+                }   
+                break;
+
+            case 'user_list':
+                if(!isset($_SESSION['username'])){
+                    require_once('Graphics/Notifications/user_list/not_logged_in.php');
+                    
+                }
+                else{
+                    if(isset($_SESSION['staff_status'])){
+                        if($_SESSION['staff_status']==1){
+                            require_once('Graphics/user_list.php');
+                            
+                        }
+                        else{
+                            require_once('Graphics/Notifications/user_list/unauthorized.php');
+                        }
+                    }
+                }
+                break;
             default:
                 require_once('Graphics/frontpage.php');
         }

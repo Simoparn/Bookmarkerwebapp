@@ -15,12 +15,22 @@ if(isset($_GET["logout"])){
     }
     //require_once('delete_authentication_token.php');  
 }
-    
-
-    
-    
     unset($_SESSION["username"]);
+    unset($_SESSION['first_name']);
+    unset($_SESSION['surname']);
+    unset($_SESSION['phone_number']);
+    unset($_SESSION['email']);
+    unset($_SESSION['staff_status']);
+    unset($_SESSION['creation_date']);
+    unset($_SESSION['last_modified']);
+    unset($_SESSION['address']);
+    unset($_SESSION['postal_code']);
+    unset($_SESSION['municipality']);
+    unset($_SESSION['country']);
+    unset($_SESSION['province']);
+    unset($_SESSION['state']);
     session_destroy();
+    //session_start needed here for previously_logged_out
     session_start();
     $_SESSION["previously_logged_out"]="yes";
     header('Location: ../../index.php?page=frontpage&logout_status=yes');

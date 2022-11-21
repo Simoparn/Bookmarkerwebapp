@@ -25,7 +25,7 @@
 
 <?php          
           if(isset($_SESSION['username'])){
-            echo "<li>User: ".$_SESSION['username']."</li>";
+            echo "<li><a href=\"./index.php?page=user_profile\" id=\"here\">User: ".$_SESSION['username']."</a></li>";
           }
           else{
             echo "<li style=\"color:grey; list-style-type:none\">Not logged in</li>";
