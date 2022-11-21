@@ -60,7 +60,7 @@
     INSERT INTO country VALUES ('Jamaica');
     INSERT INTO country VALUES ('Kazakhstan');
     INSERT INTO country VALUES ('Kenya');
-    INSERT INTO country VALUES ('Kuuba');
+    INSERT INTO country VALUES ('Cuba');
     INSERT INTO country VALUES ('Kuwait');
     INSERT INTO country VALUES ('Kyrgyzstan');
     INSERT INTO country VALUES ('Laos');

@@ -47,8 +47,7 @@ try{
         
     
 }catch(Exception $e){
-    echo "Database error: ".$e;  
-    exit();             
+                 
     header('Location: ../../index.php?page=set_new_password_form&password_change_status=no&database_error=yes');
     exit();
 }

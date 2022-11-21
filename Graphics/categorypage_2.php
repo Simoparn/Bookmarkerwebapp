@@ -4,7 +4,7 @@
   <li>
     <table class="productdata">  
       <th>
-      <p><img class="productdataimage" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Petunie.jpg/320px-Petunie.jpg"/></p>     
+      <p><img class="productdataimage" src=""/></p>     
       </th>
       <tr>
         <td>
@@ -19,7 +19,7 @@
       </tr>
       <tr>
         <td>
-          Petunia
+          Category 2, product 1
         </td>
         <td>
           8,00 e
@@ -33,7 +33,7 @@
     <li>
       <table class="productdata">  
         <th>
-        <p><img class="productdataimage" src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Dianthus_caryophyllus_L_%28Clove_pink%29.JPG/800px-Dianthus_caryophyllus_L_%28Clove_pink%29.JPG"/></p>     
+        <p><img class="productdataimage" src=""/></p>     
         </th>
         <tr>
           <td>
@@ -48,7 +48,7 @@
         </tr>
         <tr>
           <td>
-            Dianthus
+            Category 2, product 2
           </td>
           <td>
             4,00 e
@@ -62,7 +62,7 @@
       <li>
         <table class="productdata">  
           <th>
-          <p><img class="productdataimage" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Petunie.jpg/320px-Petunie.jpg"/></p>     
+          <p><img class="productdataimage" src=""/></p>     
           </th>
           <tr>
             <td>
@@ -77,7 +77,7 @@
           </tr>
           <tr>
             <td>
-              Petunia 2
+              Category 2, product 3
             </td>
             <td>
               12,00 e

@@ -21,7 +21,7 @@
         </tr>
         <tr>
           <td>
-            Aroid
+            Category 1, product 1
           </td>
           <td>
             24,00 euroa
@@ -50,7 +50,7 @@
           </tr>
           <tr>
             <td>
-              Spider plant
+              Category 1, product 2
             </td>
             <td>
               28,00 e
@@ -79,7 +79,7 @@
             </tr>
             <tr>
               <td>
-                Jade plant
+                Category 1, product 3
               </td>
               <td>
                 34 e

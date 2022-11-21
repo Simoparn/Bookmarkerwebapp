@@ -19,7 +19,7 @@
         </tr>
         <tr>
           <td>
-            Lannoite
+            Category 4, product 1
           </td>
           <td>
             6,00 euroa/kg
@@ -48,7 +48,7 @@
           </tr>
           <tr>
             <td>
-              Tuholaistorjuntamyrkky
+              Category 4, product 2
             </td>
             <td>
               14,00 euroa/kg
@@ -77,7 +77,7 @@
             </tr>
             <tr>
               <td>
-                Tuote
+                Category 4, product 3
               </td>
               <td>
                 0 e

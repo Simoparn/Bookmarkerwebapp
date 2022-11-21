@@ -193,8 +193,13 @@
                     require_once('Graphics/Notifications/user_profile/not_logged_in.php');
                 }
                 else{
+                    require_once('Graphics/Notifications/user_profile/user_information_edited.php');
                     require_once('Graphics/user_profile.php'); 
                 }   
+                break;
+
+            case 'edit_user_information_form.php':
+                    require_once('Graphics/edit_user_information_form.php');
                 break;
 
             case 'user_list':

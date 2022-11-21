@@ -6,7 +6,7 @@
     <li>
       <table class="productdata">  
         <th>
-        <p><img class="productdataimage" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Standard_household_scissors.jpg/800px-Standard_household_scissors.jpg"/></p>     
+        <p><img class="productdataimage" src=""/></p>     
         </th>
         <tr>
           <td>
@@ -21,7 +21,7 @@
         </tr>
         <tr>
           <td>
-            Garden scissors
+            Category 3, product 1
           </td>
           <td>
             17,00 e
@@ -37,7 +37,7 @@
       <li>
         <table class="productdata">  
           <th>
-          <p><img class="productdataimage" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Trowel.JPG/800px-Trowel.JPG"/></p>     
+          <p><img class="productdataimage" src=""/></p>     
           </th>
           <tr>
             <td>
@@ -52,7 +52,7 @@
           </tr>
           <tr>
             <td>
-              Garden shovel
+              Category 3, product 2
             </td>
             <td>
               22 e
