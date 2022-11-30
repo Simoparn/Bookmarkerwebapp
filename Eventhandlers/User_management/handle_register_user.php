@@ -40,10 +40,10 @@ if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["confi
         if($user_already_exists_query->execute()){
             $user_already_exists_query->store_result();
             while($user_already_exists_query->fetch()){
-                $user_already_exists_query->bind_result($username,$sähköposti);
+                $user_already_exists_query->bind_result($username,$email);
                    
                 
-                if($given_username==$username || $annettusähöposti==$sähköposti){
+                if($given_username==$username || $given_email==$email){
                 //Redirect with a failure if the credentials or the email already exist
   
                     header('Location: ../../index.php?page=registration_form&registration_status=user_already_exists');
@@ -87,7 +87,7 @@ if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["confi
                     }
                     if($set_address_query->execute()){                  
                             $set_address_query->store_result();
-                            //If retrieving address succeeded, retrieve the id of the new address, create the user account and redirect with a success
+                            //If setting address succeeded, retrieve the id of the new address, create the user account and redirect with a success
                             $get_address_id_query=$connection->prepare("SELECT MAX(address_id) FROM address");
                             if($get_address_id_query->execute()){
                                 $get_address_id_query->store_result();
@@ -104,6 +104,8 @@ if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["confi
                                         header('Location: ../../index.php?page=registration_form&registration_status=yes');
                                     }
                                 }catch(Exception $e){
+                                    echo $e;
+                                    exit();
                                     header('Location: ../../index.php?page=registration_form&registration_status=no');
                                 }
                                 $get_address_id_query->free_result();

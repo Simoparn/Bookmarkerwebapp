@@ -4,6 +4,7 @@ require_once('Eventhandlers/connect_database.php');
 
 try{
 //If the window is opened again, trying automatic login with Remember me and authentication token cookies
+    
     if(isset($_COOKIE['rememberme']) && isset($_COOKIE['authentication_token'])){
         if(isset($_SESSION["previously_logged_out"])){
             unset($_SESSION["previously_logged_out"]);
@@ -14,10 +15,10 @@ try{
         $token_user_query->bind_param("s",$selector);
         if ($token_user_query->execute()){
             $token_user_query->store_result();
-            $token_user_query->bind_result($username);
+            $token_user_query->bind_result($username, $first_name, $surname, $phone_number, $email);
             while($token_user_query->fetch()){
                 $user_address_query=$connection->prepare("SELECT address, postalcode, municipality, country, province, state FROM address WHERE address_id=?");
-                $user_address_query->bind_result("i", $address_id);
+                $user_address_query->bind_result($address_id);
                 if($user_address_query->execute()){
                     $user_address_query->store_result();
                     if($username){

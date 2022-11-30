@@ -1,0 +1,1 @@
+DROP TABLE usertoken, userprofile, orders, product, productcategory, address, country

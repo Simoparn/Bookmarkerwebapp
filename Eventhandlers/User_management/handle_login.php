@@ -76,10 +76,11 @@ try{
                 }
                 
         
-                //If the right credentials were not found, redirected back
-                header('Location: ../../index.php?page=login_form&login_status=no');
+                
             }  
             $database_query->free_result();
+            //If the right credentials (user and address) were not found, redirected back
+            header('Location: ../../index.php?page=login_form&login_status=no');
             
         }
     }            

@@ -1,7 +1,7 @@
 <?php
 
 
-//Instead of basename for  Windows/Linux-compatibility
+//Instead of basename for Windows/Linux-compatibility
 function mb_basename($path) {
     if (preg_match('@^.*[\\\\/]([^\\\\/]+)$@s', $path, $matches)) {
         return $matches[1];

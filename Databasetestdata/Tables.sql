@@ -16,7 +16,7 @@ CREATE TABLE address (
     province VARCHAR(40) NOT NULL,
     state VARCHAR(30),
     PRIMARY KEY(address_id),
-    FOREIGN KEY (country) REFERENCES country (country_name)
+    FOREIGN KEY (country) REFERENCES country (country_name) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
@@ -76,7 +76,7 @@ CREATE TABLE userprofile (
   creation_date DATETIME NOT NULL,
   last_modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY  (username),
-  FOREIGN KEY (address_id) REFERENCES address(address_id)
+  FOREIGN KEY (address_id) REFERENCES address(address_id) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE usertoken (

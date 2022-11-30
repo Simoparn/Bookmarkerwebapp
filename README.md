@@ -156,6 +156,7 @@ Salasana tämän jälkeen tiedostoon -> XAMPP Control Panel -> config.inc.php, j
 Luo testikäyttäjiä lisäämällä ne tiedostoon data.sql seuraavassa muodossa:
     INSERT INTO kayttajatili VALUES('kayttajatahan','salasanahashtahan','etunimi','sukunimi','puhelinnumero','sähköposti',osoitteenid,onkotiliaktiivinenboolean,onkokayttajahenkilokuntaaboolean,'2022-01-01 12:00:00',NULL)
 
+    Testihashit eivät toimi jostain syystä password_hash()-funktiolla luotuna, testihashit kannattaa luoda ja kopioida esim. osoitteessa: https://bcrypt.online/
 
 
 ## TODO

@@ -41,7 +41,7 @@ try{
             }
         }
         $get_user_emails_query->free_result();
-        
+            
             header('Location: ../../index.php?page=set_new_password_form&password_change_status=no&correct_email=no');
     }
         

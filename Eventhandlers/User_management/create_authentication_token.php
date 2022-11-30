@@ -12,7 +12,7 @@ if(isset($_SESSION["username"])){
     $database_query->prepare("INSERT INTO usertoken (selector,validator_hash,username,expiration_date) VALUES (?,?,?, NOW()+ INTERVAL 2 MINUTE)");
     $database_query->bind_param("sss",$selector,$validator_hash,$username);
     try{
-        if($database_query->execute($create_authentication_tokenkysely)){
+        if($database_query->execute()){
                     //Redirected if authentication token save succeeded
                     setcookie("rememberme","rememberme",time()+120,"/");
                     setcookie("authentication_token",$selector.".".$validator,time()+120,"/");
