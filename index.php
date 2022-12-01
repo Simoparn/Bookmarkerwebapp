@@ -211,6 +211,7 @@
                     if(isset($_SESSION['staff_status'])){
                         if($_SESSION['staff_status']==1){
                             require_once('Graphics/user_list.php');
+                            require_once('Graphics/Notifications/user_list/user_deleted.php');
                             
                         }
                         else{

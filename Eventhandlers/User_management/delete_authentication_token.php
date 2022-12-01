@@ -1,5 +1,5 @@
 <?php
-//TODO: Problem with logout, redirects to XAMPP dashboard and can't reopen the site until cookie is expired
+//TODO: Still not used in logout, problem with logout, redirects to XAMPP dashboard and can't reopen the site until cookie is expired
 require dirname(dirname((__DIR__))).'/vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(dirname(__DIR__)));
 $DOTENVDATA=$dotenv->load();

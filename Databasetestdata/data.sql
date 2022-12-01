@@ -147,7 +147,7 @@
     
 
     -- Addresses
-    INSERT INTO address VALUES(1,'Esimerkkikatu 8 E','84958','Keuruu','Finland','Keski-Suomi',NULL);
-    INSERT INTO address VALUES(2,'Ullakuja 13 U','19218','Savonlinna','Finland','Etelä-Savo',NULL);
-    INSERT INTO address VALUES(3,'Ollilakuja 8 H','38495','Savonlinna','Finland','Etelä-Savo',NULL);
-    INSERT INTO address VALUES(4,'Neilikkakatu 31 E','30495','Vantaa','Finland','Uusimaa',NULL);
+    INSERT INTO address VALUES(1,'Esimerkkikatu 8 E','84958','Keuruu','Finland','Keski-Suomi','');
+    INSERT INTO address VALUES(2,'Ullakuja 13 U','19218','Savonlinna','Finland','Etelä-Savo','');
+    INSERT INTO address VALUES(3,'Ollilakuja 8 H','38495','Savonlinna','Finland','Etelä-Savo','');
+    INSERT INTO address VALUES(4,'Omistajakatu 31 E','30495','Vantaa','Finland','Uusimaa','');

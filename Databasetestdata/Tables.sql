@@ -14,7 +14,7 @@ CREATE TABLE address (
     municipality VARCHAR(30) NOT NULL,
     country VARCHAR(45) NOT NULL,
     province VARCHAR(40) NOT NULL,
-    state VARCHAR(30),
+    state VARCHAR(30) NOT NULL,
     PRIMARY KEY(address_id),
     FOREIGN KEY (country) REFERENCES country (country_name) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

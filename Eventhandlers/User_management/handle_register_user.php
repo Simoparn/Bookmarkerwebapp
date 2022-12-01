@@ -24,13 +24,18 @@ if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["confi
         $given_municipality=$_POST['municipality'];
         $given_country=$_POST['country'];
         $given_province=$_POST['province'];
-        $given_state=$_POST['state'];
+        if($_POST["state"]=="" || $_POST["state"]==NULL){
+            $given_state="";
+        }
+        else{
+            $given_state=$_POST['state'];
+        }
         $given_username=$_POST['username'];
         $given_password=$_POST['password'];
         $given_password_hash=password_hash($given_password, PASSWORD_DEFAULT);
         
         $user_already_exists=false;
-        $address_id="";
+        $existent_address_id="";
         $address_already_exists=false;
 
         
@@ -60,44 +65,40 @@ if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["confi
                 
                 //Address must be created first because the user table has a foreign key pointing to the address table
                 //First check that the given address exists
-                $address_query=$connection->prepare("SELECT address_id, address FROM address WHERE address=?");
-                $address_query->bind_param("s",$given_address);
+                $address_query=$connection->prepare("SELECT address_id, address FROM address WHERE address=? AND postalcode=? AND municipality=? AND country=? AND province=? AND state=?"); 
+                $address_query->bind_param("ssssss",$given_address, $given_postal_code, $given_municipality, $given_country, $given_province, $given_state);
                 if($address_query->execute()){
-                    $address_query->bind_result($address_id, $address);
+                    $address_query->store_result();
+                    $address_query->bind_result($existent_address_id, $address);
                     while($address_query->fetch()){
                         
-                        echo $address_id.' '.$address;
-                        if($address==$given_address){
-                            $address_id=$address_id;
-                            $address_already_exists=true;
-                            break;
-                        }
+                        //echo $address_id.' '.$address;
+                        //if($address==$given_address){
+                        $existent_address_id=$existent_address_id;
+                        $address_already_exists=true;
+                        break;
+                        //}
                     }
+                    $address_query->free_result();
                 }
                 if($address_already_exists==false){
                     
-                    //If state is empty, separate query
-                    if($given_state=="" || $given_state==NULL){
-                        $set_address_query=$connection->prepare("INSERT INTO address (address,postalcode,municipality,country,province,state) VALUES(?,?,?,?,?,NULL)");
-                        $set_address_query->bind_param("sssss",$given_address,$given_postal_code,$given_municipality,$given_country,$given_province);
-                    }
-                    else{
-                        $set_address_query=$connection->prepare("INSERT INTO address (address,postalcode,municipality,country,province,state) VALUES(?,?,?,?,?,?)"); 
-                        $set_address_query->bind_param("ssssss",$given_address,$given_postal_code,$given_municipality,$given_country,$given_province,$given_state);
-                    }
+                    $set_address_query=$connection->prepare("INSERT INTO address (address,postalcode,municipality,country,province,state) VALUES(?,?,?,?,?,?)"); 
+                    $set_address_query->bind_param("ssssss",$given_address,$given_postal_code,$given_municipality,$given_country,$given_province,$given_state);
+                    
                     if($set_address_query->execute()){                  
                             $set_address_query->store_result();
                             //If setting address succeeded, retrieve the id of the new address, create the user account and redirect with a success
                             $get_address_id_query=$connection->prepare("SELECT MAX(address_id) FROM address");
                             if($get_address_id_query->execute()){
                                 $get_address_id_query->store_result();
-                                $get_address_id_query->bind_result($address_id);
+                                $get_address_id_query->bind_result($new_address_id);
                                 while($get_address_id_query->fetch()){
-                                    echo '<br>'.$address_id; 
+                                    echo '<br>'.$new_address_id; 
                                     $current_date=(string)(date_format(date_create(), 'Y-m-d H:i:s'));
                                     //TODO: Need checks for defining user as staff, if user creation is attempted when logged in as an admin
                                     $create_user_query=$connection->prepare("INSERT INTO userprofile VALUES (?,?,?,?,?,?,?,TRUE,FALSE,?,NULL)");
-                                    $create_user_query->bind_param("ssssssid",$given_username,$given_password_hash,$given_first_name,$given_surname,$given_phone_number,$given_email,$address_id,$current_date);
+                                    $create_user_query->bind_param("ssssssid",$given_username,$given_password_hash,$given_first_name,$given_surname,$given_phone_number,$given_email,$new_address_id,$current_date);
                                 }
                                 try{
                                     if($create_user_query->execute()){
@@ -114,10 +115,12 @@ if(isset($_POST["username"]) && isset($_POST["password"]) && isset($_POST["confi
                     }
                 }
                 else{
+                    //echo "Existent address_id:".$existent_address_id;
+                    //exit();
                     $current_date=(string)(date_format(date_create(), 'Y-m-d H:i:s'));
                     //TODO: Need checks for defining user as staff, if user creation is attempted when logged in as an admin
                     $create_user_query=$connection->prepare("INSERT INTO userprofile VALUES (?,?,?,?,?,?,?,TRUE,FALSE,?,NULL)");
-                    $create_user_query->bind_param("ssssssid",$given_username,$given_password_hash,$given_first_name,$given_surname,$given_phone_number,$given_email,$address_id,$current_date);
+                    $create_user_query->bind_param("ssssssid",$given_username,$given_password_hash,$given_first_name,$given_surname,$given_phone_number,$given_email,$existent_address_id,$current_date);
                     try{
                         if($create_user_query->execute()){
                             
