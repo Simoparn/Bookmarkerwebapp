@@ -1,19 +1,19 @@
 <?php return array(
     'root' => array(
-        'name' => '800038769/Bookmarkerwebapp',
+        'name' => '800038769/bookmarkerwebapp',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '19b7c4fd7c35feebaa6907e8d1dca7942ded8312',
+        'reference' => '419ed5771dce45c7a40b41550084cf4459c268b7',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        '800038769/Bookmarkerwebapp' => array(
+        '800038769/bookmarkerwebapp' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '19b7c4fd7c35feebaa6907e8d1dca7942ded8312',
+            'reference' => '419ed5771dce45c7a40b41550084cf4459c268b7',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -25,6 +25,15 @@
             'reference' => 'a878d45c1914464426dc94da61c9e1d36ae262a8',
             'type' => 'library',
             'install_path' => __DIR__ . '/../graham-campbell/result-type',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'kafene/netscape-bookmark-parser' => array(
+            'pretty_version' => 'v0.0.1',
+            'version' => '0.0.1.0',
+            'reference' => '12d93f9b436977e20f06476472bb1faeef43d79b',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../kafene/netscape-bookmark-parser',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -43,6 +52,15 @@
             'reference' => 'dc5ff11e274a90cc1c743f66c9ad700ce50db9ab',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpoption/phpoption',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'psr/log' => array(
+            'pretty_version' => '1.1.4',
+            'version' => '1.1.4.0',
+            'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../psr/log',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
@@ -69,6 +87,15 @@
             'replaced' => array(
                 0 => '*',
             ),
+        ),
+        'shaarli/netscape-bookmark-parser' => array(
+            'pretty_version' => 'v4.0.0',
+            'version' => '4.0.0.0',
+            'reference' => 'aa024e5731959966660d98fcefe27deada40d88e',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../shaarli/netscape-bookmark-parser',
+            'aliases' => array(),
+            'dev_requirement' => false,
         ),
         'starkbank/ecdsa' => array(
             'pretty_version' => '0.0.5',

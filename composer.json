@@ -11,6 +11,8 @@
     "require": {
         "phpmailer/phpmailer": "^6.6",
         "sendgrid/sendgrid": "^8.0",
-        "vlucas/phpdotenv": "^5.5"
+        "vlucas/phpdotenv": "^5.5",
+        "kafene/netscape-bookmark-parser": "^0.0.1",
+        "shaarli/netscape-bookmark-parser": "^4.0"
     }
 }

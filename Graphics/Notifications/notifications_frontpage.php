@@ -39,5 +39,6 @@ if(isset($_GET['database_error'])){
     echo "<br><span class=\"errormessage\">Database error, automatic login or removing outdated authentications failed <a href=\"./index.php?page=frontpage\">Refresh page</a></span>";
 }
 
+if(isset($_GET['boo']))
 
 ?>

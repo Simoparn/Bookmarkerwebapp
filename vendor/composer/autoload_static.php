@@ -11,6 +11,7 @@ class ComposerStaticInit76ae49173b3e1f543dc282d08fc4f294
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
+        'eb3cbd35e6171abbaae82006a9d1d2d7' => __DIR__ . '/..' . '/kafene/netscape-bookmark-parser/parse_netscape_bookmarks.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -19,6 +20,7 @@ class ComposerStaticInit76ae49173b3e1f543dc282d08fc4f294
             'Symfony\\Polyfill\\Php80\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
+            'Shaarli\\NetscapeBookmarkParser\\' => 31,
             'SendGrid\\Stats\\' => 15,
             'SendGrid\\Mail\\' => 14,
             'SendGrid\\Helper\\' => 16,
@@ -28,6 +30,7 @@ class ComposerStaticInit76ae49173b3e1f543dc282d08fc4f294
         ),
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
             'PhpOption\\' => 10,
             'PHPMailer\\PHPMailer\\' => 20,
         ),
@@ -54,6 +57,10 @@ class ComposerStaticInit76ae49173b3e1f543dc282d08fc4f294
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
+        'Shaarli\\NetscapeBookmarkParser\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/shaarli/netscape-bookmark-parser/src',
+        ),
         'SendGrid\\Stats\\' => 
         array (
             0 => __DIR__ . '/..' . '/sendgrid/sendgrid/lib/stats',
@@ -77,6 +84,10 @@ class ComposerStaticInit76ae49173b3e1f543dc282d08fc4f294
         'SendGrid\\' => 
         array (
             0 => __DIR__ . '/..' . '/sendgrid/php-http-client/lib',
+        ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
         'PhpOption\\' => 
         array (

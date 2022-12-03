@@ -1,27 +1,27 @@
 
 
-        <span id="pagelogo"/>
-        <span id="companytitle"><a href="./index.php?page=frontpage">Bookmarker app</a></span>
+<span id="pagelogo"/>
+<span id="companytitle"><a href="./index.php?page=frontpage">Bookmarker app</a></span>
 
 
-      <div id="navbar">
-        <div id="main-nav">
-            <ul>
-              <li><a href="./index.php?page=frontpage" <?php if($currentpage == 'frontpage'){echo 'id="here"';}?>>Frontpage</a></li>
-              <li><a href="./index.php?page=categories" <?php if($currentpage == 'categories'){echo 'id="here"';}?>>Categories</a>
-                <ul class="submenu">
-                  <li><a href="./index.php?page=categorypage_1" <?php if($currentpage == 'categorypage_1'){echo 'id="here"';}?>>Categorypage 1</a></li>
-                  <li><a href="./index.php?page=categorypage_2" <?php if($currentpage == 'categorypage_2'){echo 'id="here"';}?>>Categorypage 2</a></li>
-                  <li><a href="./index.php?page=categorypage_3" <?php if($currentpage == 'categorypage_3'){echo 'id="here"';}?>>Categorypage 3</a></li>
-                  <li><a href="./index.php?page=categorypage_4" <?php if($currentpage == 'categorypage_4'){echo 'id="here"';}?>>Categorypage 4</a></li>
-                </ul>	
-              </li>
-              <!--<li><a href="./index.php?page=about_us" <?php if($currentpage == 'about_us'){echo 'id="here"';}?>>About us</a></li>-->
-              <li><a href="./index.php?page=contact" <?php if($currentpage == 'contact'){echo 'id="here"';}?>>Contact</a></li>
-            </ul>
-        </div>
-          <div id="loginandsignupbox">
+<div id="navbar">
+      <div id="main-nav">
           <ul>
+            <li><a href="./index.php?page=frontpage" <?php if($currentpage == 'frontpage'){echo 'id="here"';}?>>Frontpage</a></li>
+            <li><a href="./index.php?page=categories" <?php if($currentpage == 'categories'){echo 'id="here"';}?>>Categories</a>
+              <ul class="submenu">
+                <li><a href="./index.php?page=categorypage_1" <?php if($currentpage == 'categorypage_1'){echo 'id="here"';}?>>Categorypage 1</a></li>
+                <li><a href="./index.php?page=categorypage_2" <?php if($currentpage == 'categorypage_2'){echo 'id="here"';}?>>Categorypage 2</a></li>
+                <li><a href="./index.php?page=categorypage_3" <?php if($currentpage == 'categorypage_3'){echo 'id="here"';}?>>Categorypage 3</a></li>
+                <li><a href="./index.php?page=categorypage_4" <?php if($currentpage == 'categorypage_4'){echo 'id="here"';}?>>Categorypage 4</a></li>
+              </ul>	
+            </li>
+            <!--<li><a href="./index.php?page=about_us" <?php if($currentpage == 'about_us'){echo 'id="here"';}?>>About us</a></li>-->
+            <li><a href="./index.php?page=contact" <?php if($currentpage == 'contact'){echo 'id="here"';}?>>Contact</a></li>
+          </ul>
+      </div>
+      <div id="loginandsignupbox">
+        <ul>
 
 <?php          
           if(isset($_SESSION['username'])){
@@ -49,6 +49,12 @@
             }
           }
           else{
+            if($currentpage=="bookmarks_page"){
+              echo "<li><a href=\"./index.php?page=bookmarks_page\" id=\"here\">My bookmarks</a></li>";
+            }
+            else{
+              echo "<li><a href=\"./index.php?page=bookmarks_page\">My bookmarks</a></li>";
+            }
             echo "<li><a href=\"Eventhandlers/User_management/handle_logout.php?logout=yes\">Log out</a></li>";
           }
           if($currentpage=="registration_form"){
@@ -68,9 +74,9 @@ if(!isset($_SESSION['username'])){
   }
 }
 ?>
-          </ul>
-          </div>
+        </ul>
       </div>
+</div>
         
   
 

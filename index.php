@@ -41,6 +41,8 @@
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>-->
+    <script defer src="Eventhandlers/clear_notifications.js?<?php echo time()?>"></script>
+    <noscript>Your browser doesn't support Javascript, please consider using another browser or update your browser.</noscript>
 <?php
 
 
@@ -218,6 +220,16 @@
                             require_once('Graphics/Notifications/user_list/unauthorized.php');
                         }
                     }
+                }
+                break;
+
+            case 'bookmarks_page':
+                if(!isset($_SESSION['username'])){
+                    require_once('Graphics/Notifications/bookmarks_page/not_logged_in.php');
+                }
+                else{
+                    require_once('Graphics/Notifications/bookmarks_page/bookmarks_file_upload.php');
+                    require_once('Graphics/bookmarks_page.php');
                 }
                 break;
             default:

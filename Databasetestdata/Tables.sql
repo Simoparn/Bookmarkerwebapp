@@ -79,6 +79,33 @@ CREATE TABLE userprofile (
   FOREIGN KEY (address_id) REFERENCES address(address_id) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE bookmark (
+  url VARCHAR(500) NOT NULL,
+  name VARCHAR(200) NOT NULL,
+  description VARCHAR(500) NOT NULL,
+  creation_date VARCHAR(20) NOT NULL,
+  PRIMARY KEY(url)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE tagsofbookmarks (
+  tags_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  tags VARCHAR(200) NOT NULL,
+  PRIMARY KEY(tags_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE bookmarksofusers (
+  username VARCHAR(45) NOT NULL,
+  url VARCHAR(500) NOT NULL,
+  tags_id BIGINT UNSIGNED NOT NULL,
+  FOREIGN KEY (username) REFERENCES userprofile(username) ON DELETE CASCADE,
+  FOREIGN KEY (url) REFERENCES bookmark(url) ON DELETE CASCADE,
+  FOREIGN KEY (tags_id) REFERENCES tagsofbookmarks(tags_id)  ON DELETE CASCADE
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+
 CREATE TABLE usertoken (
 
   token_id INT AUTO_INCREMENT PRIMARY KEY,

@@ -15,12 +15,13 @@ try{
         $token_user_query->bind_param("s",$selector);
         if ($token_user_query->execute()){
             $token_user_query->store_result();
-            $token_user_query->bind_result($username, $first_name, $surname, $phone_number, $email);
+            $token_user_query->bind_result($username, $first_name, $surname, $phone_number, $email, $address_id, $password_hash, $is_staff, $creation_date, $last_modified);
             while($token_user_query->fetch()){
                 $user_address_query=$connection->prepare("SELECT address, postalcode, municipality, country, province, state FROM address WHERE address_id=?");
-                $user_address_query->bind_result($address_id);
+                $user_address_query->bind_param("i", $address_id);
                 if($user_address_query->execute()){
                     $user_address_query->store_result();
+                    $user_address_query->bind_result($address, $postal_code, $municipality, $country, $province, $state);
                     if($username){
                         session_start();
                         $_SESSION['username']=$username;
@@ -32,7 +33,7 @@ try{
                         $_SESSION['creation_date']=$creation_date;
                         $_SESSION['last_modified']=$last_modified;
                         $_SESSION['address']=$address;
-                        $_SESSION['postal_code']=$postalcode;
+                        $_SESSION['postal_code']=$postal_code;
                         $_SESSION['municipality']=$municipality;
                         $_SESSION['country']=$country;
                         $_SESSION['province']=$province;

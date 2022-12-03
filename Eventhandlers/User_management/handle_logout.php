@@ -14,7 +14,7 @@ if(isset($_GET["logout"])){
         unset($_COOKIE['authentication_token']);
     }
     //require_once('delete_authentication_token.php');  
-}
+    }
     unset($_SESSION["username"]);
     unset($_SESSION['first_name']);
     unset($_SESSION['surname']);

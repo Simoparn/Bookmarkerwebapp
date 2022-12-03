@@ -312,6 +312,7 @@ Definitions are in the following order:
     background-color:var(--navigationbackgroundcolor);
     list-style-type:none;
     margin-left:37%;
+    margin-bottom:20%;
     position:fixed;  
     
     

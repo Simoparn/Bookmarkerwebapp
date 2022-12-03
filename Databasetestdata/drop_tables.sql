@@ -1,1 +1,1 @@
-DROP TABLE usertoken, userprofile, orders, product, productcategory, address, country
+DROP TABLE usertoken, bookmarksofusers, tagsofbookmarks, bookmark, userprofile, orders, product, productcategory, address, country
