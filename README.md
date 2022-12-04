@@ -39,7 +39,15 @@ Expired tokens are deleted from the database if any page is opened while logged 
 #### Notifications for email
 -Error notification if attempting to use any email service besides Mailtrap or Sendgrid. 
 ### Database structure
+#### Database structure for user management
 Several users can have the same address (family members etc.)
+
+#### Database structure for importing and showing bookmarks in the service
+bookmark -> unique URLs, have a human-readable name
+tagsofbookmarks -> all folder hierarchies used for bookmarks, described as a string "parentfolder childfolder" etc. This is needed because many users can use identical folderhierarchies
+bookmarksofusers -> bookmarks are always related to a certain user and a certain folder
+
+Redundant records are deleted automatically from bookmarksofusers when the relevant records are deleted from tagsofbookmarks and bookmark tables.
 ## Directories
 
 ### index.php
@@ -62,7 +70,7 @@ Downloaded PHP dependencies
     sendgrid-php
 
 #### Netscape bookmark file parsing
-    kafene/netscape-bookmark-parser
+    shaarli/netscape-bookmark-parser
 
 #### Testing
     phpunit

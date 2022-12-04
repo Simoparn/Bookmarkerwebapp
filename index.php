@@ -48,14 +48,14 @@
 
     
 
-    echo "<h3> COOKIE variables:</h3>";
-    foreach($_COOKIE as $key => $value){
-        echo "<br>$key : $value";
-    }
-    echo "<h3> SESSION variables:</h3>";
-    foreach($_SESSION as $key => $value){
-        echo "<br>$key : $value";
-    }
+    //echo "<h3> COOKIE variables:</h3>";
+    //foreach($_COOKIE as $key => $value){
+    //    echo "<br>$key : $value";
+    //}
+    //echo "<h3> SESSION variables:</h3>";
+    //foreach($_SESSION as $key => $value){
+    //    echo "<br>$key : $value";
+    //}
     require_once('Eventhandlers/parse_page_from_url.php');
     require_once('Graphics/navigation_panel.php');
     if(isset($_GET['page'])){
@@ -229,6 +229,7 @@
                 }
                 else{
                     require_once('Graphics/Notifications/bookmarks_page/bookmarks_file_upload.php');
+                    require_once('Graphics/Notifications/bookmarks_page/bookmarks_list.php');
                     require_once('Graphics/bookmarks_page.php');
                 }
                 break;

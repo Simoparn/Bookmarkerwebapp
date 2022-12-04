@@ -9,39 +9,49 @@
 </form>
 </p>
 <p>
-<span class="paragraphtitle">Bookmarks exported to database</span>
+<span class="paragraphtitle">Your bookmarks</span>
 <?php
-    //TODO: Experiment to check the structure for conversion to database
-    require './vendor/autoload.php';
-    use Shaarli\NetscapeBookmarkParser\NetscapeBookmarkParser;
 
-    $filenames=scandir('./uploads/');
-    $filename=$filenames[2];
-    //echo "FILENAME HERE: ".$filename;
-    $parser = new NetscapeBookmarkParser();
-    $bookmarks_panel_items = $parser->parseFile('./uploads/'.$filename);
 
-    echo "<table>";
-    foreach($bookmarks_panel_items as $bookmark_key=>$bookmark_value){
+
+
+    $get_users_bookmarks_query=$connection->prepare("SELECT bookmarksofusers.url, name, tags_id, bookmarksofusers.database_creation_date, bookmarksofusers.database_last_modified FROM bookmarksofusers INNER JOIN bookmark ON bookmarksofusers.url=bookmark.url AND username=?");
+    $get_users_bookmarks_query->bind_param("s",$_SESSION["username"]);
+    try{
+    if($get_users_bookmarks_query->execute()){
         
-        //order when printing highest level item values: bookmark, image header, url, tags (as an array), description, creation date, publicity (possible values atleast public)
-        foreach($bookmark_value as $bmv_key=>$bmv_value){
-            echo "<tr>";
-            //folder structure of each bookmark is described with the tags array
-            if($bmv_key != "tags"){
-                echo "<td>$bmv_key</td><td>$bmv_value</td>";
-            }
-            else{
-                foreach($bmv_value as $bmv_value_key => $bmv_value_value){
-                    echo "<tr><td>$bmv_value_key</td><td>$bmv_value_value</td></tr>";
+        $get_users_bookmarks_query->store_result();
+        $get_users_bookmarks_query->bind_result($user_bookmark_urls,$user_bookmark_names,$user_bookmark_tag_ids,$user_bookmark_url_database_creation_dates,$user_bookmark_url_database_last_modified_dates);
+        
+        echo "<table class=\"bookmarktable\">";
+        
+        echo "<tr><td>URL</td><td>Database creation dare</td><td>Database last modified dates</td></tr>";
+        
+            
+                while($get_users_bookmarks_query->fetch()){
+                    //while($get_current_bookmark_name_query->fetch()){
+
+                        echo "<tr>";
+                        echo "<td><a href=\"$user_bookmark_urls\">$user_bookmark_names</a></td><td>$user_bookmark_url_database_creation_dates</td><td>$user_bookmark_url_database_last_modified_dates</td>";
+                        echo "<tr>";
+                    //}
                 }
-            }
-            echo "</tr>";
-        }
+                //$get_current_bookmark_name_query->free_result();
+            //}
         
+
+        echo "</table>";
+
+        $get_users_bookmarks_query->free_result();
+
+    }
+    }catch(Exception $e){
+        header('./index.php?page=bookmarks_page&bookmarks_retrieved_status=no');
+        exit();
     }
 
-    echo "</table>";
+
+
 ?>
 </p>
 </div>

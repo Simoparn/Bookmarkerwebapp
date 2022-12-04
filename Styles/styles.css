@@ -158,6 +158,13 @@ Definitions are in the following order:
   }
 
 
+  .bookmarktable
+  {
+    background-color:whitesmoke;
+
+  }
+  
+
   /* for feedback form */
   .customradio
   {
@@ -559,6 +566,14 @@ Definitions are in the following order:
   }
 
 
+
+
+  .bookmarktable
+  {
+    background-color:whitesmoke;
+
+  }
+
   /* for feedback form */
   .customradio
   {
@@ -635,6 +650,7 @@ Definitions are in the following order:
     font-size:1.15em;
   }
 
+  
   #companytitle
   {
     

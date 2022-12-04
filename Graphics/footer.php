@@ -11,7 +11,7 @@
             <li><a href="./index.php?page=privacy_policy" <?php if($currentpage == 'privacy_policy'){echo 'id="here"';}?>>Privacy policy</a></li>
             </ul>
         </span>
-        <img src="./Graphics/company_logo.jpg" alt="Company logo"></img>
+        <a href="https://nanparensoft.com"><img src="./Graphics/company_logo.jpg" id="companylogo" alt="Company logo"></img></a>
     
      
         
