@@ -22,18 +22,20 @@
         
         $get_users_bookmarks_query->store_result();
         $get_users_bookmarks_query->bind_result($user_bookmark_urls,$user_bookmark_names,$user_bookmark_tag_ids,$user_bookmark_url_database_creation_dates,$user_bookmark_url_database_last_modified_dates);
-        
+        echo "<p>".$get_users_bookmarks_query->num_rows()." bookmarks in total</p>";
         echo "<table class=\"bookmarktable\">";
         
         echo "<tr><td>URL</td><td>Database creation dare</td><td>Database last modified dates</td></tr>";
         
-            
+
                 while($get_users_bookmarks_query->fetch()){
                     //while($get_current_bookmark_name_query->fetch()){
 
                         echo "<tr>";
                         echo "<td><a href=\"$user_bookmark_urls\">$user_bookmark_names</a></td><td>$user_bookmark_url_database_creation_dates</td><td>$user_bookmark_url_database_last_modified_dates</td>";
+                        echo "<td><form method=\"post\" action=\"Eventhandlers\\handle_delete_bookmark.php\"><input type=\"submit\" name=\"delete_bookmark\" id=\"delete_bookmark\" value =\"DELETE BOOKMARK ".$user_bookmark_urls."\" style=\"color:red\"></form></td>"; }
                         echo "<tr>";
+                        
                     //}
                 }
                 //$get_current_bookmark_name_query->free_result();
@@ -44,7 +46,7 @@
 
         $get_users_bookmarks_query->free_result();
 
-    }
+    
     }catch(Exception $e){
         header('./index.php?page=bookmarks_page&bookmarks_retrieved_status=no');
         exit();

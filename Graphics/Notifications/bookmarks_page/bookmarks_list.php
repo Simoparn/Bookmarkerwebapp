@@ -13,6 +13,20 @@ if(isset($_GET['bookmarks_retrieved_status'])){
 
 }
 
+if(isset($_GET['bookmark_deleted_status'])){
+
+    if($_GET['bookmark_deleted_status']=='yes'){
+        echo "<br><span class=\"successmessage\">Deleting bookmark succeeded.</span>";
+    }
+
+
+    elseif($_GET['bookmark_deleted_status']=='no'){   
+            echo "<br><span class=\"errormessage\">Deleting bookmarks failed, please retry or try refreshing the page. <a href=\"./index.php?page=bookmarks_page\">Refresh page</a></span>"; 
+    }
+
+
+}
+
 ?>
 
 

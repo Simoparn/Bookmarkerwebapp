@@ -55,8 +55,8 @@ if(isset($_POST["delete_user"])){
 
     }catch(Exception $e){
             //database error
-            echo $e;
-            exit();
+            //echo $e;
+            //exit();
             header('Location: ../../index.php?page=user_list&user_deleted_status=no');
     }
 }
