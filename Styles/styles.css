@@ -131,6 +131,11 @@ Definitions are in the following order:
   
   }
   
+
+  td{
+    padding:1em;
+
+  }
     
 
   ul
@@ -161,8 +166,10 @@ Definitions are in the following order:
   .bookmarktable
   {
     background-color:whitesmoke;
+    
 
   }
+
   
 
   /* for feedback form */
@@ -377,6 +384,7 @@ Definitions are in the following order:
     color:black;
     font-size:80%;
     font-weight:bold;
+    width:100%;
     margin-left:2%;
     margin-right:2%;
     margin-bottom:2%;
@@ -540,6 +548,13 @@ Definitions are in the following order:
     
   }
 
+
+
+  td{
+    padding:1em;
+
+  }
+
   
   ul
   {
@@ -571,6 +586,7 @@ Definitions are in the following order:
   .bookmarktable
   {
     background-color:whitesmoke;
+    
 
   }
 
@@ -721,6 +737,7 @@ Definitions are in the following order:
     background-color:lightgrey;
     color:black;
     font-size:80%;
+    width:200;
     font-weight:bold;
     margin-left:2%;
     margin-right:2%;

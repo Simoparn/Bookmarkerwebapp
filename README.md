@@ -207,6 +207,11 @@ Also make sure that the PHP server allows uploading of sufficiently large files 
     Connect the Github main branch to Azure, export the local dtabase to Azure and retrieve the credentials with the $_SERVER superglobal in a specialized file
     while in cloud.
 
+### Bookmark management
+
+    Prevent duplicate bookmarks for users -> UNFINISHED
+    Fix issue with deleting links like chrome://newtab/, when the bookmark exists for other users as well ->
+
 
     
 
