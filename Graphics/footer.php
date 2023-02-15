@@ -4,7 +4,7 @@
     NanparenSoft 2022</span>
         <span>
         <br>Tel: +358000000
-        <br>Email: simoparnanen@nanparensoft.com</span>
+        <br>Email: nanparensoft@gmail.com</span>
         <span>
             <ul>
             <li><a href="./index.php?page=about_us" <?php if($currentpage == 'about_us'){echo 'id="here"';}?>>About us</a></li>

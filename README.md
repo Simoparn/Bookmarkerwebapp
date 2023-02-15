@@ -23,8 +23,11 @@ see the installation instructions section for further information.
 Graphics are rendered through index.php, which is always shown to the user. The graphics are rendered based on require statements and URL link query variables.
 The page navigation/user profile panels show the currently selected page with a different background color for the relevant link.
 ### User management
+#### User profile creation
 Page visitors can create a new user profile. Profile usernames must be unique. The application also doesn't allow creating a new
-user if the given email already exists in the database. Users are allowed to have the same address (Family members etc.). Passwords are saved to the database in hash format (hashing algorithm bcrypt).
+user if the given email already exists in the database. Users are allowed to have the same address (Family members etc.).
+#### Passwords
+Passwords are saved to the database in hash format (hashing algorithm bcrypt).
 #### Forgotten password change
 A message about the forgotten password is sent through the Mailgrid or Twilio Sendgrid service. Twilio Sendgrid can send the email to the real SMTP server in the free version. Password reset form cannot be opened without
 the user email and username hashes in the link sent to the email. Even then, the old password is required for resetting the password.
@@ -44,7 +47,7 @@ Several users can have the same address (family members etc.)
 
 #### Database structure for importing and showing bookmarks in the service
 bookmark -> unique URLs, have a human-readable name
-tagsofbookmarks -> all folder hierarchies used for bookmarks, described as a string "parentfolder childfolder" etc. This is needed because many users can use identical folderhierarchies
+tagsofbookmarks ->  "tags" word used here because the shaarli parser includes folder names in the tags subarray. All folder hierarchies used for bookmarks, described as a string in the format "parentfolder childfolder" etc. This is needed because many users can use identical folder hierarchies
 bookmarksofusers -> bookmarks are always related to a certain user and a certain folder
 
 Redundant records are deleted automatically from bookmarksofusers when the relevant records are deleted from tagsofbookmarks and bookmark tables.
@@ -116,7 +119,7 @@ back on if an alternative email service configuration can be found for Gmail API
 #### Sendgrid (SMTP)
 
 If Twilio Sendgrid is needed for sending SMTP emails, create a [SendGrid account](https://app.sendgrid.com) and create the necessary credentials: (Integrate->SMTP Relay)
-
+Make sure that you are using an authorized sender identity when testing the feedback email in development.
 
 #### Mailtrap (SMTP)
 

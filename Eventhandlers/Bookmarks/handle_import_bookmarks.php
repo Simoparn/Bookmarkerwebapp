@@ -3,7 +3,7 @@
 require '../vendor/autoload.php';
 use Shaarli\NetscapeBookmarkParser\NetscapeBookmarkParser;
 
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+$dotenv = Dotenv\Dotenv::createImmutable(dirname(dirname(__DIR__)));
 $DOTENVDATA=$dotenv->load();
 
 
