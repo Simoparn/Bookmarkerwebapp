@@ -15,13 +15,13 @@
 
 
 
-    $get_users_bookmarks_query=$connection->prepare("SELECT bookmarksofusers.url, name, tagsofbookmarks.tags, bookmarksofusers.database_creation_date, bookmarksofusers.database_last_modified FROM bookmarksofusers INNER JOIN bookmark ON bookmarksofusers.url=bookmark.url AND username=? INNER JOIN tagsofbookmarks ON tagsofbookmarks.tags_id=bookmarksofusers.tags_id");
+    $get_users_bookmarks_query=$connection->prepare("SELECT bookmarksofusers.url, name, tagsofbookmarks.tags, tagsofbookmarks.tags_id, bookmarksofusers.database_creation_date, bookmarksofusers.database_last_modified FROM bookmarksofusers INNER JOIN bookmark ON bookmarksofusers.url=bookmark.url AND username=? INNER JOIN tagsofbookmarks ON tagsofbookmarks.tags_id=bookmarksofusers.tags_id");
     $get_users_bookmarks_query->bind_param("s",$_SESSION["username"]);
     try{
     if($get_users_bookmarks_query->execute()){
         
         $get_users_bookmarks_query->store_result();
-        $get_users_bookmarks_query->bind_result($user_bookmark_urls,$user_bookmark_names,$user_bookmark_tags,$user_bookmark_url_database_creation_dates,$user_bookmark_url_database_last_modified_dates);
+        $get_users_bookmarks_query->bind_result($user_bookmark_urls,$user_bookmark_names,$user_bookmark_tags, $user_bookmark_tags_id, $user_bookmark_url_database_creation_dates,$user_bookmark_url_database_last_modified_dates);
         echo "<p><span class=\"paragraphtitle\">".$get_users_bookmarks_query->num_rows()." bookmarks in total</span></p>";
         echo "<table class=\"bookmarktable\">";
         
@@ -33,7 +33,7 @@
 
                         echo "<tr>";
                         echo "<td><a href=\"$user_bookmark_urls\">$user_bookmark_names</a></td><td>$user_bookmark_tags</td><td>$user_bookmark_url_database_creation_dates</td><td>$user_bookmark_url_database_last_modified_dates</td>";
-                        echo "<td><form method=\"post\" action=\"Eventhandlers\\bookmarks\\handle_delete_bookmark.php\"><input type=\"submit\" name=\"delete_bookmark\" id=\"delete_bookmark\" value =\"DELETE BOOKMARK ".$user_bookmark_urls."\" style=\"color:red\"></form></td>"; }
+                        echo "<td><form method=\"post\" action=\"Eventhandlers\\bookmarks\\handle_delete_bookmark.php\"><input type=\"hidden\" name=\"delete_bookmark_url\" id=\"delete_bookmark_url\" value=".$user_bookmark_urls."><input type=\"hidden\" name=\"delete_bookmark_tags_id\" id=\"delete_bookmark_tags_id\" value=\"$user_bookmark_tags_id\"><input type=\"submit\" name=\"delete_bookmark\" id=\"delete_bookmark\" value =\"DELETE BOOKMARK\" style=\"color:red\"></form></td>"; }
                         echo "<tr>";
                         
                     //}

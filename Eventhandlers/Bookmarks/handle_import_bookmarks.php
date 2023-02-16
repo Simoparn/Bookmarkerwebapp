@@ -1,6 +1,6 @@
 <?php
 
-require '../vendor/autoload.php';
+require '../../vendor/autoload.php';
 use Shaarli\NetscapeBookmarkParser\NetscapeBookmarkParser;
 
 $dotenv = Dotenv\Dotenv::createImmutable(dirname(dirname(__DIR__)));
@@ -10,15 +10,15 @@ $DOTENVDATA=$dotenv->load();
 
 
 //Remove the previously uploaded file and folder
-if(file_exists('../uploads')){
-    foreach(scandir('../uploads') as $dir){
+if(file_exists('../../uploads')){
+    foreach(scandir('../../uploads') as $dir){
         
-    unlink('../uploads/'.$dir);
+    unlink('../../uploads/'.$dir);
     }
-    rmdir('../uploads');
+    rmdir('../../uploads');
 }
-if(!file_exists('../uploads')){
-    mkdir('../uploads');
+if(!file_exists('../../uploads')){
+    mkdir('../../uploads');
 }
 
 
@@ -44,7 +44,7 @@ try {
             break;
         case UPLOAD_ERR_NO_FILE:
             //throw new RuntimeException('No file sent.');
-            header('Location: ../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=file_not_sent');
+            header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=file_not_sent');
             exit();
         case UPLOAD_ERR_INI_SIZE:
         case UPLOAD_ERR_FORM_SIZE:
@@ -56,7 +56,7 @@ try {
     // You should also check filesize here.
     if ($_FILES['bookmarks_file']['size'] > 1000000) {
         //throw new RuntimeException('Exceeded filesize limit.');
-        header('Location: ../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=filesize_exceeded');
+        header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=filesize_exceeded');
         exit();
     }
 
@@ -71,7 +71,7 @@ try {
         true
     )) {
         //throw new RuntimeException('Invalid file format.');
-        header('Location: ../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=wrong_file_format');
+        header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=wrong_file_format');
         exit();
     }
 
@@ -80,7 +80,7 @@ try {
     // On this example, obtain safe unique name from its binary data.
     if (!move_uploaded_file(
         $_FILES['bookmarks_file']['tmp_name'],
-        sprintf('../uploads/%s.%s',
+        sprintf('../../uploads/%s.%s',
             sha1_file($_FILES['bookmarks_file']['tmp_name']),
             $ext
         )
@@ -102,11 +102,11 @@ try {
 
 
 
-$filenames=scandir('../uploads/');
+$filenames=scandir('../../uploads/');
 $filename=$filenames[2];
 
 $parser = new NetscapeBookmarkParser();
-$bookmarks_panel_items = $parser->parseFile('../uploads/'.$filename);
+$bookmarks_panel_items = $parser->parseFile('../../uploads/'.$filename);
 //var_dump($bookmarks);
 //exit();
 //session_start();
@@ -114,7 +114,7 @@ $bookmarks_panel_items = $parser->parseFile('../uploads/'.$filename);
 
 
 try{
-    require_once('./connect_database.php');
+    require_once('../connect_database.php');
 
     //echo "<table>";
     foreach($bookmarks_panel_items as $bookmark_key=>$bookmark_value){
@@ -175,7 +175,7 @@ try{
                             
                             }
                             else{
-                                header('Location: ../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                                header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
                                 exit();
                             }
                             
@@ -192,7 +192,7 @@ try{
                             }
                             else{
                                 echo "<br>CREATE TAGS AND SET USER STATUS: FALSE";
-                                header('Location: ../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                                header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
                                 exit();
                             }
                             
@@ -201,7 +201,7 @@ try{
                         $check_if_bookmark_exists_query->free_result();
                     
                     }else{
-                        header('Location: ../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                        header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
                         exit();
                     }
                 
@@ -217,7 +217,7 @@ try{
     //exit();
 
     //Redirect with success if no error redirection
-    header('Location: ../index.php?page=bookmarks_page&bookmarks_file_upload_status=yes');
+    header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=yes');
     exit();
 
     
@@ -228,7 +228,7 @@ try{
     //Database error
     echo $e;
     exit();
-    header('Location: ../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+    header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
 }
 
 

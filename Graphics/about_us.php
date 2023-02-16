@@ -7,7 +7,7 @@
     <br><br>NanparenSoft
     <br>Vantaa
     <br>Telephone number: xx-xxxxxxx
-    <br>E-mail: simoparnanen@nanparensoft.com
+    <br>E-mail: nanparensoft@gmail.com
   
     <br>
     <br>Open
