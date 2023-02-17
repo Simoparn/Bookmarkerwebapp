@@ -138,7 +138,7 @@ try{
                     $current_tags=implode(" ",$bookmark_value["tags"]);
                     
 
-
+                    //SELECT COUNT(bookmark.url) FROM bookmark INNER JOIN bookmarksofusers ON bookmark.url=bookmarksofusers.url AND username=? INNER JOIN tagsofbookmarks ON tagsofbookmarks.tags_id=bookmarksofusers.tags_id WHERE bookmark.url=?)";
                     $check_if_bookmark_exists_query=$connection->prepare("SELECT COUNT(url) FROM bookmark WHERE url=?");
                     $check_if_bookmark_exists_query->bind_param("s",$bmv_value);
                     
@@ -147,6 +147,7 @@ try{
                         $check_if_bookmark_exists_query->store_result();
                         $check_if_bookmark_exists_query->bind_result($bookmark_count);
                         $check_if_bookmark_exists_query->fetch();
+                        
                         if($bookmark_count == 0){
                             //$current_url=$bmv_value;
                             //$current_name=$bookmark_value["name"];
@@ -181,7 +182,7 @@ try{
                             
                         }
                         else{
-                            //If an identical url already exists in the database, check for tags and define the user for the bookmark regardless
+                            //If an identical bookmark (url) already exists in the database, define the folder-bookmark combination for the user regardless
                             require_once('create_tags_and_set_user_for_the_bookmark.php');
                             
 

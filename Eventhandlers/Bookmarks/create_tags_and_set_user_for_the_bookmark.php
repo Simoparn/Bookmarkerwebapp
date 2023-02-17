@@ -19,13 +19,25 @@ function create_tags_and_set_user_for_the_bookmark($connection, $current_url, $c
             
             if($save_tags_to_database_query->execute()){
 
-                $save_user_with_this_bookmark_and_these_tags_query=$connection->prepare("INSERT INTO bookmarksofusers(username, url, tags_id) VALUES(?,?,(SELECT MAX(tags_id) FROM tagsofbookmarks))");
-                $save_user_with_this_bookmark_and_these_tags_query->bind_param("ss", $_SESSION["username"], $current_url);
-                
-                if($save_user_with_this_bookmark_and_these_tags_query->execute()){
-                    
-                        //Simply continue to the next url after success
-                        return true;
+
+                $check_that_user_bookmark_with_tags_doesnt_exist_query=$connection->prepare("SELECT COUNT(username) FROM bookmarksofusers WHERE url=? AND tags_id=? ");
+                $check_that_user_bookmark_with_tags_doesnt_exist_query->bind_param("ss", $current_url, $_current_tags);
+                if($check_that_user_bookmark_with_tags_doesnt_exist_query->execute()){
+
+                    $check_that_user_bookmark_with_tags_doesnt_exist_query->store_result();
+                    $check_that_user_bookmark_with_tags_doesnt_exist_query->bind_result($user_bookmarks_count);
+                    $check_that_user_bookmark_with_tags_doesnt_exist_query->fetch();
+                    if($user_bookmarks_count == 0){
+                        $save_user_with_this_bookmark_and_these_tags_query=$connection->prepare("INSERT INTO bookmarksofusers(username, url, tags_id) VALUES(?,?,(SELECT MAX(tags_id) FROM tagsofbookmarks))");
+                        $save_user_with_this_bookmark_and_these_tags_query->bind_param("ss", $_SESSION["username"], $current_url);
+                        
+                        if($save_user_with_this_bookmark_and_these_tags_query->execute()){
+                        
+                                //Simply continue to the next url after success
+                                return true;
+                        }
+                    }
+                    $check_that_user_bookmark_with_tags_doesnt_exist_query->free_result();
                 }
 
             }
@@ -39,7 +51,7 @@ function create_tags_and_set_user_for_the_bookmark($connection, $current_url, $c
 
         }
         else{
-            //If both the bookmark and the folder hierarchy already exist, simply appoint the current user for the bookmark that has the specific folder hierarchy location
+            //If both the bookmark and the folder hierarchy already exists for several users, simply appoint the current user for the bookmark that has the specific folder hierarchy location
             
             $retrieve_tags_id_query=$connection->prepare("SELECT tags_id FROM tagsofbookmarks WHERE tags =?");
             
@@ -54,13 +66,26 @@ function create_tags_and_set_user_for_the_bookmark($connection, $current_url, $c
                 $retrieve_tags_id_query->fetch();
                 //echo $current_url." ".$current_name." ".$current_description." ".$tags_id."<br>";
 
-                    
-                $save_user_with_this_bookmark_and_these_tags_query=$connection->prepare("INSERT INTO bookmarksofusers(username, url, tags_id) VALUES(?,?,?)");
-                $save_user_with_this_bookmark_and_these_tags_query->bind_param("ssi", $_SESSION["username"], $current_url, $tags_id);
                 
-                if($save_user_with_this_bookmark_and_these_tags_query->execute()){
-                    //Simply continue to the next url after success
-                    return true;
+                
+
+                $check_that_user_bookmark_with_tags_doesnt_exist_query=$connection->prepare("SELECT COUNT(username) FROM bookmarksofusers WHERE url=? AND tags_id=? ");
+                $check_that_user_bookmark_with_tags_doesnt_exist_query->bind_param("ss", $current_url, $_current_tags);
+
+                if($check_that_user_bookmark_with_tags_doesnt_exist_query->execute()){
+                    $check_that_user_bookmark_with_tags_doesnt_exist_query->store_result();
+                    $check_that_user_bookmark_with_tags_doesnt_exist_query->bind_result($user_bookmarks_count);
+                    $check_that_user_bookmark_with_tags_doesnt_exist_query->fetch();
+                    if($user_bookmarks_count==0){
+                        $save_user_with_this_bookmark_and_these_tags_query=$connection->prepare("INSERT INTO bookmarksofusers(username, url, tags_id) VALUES(?,?,?)");
+                        $save_user_with_this_bookmark_and_these_tags_query->bind_param("ssi", $_SESSION["username"], $current_url, $tags_id);
+                    
+                        if($save_user_with_this_bookmark_and_these_tags_query->execute()){
+                            //Simply continue to the next url after success
+                            return true;
+                        }
+                    }
+                    $check_that_user_bookmark_with_tags_doesnt_exist_query->free_result();
                 }
                 $retrieve_tags_id_query->free_result();
             }
