@@ -29,7 +29,7 @@
       </select>
       <br><b>Province (capitalized initial letter and atleast four letters in total, spaces allowed)</b><input type="text" name="province" id="province" pattern="[A-Z]{1,1}.[a-öA-Ö\ ]{3,}$"required><br>
       <br><b>State (can be empty)</b><input type="text" name="state" id="state"><br>
-      <br><b>Username (at least 8 characters)</b> <input type="text" name="username" id="username" pattern="[a-öA-Ö0-9-]{8,}$"required>  <br>   
+      <br><b>Username (at least 8 characters, only letters and numbers allowed)</b> <input type="text" name="username" id="username" pattern="[a-öA-Ö0-9-]{8,}$"required>  <br>   
       <br><b>Password (at least one number and 8 characters in total)</b> <input type="password" name="password" id="password" pattern="(?=.*[0-9])(?=.*[a-öA-Ö]).{8,}"required>
       <br><b>Confirm password</b> <input type="password" name="confirm_password" id="confirm_password" pattern="(?=.*[0-9])(?=.*[a-zA-Z]).{8,}"required>
       <input type="submit" name="register_user" id="register_user" value="Create user" onClick="buttonpressedtext=window.document.getElementById('buttonpressedtext'); buttonpressedtext.innerHTML='Please wait, handling user registration, or please fix the errors';">

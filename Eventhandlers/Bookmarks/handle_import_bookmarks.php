@@ -117,6 +117,7 @@ try{
     require_once('../connect_database.php');
 
     //echo "<table>";
+    $successfully_loaded_bookmark_count=0;
     foreach($bookmarks_panel_items as $bookmark_key=>$bookmark_value){
         
         //order when printing highest level item values: bookmark, image header, url, tags (as an array), description, creation date, publicity (possible values atleast public)
@@ -165,12 +166,13 @@ try{
                                 require_once('create_tags_and_set_user_for_the_bookmark.php');
                                 $create_tags_and_set_user_status=create_tags_and_set_user_for_the_bookmark($connection, $current_url, $current_tags);
                                 if($create_tags_and_set_user_status == true){
-                                   //echo "<br>CREATE TAGS AND SET USER STATUS: TRUE";
+                                    $successfully_loaded_bookmark_count+=1;
                                     continue;
                                 }
-                                //else{
-                                //    echo "<br>CREATE TAGS AND SET USER STATUS: FALSE";
-                                //}
+                                else{
+                                    //    echo "<br>CREATE TAGS AND SET USER STATUS: FALSE";
+                                    header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                                }
                                 
                                 
                             
@@ -182,19 +184,19 @@ try{
                             
                         }
                         else{
-                            //If an identical bookmark (url) already exists in the database, define the folder-bookmark combination for the user regardless
+                            //If an identical bookmark (url) already exists in the database, check and define (if needed) the folder-bookmark combination for the user regardless
                             require_once('create_tags_and_set_user_for_the_bookmark.php');
                             
 
                             $create_tags_and_set_user_status=create_tags_and_set_user_for_the_bookmark($connection, $current_url, $current_tags);
                             if($create_tags_and_set_user_status == true){
-                                echo "<br>CREATE TAGS AND SET USER STATUS: TRUE";
+                                echo "<br>CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: TRUE";
+                                $successfully_loaded_bookmark_count+=1;
                                 continue;
                             }
                             else{
-                                echo "<br>CREATE TAGS AND SET USER STATUS: FALSE";
-                                header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
-                                exit();
+                                echo "<br>CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: FALSE";
+                                
                             }
                             
                         }
@@ -216,7 +218,7 @@ try{
         
     }
     //exit();
-
+    $_SESSION["successfully_loaded_bookmark_count"]=$successfully_loaded_bookmark_count;
     //Redirect with success if no error redirection
     header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=yes');
     exit();

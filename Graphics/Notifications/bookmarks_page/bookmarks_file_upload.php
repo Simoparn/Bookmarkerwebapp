@@ -3,7 +3,10 @@
 
 if(isset($_GET['bookmarks_file_upload_status'])){
     if($_GET['bookmarks_file_upload_status']=='yes'){
-        echo "<br><span class=\"successmessage\">Uploading bookmarks file succeeded <a href=\"./index.php?page=bookmarks_page\">Refresh page</a></span>";
+        if(isset($_SESSION['successfully_loaded_bookmark_count'])){
+            echo "<br><span class=\"successmessage\">Uploading bookmarks file succeeded, ". $_SESSION['successfully_loaded_bookmark_count']." unique bookmarks loaded. <a href=\"./index.php?page=bookmarks_page\">Refresh page</a></span>";
+            unset($_SESSION['successfully_loaded_bookmark_count']);
+        }
     }
 
     elseif($_GET['bookmarks_file_upload_status']=='no'){
