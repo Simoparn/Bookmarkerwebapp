@@ -70,6 +70,10 @@ Definitions are in the following order:
       background-color:darkgrey;
   }
 
+
+
+
+
   form{
     background-color:whitesmoke;
     margin-left:0.5%;
@@ -164,11 +168,57 @@ Definitions are in the following order:
   }
 
 
+    /* Bookmark list  */
+
   .bookmarktable
   {
+    list-style-type:none;
+    margin: 0;
+    padding: 0;
     background-color:whitesmoke;
     
 
+  }
+
+  .bookmarklist
+  {
+    list-style-type:none;
+    margin: 0;
+    padding: 0;
+    background-color:whitesmoke;
+    
+
+  }
+
+
+  /* Rotate the caret/arrow icon when clicked on (using JavaScript) */
+  .caret-down::before {
+    transform: rotate(90deg);
+  }
+
+
+  /* Style the caret/arrow */
+  .caret {
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+  }
+
+  /* Create the caret/arrow with a unicode, and style it */
+  .caret::before {
+    content: "\25B6";
+    color: black;
+    display: inline-block;
+    margin-right: 6px;
+  }
+
+  /* Hide the nested list */
+  .nested {
+    display: none;
+  }
+
+  /* Show the nested list when the user clicks on the caret/arrow (with JavaScript) */
+  .active {
+    display: block;
   }
 
   
@@ -288,6 +338,8 @@ Definitions are in the following order:
 
   
   
+
+
   
   #contactinfo
   {
@@ -584,8 +636,11 @@ Definitions are in the following order:
 
 
 
+
   .bookmarktable
   {
+    margin: 0;
+    padding: 0;
     background-color:whitesmoke;
     
 

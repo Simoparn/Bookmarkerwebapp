@@ -27,13 +27,22 @@
         
         echo "<tr><td>URL</td><td>Folder</td><td>Database creation dare</td><td>Database last modified dates</td></tr>";
         
-
+                $all_user_bookmark_tags_thus_far=array();
                 while($get_users_bookmarks_query->fetch()){
                     //while($get_current_bookmark_name_query->fetch()){
+                        
+                        //TODO: experimenting with folder generation
+                        require_once('Eventhandlers/Bookmarks/generate_bookmark_folder.php');
+                        $user_bookmark_tags_as_array=explode(' ',$user_bookmark_tags);
+                        echo "<ul class=\"bookmarklist\">";
+                        generate_bookmark_folder($user_bookmark_tags, $user_bookmark_tags_as_array, $all_user_bookmark_tags_thus_far);
+                        
+                        echo "</ul>";
 
                         echo "<tr>";
                         echo "<td><a href=\"$user_bookmark_urls\">$user_bookmark_names</a></td><td>$user_bookmark_tags</td><td>$user_bookmark_url_database_creation_dates</td><td>$user_bookmark_url_database_last_modified_dates</td>";
-                        echo "<td><form method=\"post\" action=\"Eventhandlers\\bookmarks\\handle_delete_bookmark.php\"><input type=\"hidden\" name=\"delete_bookmark_url\" id=\"delete_bookmark_url\" value=".$user_bookmark_urls."><input type=\"hidden\" name=\"delete_bookmark_tags_id\" id=\"delete_bookmark_tags_id\" value=\"$user_bookmark_tags_id\"><input type=\"submit\" name=\"delete_bookmark\" id=\"delete_bookmark\" value =\"DELETE BOOKMARK\" style=\"color:red\"></form></td>"; }
+                        echo "<td><form method=\"post\" action=\"Eventhandlers\\bookmarks\\handle_delete_bookmark.php\"><input type=\"hidden\" name=\"delete_bookmark_url\" id=\"delete_bookmark_url\" value=".$user_bookmark_urls."><input type=\"hidden\" name=\"delete_bookmark_tags_id\" id=\"delete_bookmark_tags_id\" value=\"$user_bookmark_tags_id\"><input type=\"submit\" name=\"delete_bookmark\" id=\"delete_bookmark\" value =\"DELETE BOOKMARK\" style=\"color:red\"></form></td>";
+                } 
                         echo "<tr>";
                         
                     //}
