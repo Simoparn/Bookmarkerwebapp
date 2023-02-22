@@ -18,6 +18,17 @@
     $get_users_bookmarks_query=$connection->prepare("SELECT bookmarksofusers.url, name, tagsofbookmarks.tags, tagsofbookmarks.tags_id, bookmarksofusers.database_creation_date, bookmarksofusers.database_last_modified FROM bookmarksofusers INNER JOIN bookmark ON bookmarksofusers.url=bookmark.url AND username=? INNER JOIN tagsofbookmarks ON tagsofbookmarks.tags_id=bookmarksofusers.tags_id");
     $get_users_bookmarks_query->bind_param("s",$_SESSION["username"]);
     try{
+
+
+        //TODO: experimenting with folder generation
+        require_once('Eventhandlers/Bookmarks/generate_bookmark_folder.php');
+        //$user_bookmark_tags_as_array=explode(' ',$user_bookmark_tags);
+        echo "<ul class=\"bookmarklist\">";
+        //generate_bookmark_folder($connection, $user_bookmark_tags_as_array);
+        generate_bookmark_folder($connection);
+        //generate_bookmark_folder($connection, $user_bookmark_tags, $user_bookmark_tags_as_array);
+        echo "</ul>";
+
     if($get_users_bookmarks_query->execute()){
         
         $get_users_bookmarks_query->store_result();
@@ -27,17 +38,12 @@
         
         echo "<tr><td>URL</td><td>Folder</td><td>Database creation dare</td><td>Database last modified dates</td></tr>";
         
-                $all_user_bookmark_tags_thus_far=array();
+                
                 while($get_users_bookmarks_query->fetch()){
                     //while($get_current_bookmark_name_query->fetch()){
                         
-                        //TODO: experimenting with folder generation
-                        require_once('Eventhandlers/Bookmarks/generate_bookmark_folder.php');
-                        $user_bookmark_tags_as_array=explode(' ',$user_bookmark_tags);
-                        echo "<ul class=\"bookmarklist\">";
-                        generate_bookmark_folder($user_bookmark_tags, $user_bookmark_tags_as_array, $all_user_bookmark_tags_thus_far);
-                        
-                        echo "</ul>";
+
+
 
                         echo "<tr>";
                         echo "<td><a href=\"$user_bookmark_urls\">$user_bookmark_names</a></td><td>$user_bookmark_tags</td><td>$user_bookmark_url_database_creation_dates</td><td>$user_bookmark_url_database_last_modified_dates</td>";
