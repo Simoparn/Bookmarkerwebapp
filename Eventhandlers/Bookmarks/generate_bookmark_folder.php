@@ -122,57 +122,115 @@
 
 
     //subarrays: folder path (unique list of tags) and the subfolder in the folder path 
-    $final_bookmark_folder_structure=array("folder_location"=>array("subfolder_in_folder_location"=>array()));
+    $final_bookmark_folder_structure=array();
     $retrieve_unique_tags_for_user_query=$connection->prepare("SELECT DISTINCT tags from tagsofbookmarks INNER JOIN bookmarksofusers ON tagsofbookmarks.tags_id=bookmarksofusers.tags_id AND bookmarksofusers.username = ? ORDER BY tags ASC");
     $retrieve_unique_tags_for_user_query->bind_param("s", $_SESSION["username"]);
     if($retrieve_unique_tags_for_user_query->execute()){
         $retrieve_unique_tags_for_user_query->store_result();
-        $retrieve_unique_tags_for_user_query->bind_result($unique_tags_for_user);
+        $retrieve_unique_tags_for_user_query->bind_result($unique_folder_location_for_user);
         
-        $cached_unique_tags=null;
-        $cached_unique_tags_as_array=null;
+        $all_unique_user_folder_locations_as_array=array();
 
-        $tags_iteration=0;
         while($retrieve_unique_tags_for_user_query->fetch()){
-            $unique_tags_as_array=explode(" ",$unique_tags_for_user);
-            echo "<br><br> unique tags for the bookmark:".$unique_tags_for_user;
-
-            if($cached_unique_tags != null && $cached_unique_tags_as_array != null){
-                echo "<br>comparing \"".$unique_tags_for_user."\" and cached \"".$cached_unique_tags."\"";
-                if($cached_unique_tags== substr($unique_tags_for_user,0,strlen($cached_unique_tags))){
-                    echo "<br>cached tags (folder path) are fully included in current tags, counting the ending tags next";
-                    $current_and_cached_tags_count_difference=count($unique_tags_as_array)-count($cached_unique_tags_as_array);
-                    if($current_and_cached_tags_count_difference==0){
-                        echo "<br> cached and current tags match and are of equal length, create only the cached folder path, no subfolders are needed";
-                        array_push($final_bookmark_folder_structure[$tags_iteration][$tags_iteration],$cached_unique_tags);
-                        //array_push($final_bookmark_folder_structure[$tags_iteration][$tags_iteration],$cached_unique_tags_as_array);
-                    }      
-                    else if($current_and_cached_tags_count_difference > 0){
-                        echo "<br>cached tags count is ".$current_and_cached_tags_count_difference." less than current tags count, subfolders are needed";
-                    }
-                    else{
-                        echo "<br>cached tags count is ".$current_and_cached_tags_count_difference*(-1)." more than current tags count, subfolders are not needed";
-                    }
-                }
-                else{
-                    echo "<br>cached tags are not included in the current tags, it is safe to generate both folder paths";
-                    //array_push($final_bookmark_folder_structure[$tags_iteration][$tags_iteration],$cached_unique_tags);
-                    //array_push($final_bookmark_folder_structure[$tags_iteration+1][$tags_iteration+1],$unique_tags);
-                    
-                }
-            }
-            $cached_unique_tags=$unique_tags_for_user;
-            $cached_unique_tags_as_array=explode(" ",$unique_tags_for_user);
-
-            $tags_iteration=$tags_iteration+1;
+            echo "<br>unique folder:".$unique_folder_location_for_user;
+            array_push($all_unique_user_folder_locations_as_array,$unique_folder_location_for_user);
 
         }
+        //echo "<br><br>all unique folders for user: ";
+        //var_dump($all_unique_user_folder_locations_as_array);
+
+        
+
+        $cached_user_folder_location_value=null;
+
+        foreach($all_unique_user_folder_locations_as_array as $user_folder_location_key=>$user_folder_location_value){
+                //echo "<br>subfolder in unique folder location ".$user_folder_location_as_array_key.": ".$user_folder_value;
+  
+            $user_folders_as_array=explode(" ",$user_folder_location_value);
+
+            foreach($user_folders_as_array as $user_folder_key => $user_folder_value){
+                //top-level folders
+                if($user_folder_key==0){
+                
+
+                    if(array_search($user_folder_value, $final_bookmark_folder_structure) == false){
+                        array_push($final_bookmark_folder_structure, array($user_folder_value=>array()));
+                        
+                    }
+                }
+                //2nd level folders
+                if($user_folder_key==1){
+                    //array conversion is needed
+                    if(gettype($final_bookmark_folder_structure[$user_folder_location_key])=="string"){
+                        
+                        $final_bookmark_folder_structure[$user_folder_location_key]=array();
+                        
+                    }
+                    
+
+                    if(array_search($user_folder_value, $final_bookmark_folder_structure[$user_folder_location_key]) == false){
+                        echo "<br><br>the key $user_folder_value doesn't exist for path $user_folder_location_value";
+                        //$final_bookmark_folder_structure[$user_folder_location_key][$cached_top_level_folder_value]=array();
+                        echo "<br>keys on level 2 for: ";
+                        print_r(array_keys($final_bookmark_folder_structure[$user_folder_location_key][$cached_top_level_folder_value]));
+                        array_push($final_bookmark_folder_structure[$user_folder_location_key][$cached_top_level_folder_value], array($user_folder_value=>array()));
+                        //echo "var dump:";
+                        //var_dump($final_bookmark_folder_structure[$user_folder_location_key]);
+                    }
+                }
+
+                /*3rd level folders
+                if($user_folder_key==2){
+                    //array conversion is needed
+                    if(gettype($final_bookmark_folder_structure[$user_folder_location_key])=="string"){
+                        
+                        $final_bookmark_folder_structure[$user_folder_location_key]=array();
+                        
+                    }
+                    
+
+                    if(array_search($user_folder_value, $final_bookmark_folder_structure[$user_folder_location_key][$cached_top_level_folder_value]) == false){
+                        echo "<br>the key $user_folder_value doesn't exist for path $user_folder_location_value";
+                        $final_bookmark_folder_structure[$user_folder_location_key][$cached_top_level_folder_value][$cached_second_level_folder_value]=array();
+                        echo "<br>keys on level 3 for: ";
+                        print_r(array_keys($final_bookmark_folder_structure[$user_folder_location_key][$cached_top_level_folder_value][$cached_second_level_folder_value]));
+                        array_push($final_bookmark_folder_structure[$user_folder_location_key][$cached_top_level_folder_value][$cached_second_level_folder_value], array($user_folder_value=>array()));
+                        //echo "var dump:";
+                        //var_dump($final_bookmark_folder_structure[$user_folder_location_key]);
+                    }
+                }*/
+        
+                if($user_folder_key==0){
+                    $cached_top_level_folder_value=$user_folder_value;
+                }
+                if($user_folder_key==1){
+                    $cached_second_level_folder_value=$user_folder_value;
+                }
+            }
+        }
+
         $retrieve_unique_tags_for_user_query->free_result();
     }
 
+    
+        echo "<br><br>FINAL FOLDER STRUCTURE: ";
+        //foreach($final_bookmark_folder_structure as $structure_key=>$structure_value){
+            //print_r($final_bookmark_folder_structure);
+        //}
 
-        echo "<br>FINAL FOLDER STRUCTURE: ";
-        print_r($final_bookmark_folder_structure);
+        foreach($final_bookmark_folder_structure as $structure_key=>$structure_value){
+            echo "<br><br>top-level folder for index $structure_key: ";
+                    print_r($structure_value);
+                    foreach($structure_value as $second_level_key=>$second_level_value){
+                        echo "<br>second level folder: ";
+                        print_r($second_level_value);
+                            foreach($second_level_value as $third_level_key=>$third_level_value){
+                                echo "<br>third level folder:";
+                                print_r($third_level_value);
+                            }
+                    }
+        }
+        
 
 
     /*$unique_tags_for_user=array_unique($user_bookmark_tags_as_array);
