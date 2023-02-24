@@ -20,6 +20,9 @@ if(isset($_GET['bookmarks_file_upload_status'])){
             elseif($_GET['error']=='filesize_exceeded'){
                 echo "<br><span class=\"errormessage\">Uploading bookmarks file failed, filesize exceeded <a href=\"./index.php?page=bookmarks_page\">Refresh page</a></span>";
             }
+            elseif($_GET['error']=='some_folder_paths_too_long'){
+                echo "<br><span class=\"errormessage\">Uploading bookmarks file failed, some folder paths are too long, a maximum of ten levels of depth allowed for folders <a href=\"./index.php?page=bookmarks_page\">Refresh page</a></span>";
+            }
             elseif($_GET['error']=='database_error'){
                 echo "<br><span class=\"errormessage\">Uploading bookmarks file failed, database error <a href=\"./index.php?page=bookmarks_page\">Refresh page</a></span>";
             }

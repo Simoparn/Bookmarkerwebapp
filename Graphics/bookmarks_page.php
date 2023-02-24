@@ -21,12 +21,17 @@
 
 
         //TODO: experimenting with folder generation
-        require_once('Eventhandlers/Bookmarks/generate_bookmark_folder.php');
+        require_once('Eventhandlers/Bookmarks/generate_bookmark_folders.php');
         //$user_bookmark_tags_as_array=explode(' ',$user_bookmark_tags);
         echo "<ul class=\"bookmarklist\">";
-        //generate_bookmark_folder($connection, $user_bookmark_tags_as_array);
-        generate_bookmark_folder($connection);
-        //generate_bookmark_folder($connection, $user_bookmark_tags, $user_bookmark_tags_as_array);
+        //generate_bookmark_folders($connection, $user_bookmark_tags_as_array);
+        $bookmark_folder_structure=generate_bookmark_folders($connection);
+        echo "iterate recursively over bookmark folders:";
+        $iterator= new RecursiveArrayIterator($bookmark_folder_structure);
+        foreach($iterator as $iterator_key=>$iterator_value){
+            echo $iterator_key." ".$iterator_value;
+        }
+        //generate_bookmark_folders($connection, $user_bookmark_tags, $user_bookmark_tags_as_array);
         echo "</ul>";
 
     if($get_users_bookmarks_query->execute()){
@@ -36,7 +41,7 @@
         echo "<p><span class=\"paragraphtitle\">".$get_users_bookmarks_query->num_rows()." bookmarks in total</span></p>";
         echo "<table class=\"bookmarktable\">";
         
-        echo "<tr><td>URL</td><td>Folder</td><td>Database creation dare</td><td>Database last modified dates</td></tr>";
+        echo "<tr><td>URL</td><td>Folder</td><td>Database creation date</td><td>Database last modified dates</td></tr>";
         
                 
                 while($get_users_bookmarks_query->fetch()){

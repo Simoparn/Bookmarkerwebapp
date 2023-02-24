@@ -107,116 +107,143 @@ $filename=$filenames[2];
 
 $parser = new NetscapeBookmarkParser();
 $bookmarks_panel_items = $parser->parseFile('../../uploads/'.$filename);
-//var_dump($bookmarks);
-//exit();
-//session_start();
-//$_SESSION["bookmarks"]=$bookmarks;
+
 
 
 try{
     require_once('../connect_database.php');
 
-    //echo "<table>";
+    $some_folder_paths_are_too_long=false;
+    //$maximum_folder_path_length=0;
+    //$cached_path_length=null;
     $successfully_loaded_bookmark_count=0;
+
     foreach($bookmarks_panel_items as $bookmark_key=>$bookmark_value){
+        //if($cached_path_length > $maximum_folder_path_length){
+        //    $maximum_folder_path_length=$cached_path_length;
+        //}
+        //First check that the folder path (tags) is not too long for any bookmark, needed for folder generation in UI (generate_bookmark_folders)
+        if(count($bookmark_value["tags"])>10){
+            $some_folder_paths_are_too_long=true;
+            
+
+        }
+        //$cached_path_length=$maximum_folder_path=count($bookmark_value["tags"]);
+    }
+
+    //echo "longest folder path in imported file:".$maximum_folder_path_length;
+
+ 
+    if($some_folder_paths_are_too_long == false){
+        foreach($bookmarks_panel_items as $bookmark_key=>$bookmark_value){
         
-        //order when printing highest level item values: bookmark, image header, url, tags (as an array), description, creation date, publicity (possible values atleast public)
-        foreach($bookmark_value as $bmv_key=>$bmv_value){
-            
-            
-                //search for url, folder structure of each bookmark is described with the tags array
-                if($bmv_key =="url"){
+        
 
-                    $current_url=$bmv_value;
-                    $current_name=$bookmark_value["name"];
-                    if($bookmark_value["description"]==null){
-                        $current_description="";
-                    }
-                    else{
-                        $current_description=$bookmark_value["description"];
-                    }
-                    $current_creation_date=$bookmark_value["dateCreated"];
-                    $current_tags=implode(" ",$bookmark_value["tags"]);
-                    
+            //order when printing highest level item values: bookmark, image header, url, tags (as an array), description, creation date, publicity (possible values atleast public)
+            foreach($bookmark_value as $bmv_key=>$bmv_value){
+                
+                
+                    //search for url, folder structure of each bookmark is described with the tags array
+                    if($bmv_key =="url"){
 
-                    //SELECT COUNT(bookmark.url) FROM bookmark INNER JOIN bookmarksofusers ON bookmark.url=bookmarksofusers.url AND username=? INNER JOIN tagsofbookmarks ON tagsofbookmarks.tags_id=bookmarksofusers.tags_id WHERE bookmark.url=?)";
-                    $check_if_bookmark_exists_query=$connection->prepare("SELECT COUNT(url) FROM bookmark WHERE url=?");
-                    $check_if_bookmark_exists_query->bind_param("s",$bmv_value);
-                    
-                    if($check_if_bookmark_exists_query->execute()){
-
-                        $check_if_bookmark_exists_query->store_result();
-                        $check_if_bookmark_exists_query->bind_result($bookmark_count);
-                        $check_if_bookmark_exists_query->fetch();
+                        $current_url=$bmv_value;
+                        $current_name=$bookmark_value["name"];
+                        if($bookmark_value["description"]==null){
+                            $current_description="";
+                        }
+                        else{
+                            $current_description=$bookmark_value["description"];
+                        }
+                        $current_creation_date=$bookmark_value["dateCreated"];
+                        $current_tags=implode(" ",$bookmark_value["tags"]);
                         
-                        if($bookmark_count == 0){
-                            //$current_url=$bmv_value;
-                            //$current_name=$bookmark_value["name"];
-                            //if($bookmark_value["description"]==null){
-                            //    $current_description="";
-                            //}
-                            //else{
-                            //    $current_description=$bookmark_value["description"];
-                            //}
-                            //$current_creation_date=$bookmark_value["dateCreated"];
-                            $save_bookmark_to_database_query=$connection->prepare("INSERT INTO bookmark(url, name, description, creation_date) VALUES (?,?,?,?)");
-                            $save_bookmark_to_database_query->bind_param("ssss",$current_url,$current_name,$current_description,$current_creation_date);
+
+                        //SELECT COUNT(bookmark.url) FROM bookmark INNER JOIN bookmarksofusers ON bookmark.url=bookmarksofusers.url AND username=? INNER JOIN tagsofbookmarks ON tagsofbookmarks.tags_id=bookmarksofusers.tags_id WHERE bookmark.url=?)";
+                        $check_if_bookmark_exists_query=$connection->prepare("SELECT COUNT(url) FROM bookmark WHERE url=?");
+                        $check_if_bookmark_exists_query->bind_param("s",$bmv_value);
+                        
+                        if($check_if_bookmark_exists_query->execute()){
+
+                            $check_if_bookmark_exists_query->store_result();
+                            $check_if_bookmark_exists_query->bind_result($bookmark_count);
+                            $check_if_bookmark_exists_query->fetch();
                             
-                            if($save_bookmark_to_database_query->execute()){
+                            if($bookmark_count == 0){
+                                //$current_url=$bmv_value;
+                                //$current_name=$bookmark_value["name"];
+                                //if($bookmark_value["description"]==null){
+                                //    $current_description="";
+                                //}
+                                //else{
+                                //    $current_description=$bookmark_value["description"];
+                                //}
+                                //$current_creation_date=$bookmark_value["dateCreated"];
+                                $save_bookmark_to_database_query=$connection->prepare("INSERT INTO bookmark(url, name, description, creation_date) VALUES (?,?,?,?)");
+                                $save_bookmark_to_database_query->bind_param("ssss",$current_url,$current_name,$current_description,$current_creation_date);
+                                
+                                if($save_bookmark_to_database_query->execute()){
+                                    require_once('create_tags_and_set_user_for_the_bookmark.php');
+                                    $create_tags_and_set_user_status=create_tags_and_set_user_for_the_bookmark($connection, $current_url, $current_tags);
+                                    if($create_tags_and_set_user_status == true){
+                                        $successfully_loaded_bookmark_count+=1;
+                                        continue;
+                                    }
+                                    else{
+                                        //    echo "<br>CREATE TAGS AND SET USER STATUS: FALSE";
+                                        header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                                    }
+                                    
+                                    
+                                
+                                }
+                                else{
+                                    header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                                    exit();
+                                }
+                                
+                            }
+                            else{
+                                //If an identical bookmark (url) already exists in the database, check and define (if needed) the folder-bookmark combination for the user regardless
                                 require_once('create_tags_and_set_user_for_the_bookmark.php');
+                                
+
                                 $create_tags_and_set_user_status=create_tags_and_set_user_for_the_bookmark($connection, $current_url, $current_tags);
                                 if($create_tags_and_set_user_status == true){
+                                    echo "<br>CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: TRUE";
                                     $successfully_loaded_bookmark_count+=1;
                                     continue;
                                 }
                                 else{
-                                    //    echo "<br>CREATE TAGS AND SET USER STATUS: FALSE";
-                                    header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                                    echo "<br>CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: FALSE";
+                                    
                                 }
                                 
-                                
-                            
                             }
-                            else{
-                                header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
-                                exit();
-                            }
-                            
-                        }
-                        else{
-                            //If an identical bookmark (url) already exists in the database, check and define (if needed) the folder-bookmark combination for the user regardless
-                            require_once('create_tags_and_set_user_for_the_bookmark.php');
-                            
-
-                            $create_tags_and_set_user_status=create_tags_and_set_user_for_the_bookmark($connection, $current_url, $current_tags);
-                            if($create_tags_and_set_user_status == true){
-                                echo "<br>CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: TRUE";
-                                $successfully_loaded_bookmark_count+=1;
-                                continue;
-                            }
-                            else{
-                                echo "<br>CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: FALSE";
-                                
-                            }
-                            
+                        
+                            $check_if_bookmark_exists_query->free_result();
+                        
+                        }else{
+                            header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                            exit();
                         }
                     
-                        $check_if_bookmark_exists_query->free_result();
-                    
-                    }else{
-                        header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
-                        exit();
                     }
                 
-                }
-            
-            
+                
             
 
-            
-        }
+                
+            }
+
         
+        }
+
     }
+    else{
+        header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=some_folder_paths_too_long');
+        exit();
+    }
+
     //exit();
     $_SESSION["successfully_loaded_bookmark_count"]=$successfully_loaded_bookmark_count;
     //Redirect with success if no error redirection
