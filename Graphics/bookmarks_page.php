@@ -24,13 +24,41 @@
         require_once('Eventhandlers/Bookmarks/generate_bookmark_folders.php');
         //$user_bookmark_tags_as_array=explode(' ',$user_bookmark_tags);
         echo "<ul class=\"bookmarklist\">";
+        
         //generate_bookmark_folders($connection, $user_bookmark_tags_as_array);
         $bookmark_folder_structure=generate_bookmark_folders($connection);
-        echo "iterate recursively over bookmark folders:";
-        $iterator= new RecursiveArrayIterator($bookmark_folder_structure);
-        foreach($iterator as $iterator_key=>$iterator_value){
-            echo $iterator_key." ".$iterator_value;
+        echo "<br><br>iterating recursively over bookmark folders:";
+
+        function traverseFolderStructure($iterator) {
+
+            while ( $iterator -> valid() ) {
+        
+                if ( $iterator -> hasChildren() ) {
+           
+                    print_r($iterator->key());
+                    echo ":";
+                    print_r($iterator->current());
+                    echo "<br> previous array has children<br>";
+                    traverseFolderStructure($iterator -> getChildren());   
+                    
+                }
+        
+                else {
+        
+                    echo $iterator -> key() . ' : ' . $iterator -> current() .PHP_EOL;    
+        
+                }
+        
+                $iterator -> next();
+        
+            }
+            
+        
         }
+
+        $iterator= new RecursiveArrayIterator($bookmark_folder_structure);
+        iterator_apply($iterator,"traverseFolderStructure",array($iterator));
+        
         //generate_bookmark_folders($connection, $user_bookmark_tags, $user_bookmark_tags_as_array);
         echo "</ul>";
 
