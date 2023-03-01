@@ -1,9 +1,9 @@
 <?php
 
     //TODO: experimenting with bookmark folder generation
-    //function generate_bookmark_folder($connection,$user_bookmark_tags_as_array){
-    function generate_bookmark_folders($connection){
-    //function generate_bookmark_folder($connection, $user_bookmark_tags, $user_bookmark_tags_as_array){
+    //function generate_bookmark_folder_array($connection,$user_bookmark_tags_as_array){
+    function generate_bookmark_folder_array($connection){
+    //function generate_bookmark_folder_array($connection, $user_bookmark_tags, $user_bookmark_tags_as_array){
 
 
 
@@ -47,7 +47,7 @@
         $all_unique_user_folder_locations_as_array=array();
 
         while($retrieve_unique_tags_for_user_query->fetch()){
-            echo "<br>unique folder:".$unique_folder_location_for_user;
+            //echo "<br>unique folder:".$unique_folder_location_for_user;
             array_push($all_unique_user_folder_locations_as_array,$unique_folder_location_for_user);
 
         }
@@ -69,9 +69,9 @@
                 
                     
                     if(array_key_exists($user_folder_value, $final_bookmark_folder_structure) == false){
-                        echo "<br><br> top level folder key ".$user_folder_value." was not in: ";
-                        print_r($final_bookmark_folder_structure);
-                        echo ", push and continue for level 2 folder";
+                        //echo "<br><br> top level folder key ".$user_folder_value." was not in: ";
+                        //print_r($final_bookmark_folder_structure);
+                        //echo ", push and continue for level 2 folder";
                         //array_push($final_bookmark_folder_structure, array($user_folder_value=>array()));
                         $final_bookmark_folder_structure[$user_folder_value]=array();
                     
@@ -84,11 +84,11 @@
                     
 
                     if(array_key_exists($user_folder_value, $final_bookmark_folder_structure[$cached_top_level_folder_value]) == false){
-                        echo "<br>the level 2 key $user_folder_value doesn't exist for final folder structure, creating keys to level 2:";
-                        print_r($final_bookmark_folder_structure);
+                        //echo "<br>the level 2 key $user_folder_value doesn't exist for final folder structure, creating keys to level 2:";
+                        //print_r($final_bookmark_folder_structure);
                         $final_bookmark_folder_structure[$cached_top_level_folder_value][$user_folder_value]=array();
-                        echo "<br>level 2 folders: ";
-                        print_r($final_bookmark_folder_structure[$cached_top_level_folder_value]);
+                        //echo "<br>level 2 folders: ";
+                        //print_r($final_bookmark_folder_structure[$cached_top_level_folder_value]);
                         
                     }
                 }
@@ -98,11 +98,11 @@
                 if($user_folder_key==2){
 
                     if(array_key_exists($user_folder_value, $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value]) == false){
-                        echo "<br>the level 3 key $user_folder_value doesn't exist for final folder structure, creating keys to level 3:";
-                        print_r($final_bookmark_folder_structure);  
+                        //echo "<br>the level 3 key $user_folder_value doesn't exist for final folder structure, creating keys to level 3:";
+                        //print_r($final_bookmark_folder_structure);  
                         $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$user_folder_value]=array();
-                        echo "<br>level 3 folders: ";
-                        print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value]);
+                        //echo "<br>level 3 folders: ";
+                        //print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value]);
                         
                     }
                 }
@@ -112,11 +112,11 @@
                 if($user_folder_key==3){
 
                     if(array_key_exists($user_folder_value, $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value]) == false){
-                        echo "<br>the level 4 key $user_folder_value doesn't exist for final folder structure, creating keys to level 4:";
-                        print_r($final_bookmark_folder_structure);  
+                        //echo "<br>the level 4 key $user_folder_value doesn't exist for final folder structure, creating keys to level 4:";
+                        //print_r($final_bookmark_folder_structure);  
                         $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$user_folder_value]=array();
-                        echo "<br>level 4 folders: ";
-                        print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value]);
+                        //echo "<br>level 4 folders: ";
+                        //print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value]);
                     
                     }
                 }
@@ -128,11 +128,11 @@
                 if($user_folder_key==4){
 
                     if(array_key_exists($user_folder_value, $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value]) == false){
-                        echo "<br>the level 5 key $user_folder_value doesn't exist for final folder structure, creating keys to level 5:";
-                        print_r($final_bookmark_folder_structure);  
+                        //echo "<br>the level 5 key $user_folder_value doesn't exist for final folder structure, creating keys to level 5:";
+                        //print_r($final_bookmark_folder_structure);  
                         $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$user_folder_value]=array();
-                        echo "<br>level 5 folders: ";
-                        print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value]);
+                        //echo "<br>level 5 folders: ";
+                        //print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value]);
                     
                     }
                 }
@@ -142,11 +142,11 @@
                 if($user_folder_key==5){
 
                     if(array_key_exists($user_folder_value, $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value]) == false){
-                        echo "<br>the level 6 key $user_folder_value doesn't exist for final folder structure, creating keys to level 6:";
-                        print_r($final_bookmark_folder_structure);  
+                        //echo "<br>the level 6 key $user_folder_value doesn't exist for final folder structure, creating keys to level 6:";
+                        //print_r($final_bookmark_folder_structure);  
                         $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$user_folder_value]=array();
-                        echo "<br>level 6 folders: ";
-                        print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value]);
+                        //echo "<br>level 6 folders: ";
+                        //print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value]);
                     
                     }
                 }
@@ -156,11 +156,11 @@
                 if($user_folder_key==6){
 
                     if(array_key_exists($user_folder_value, $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value]) == false){
-                        echo "<br>the level 7 key $user_folder_value doesn't exist for final folder structure, creating keys to level 7:";
-                        print_r($final_bookmark_folder_structure);  
+                        //echo "<br>the level 7 key $user_folder_value doesn't exist for final folder structure, creating keys to level 7:";
+                        //print_r($final_bookmark_folder_structure);  
                         $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$user_folder_value]=array();
-                        echo "<br>level 7 folders: ";
-                        print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value]);
+                        //echo "<br>level 7 folders: ";
+                        //print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value]);
                     
                     }
                 }
@@ -169,11 +169,11 @@
                 if($user_folder_key==7){
 
                     if(array_key_exists($user_folder_value, $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$cached_seventh_level_folder_value]) == false){
-                        echo "<br>the level 8 key $user_folder_value doesn't exist for final folder structure, creating keys to level 8:";
-                        print_r($final_bookmark_folder_structure);  
+                        //echo "<br>the level 8 key $user_folder_value doesn't exist for final folder structure, creating keys to level 8:";
+                        //print_r($final_bookmark_folder_structure);  
                         $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$cached_seventh_level_folder_value][$user_folder_value]=array();
-                        echo "<br>level 8 folders: ";
-                        print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$cached_seventh_level_folder_value]);
+                        //echo "<br>level 8 folders: ";
+                        //print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$cached_seventh_level_folder_value]);
                     
                     }
                 }
@@ -182,11 +182,11 @@
                 if($user_folder_key==8){
 
                     if(array_key_exists($user_folder_value, $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$cached_seventh_level_folder_value][$cached_eight_level_folder_value]) == false){
-                        echo "<br>the level 9 key $user_folder_value doesn't exist for final folder structure, creating keys to level 9:";
-                        print_r($final_bookmark_folder_structure);  
+                        //echo "<br>the level 9 key $user_folder_value doesn't exist for final folder structure, creating keys to level 9:";
+                        //print_r($final_bookmark_folder_structure);  
                         $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$cached_seventh_level_folder_value][$cached_eight_level_folder_value][$user_folder_value]=array();
-                        echo "<br>level 9 folders: ";
-                        print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$cached_seventh_level_folder_value][$cached_eight_level_folder_value]);
+                        //echo "<br>level 9 folders: ";
+                        //print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$cached_seventh_level_folder_value][$cached_eight_level_folder_value]);
                     
                     }
                 }
@@ -196,11 +196,11 @@
                 if($user_folder_key==9){
 
                     if(array_key_exists($user_folder_value, $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$cached_seventh_level_folder_value][$cached_eight_level_folder_value][$cached_ninth_level_folder_value]) == false){
-                        echo "<br>the level 10 key $user_folder_value doesn't exist for final folder structure, creating keys to level 10:";
-                        print_r($final_bookmark_folder_structure);  
+                        //echo "<br>the level 10 key $user_folder_value doesn't exist for final folder structure, creating keys to level 10:";
+                        //print_r($final_bookmark_folder_structure);  
                         $final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$cached_seventh_level_folder_value][$cached_eight_level_folder_value][$cached_ninth_level_folder_value][$user_folder_value]=array();
-                        echo "<br>level 10 folders: ";
-                        print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$cached_seventh_level_folder_value][$cached_eight_level_folder_value][$cached_ninth_level_folder_value]);
+                        //echo "<br>level 10 folders: ";
+                        //print_r($final_bookmark_folder_structure[$cached_top_level_folder_value][$cached_second_level_folder_value][$cached_third_level_folder_value][$cached_fourth_level_folder_value][$cached_fifth_level_folder_value][$cached_sixth_level_folder_value][$cached_seventh_level_folder_value][$cached_eight_level_folder_value][$cached_ninth_level_folder_value]);
                     
                     }
                 }
@@ -244,7 +244,7 @@
     }
 
     
-        echo "<br><br>FINAL FOLDER STRUCTURE: ";
+        /*echo "<br><br>FINAL FOLDER STRUCTURE: ";
         //foreach($final_bookmark_folder_structure as $structure_key=>$structure_value){
             print_r($final_bookmark_folder_structure);
         //}
@@ -269,7 +269,7 @@
                                 }
                             }
                     }
-        }
+        }*/
 
         return $final_bookmark_folder_structure;
 
