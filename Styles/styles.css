@@ -170,7 +170,7 @@ Definitions are in the following order:
 
     /* Bookmark list  */
 
-  .bookmarktable
+  .bookmarksinsubfolderdata
   {
     list-style-type:none;
     margin: 0;
@@ -182,6 +182,7 @@ Definitions are in the following order:
 
   .bookmarklist
   {
+    
     list-style-type:none;
     margin: 0;
     padding: 0;
@@ -213,23 +214,35 @@ Definitions are in the following order:
   }
 
   /* Hide the nested list */
-  .nested {
+  .folder_nested {
     display: none;
     list-style-type:none;
   }
 
   /* Show the nested list when the user clicks on the folder caret (with JavaScript) */
-  .active {
+  .folder_active  {
     display: block;
     list-style-type:none;
   }
 
+ 
   
 
   /* for feedback form */
   .customradio
   {
     display:inline;
+  }
+
+
+  .deletebutton
+  {
+    
+    color:red;
+    background-color:inherit;
+    border-style:none;
+    font-weight:bolder;
+    font-size:inherit;
   }
 
 
@@ -626,7 +639,7 @@ Definitions are in the following order:
 
 
 
-  li:hover > .submenu  
+  li:hover > .submenu
   {
     background-color:var(--navigationbackgroundcolor);
     display:block;
@@ -640,7 +653,7 @@ Definitions are in the following order:
 
 
 
-  .bookmarktable
+  .bookmarksinsubfolderdata
   {
     margin: 0;
     padding: 0;
