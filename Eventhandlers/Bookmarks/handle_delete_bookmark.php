@@ -118,7 +118,7 @@ if(isset($_POST["delete_bookmark"]) && isset($_POST["delete_bookmark_url"]) && i
     }catch(Exception $e){
         //database error
         echo $e;
-        exit();
+        //exit();
         header('Location: ../index.php?page=bookmarks_page&bookmark_deleted_status=no');
         
     }

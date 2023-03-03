@@ -69,7 +69,7 @@ function create_tags_and_set_user_for_the_bookmark($connection, $current_url, $c
                 
                 $retrieve_tags_id_query=$connection->prepare("SELECT tags_id FROM tagsofbookmarks WHERE tags =?");
                 
-                //This is needed for searching url with 'LIKE "url%"', url can't be retrieved with '=' alone for some reason, URL forward slashes should not be a problem
+                //TODO: This is needed for searching url with 'LIKE "url%"', url can't be retrieved with '=' alone for some reason, URL forward slashes should not be a problem
                 //$current_url_for_search=$current_url.'%';
                 
                 $retrieve_tags_id_query->bind_param("s",$current_tags);

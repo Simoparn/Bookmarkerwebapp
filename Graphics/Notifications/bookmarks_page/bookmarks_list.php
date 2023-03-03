@@ -27,6 +27,25 @@ if(isset($_GET['bookmark_deleted_status'])){
 
 }
 
+
+
+if(isset($_GET['bookmark_folder_deleted_status'])){
+
+    if($_GET['bookmark_folder_deleted_status']=='yes'){
+        if(isset($_SESSION["successfully_deleted_total_bookmark_count"])){
+        echo "<br><span class=\"successmessage\">Deleting bookmark folder(s) succeeded. ".$_SESSION["successfully_deleted_total_bookmark_count"]." bookmarks deleted in total.</span>";
+        }
+        
+    }
+
+
+    elseif($_GET['bookmark_folder_deleted_status']=='no'){   
+            echo "<br><span class=\"errormessage\">Deleting bookmark folder failed, please retry or try refreshing the page. <a href=\"./index.php?page=bookmarks_page\">Refresh page</a></span>"; 
+    }
+
+
+}
+
 ?>
 
 
