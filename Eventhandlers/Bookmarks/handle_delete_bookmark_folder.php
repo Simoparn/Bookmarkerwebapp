@@ -21,36 +21,37 @@ if(isset($_POST["delete_current_bookmark_folder_structure_from_top"]) && isset($
         $retrieve_all_subfolders_inside_the_folder_query->bind_param("ss",$subfolders_match, $bookmark_folder_from_post);
         if($retrieve_all_subfolders_inside_the_folder_query->execute()){
             $retrieve_all_subfolders_inside_the_folder_query->store_result();
-            $retrieve_all_subfolders_inside_the_folder_query->bind_result($all_subfolders_inside_the_folder);
+            $retrieve_all_subfolders_inside_the_folder_query->bind_result($subfolder_inside_the_folder);
             
             //Then check if other users exist for any of the subfolders, if more than 1 user in any case, delete only the relevant bookmark references (bookmarksofusers), so that
             //the associated folder cannot be rendered for the current user
-            $leave_folders_alone=false;
+            $leave_folders_in_database_alone=false;
 
-            $all_subfolders_as_an_array=array();
+            $all_subfolders_within_the_folder_as_an_array=array();
             $_SESSION["successfully_deleted_total_bookmark_count"]=0;
-            while($retrieve_all_subfolders_inside_the_folder_query->fetch()){
-                array_push($all_subfolders_as_an_array, $all_subfolders_inside_the_folder);
+            /*while($retrieve_all_subfolders_inside_the_folder_query->fetch()){
+                array_push($all_subfolders_within_the_folder_as_an_array, $subfolder_inside_the_folder);
             }
-            echo "<br>all subfolders as an array for later use:";
-            foreach($all_subfolders_as_an_array as $array_subfolder_key=>$array_subfolder_value){
+                echo "<br>all subfolders as an array for later use:";
+            foreach($all_subfolders_within_the_folder_as_an_array as $array_subfolder_key=>$array_subfolder_value){
                 echo"<br>".$array_subfolder_value;
             }
-            echo "<br><br>";
+            echo "<br><br>";*/
 
+            echo "<br><br>All subfolders within the folder during iteration:";
             while($retrieve_all_subfolders_inside_the_folder_query->fetch()){
             
+                    echo "<br>Checking current subfolder:";
+                    echo "<br>".$subfolder_inside_the_folder;
                 
-                    echo "<br>".$all_subfolders_inside_the_folder;
                 
                 
-                
-                //foreach($all_subfolders_inside_the_folder as $subfolder_key=>$subfolder_name){
+                //foreach($subfolder_inside_the_folder as $subfolder_key=>$subfolder_name){
                     
 
                     
                     $check_if_subfolder_only_used_by_current_user_query=$connection->prepare("SELECT DISTINCT username FROM bookmarksofusers INNER JOIN tagsofbookmarks ON bookmarksofusers.tags_id=(SELECT tags_id FROM tagsofbookmarks WHERE tags =?)");
-                    $check_if_subfolder_only_used_by_current_user_query->bind_param("s",$subfolder_name);
+                    $check_if_subfolder_only_used_by_current_user_query->bind_param("s",$subfolder_inside_the_folder);
                     
                     if($check_if_subfolder_only_used_by_current_user_query->execute()){
 
@@ -61,27 +62,34 @@ if(isset($_POST["delete_current_bookmark_folder_structure_from_top"]) && isset($
                         echo "<br>number of distinct users for a filled folder (with bookmarks in this particular folder, not the possible subfolders): ".$check_if_subfolder_only_used_by_current_user_query->num_rows();
                         
                         if($check_if_subfolder_only_used_by_current_user_query->num_rows() > 1){
-                            $leave_folders_alone=true;
-                            break;
+                            $leave_folders_in_database_alone=true;
+                            
                         }
                         
                         $check_if_subfolder_only_used_by_current_user_query->free_result();
                     }
 
                 //}
+                if($subfolder_inside_the_folder != null){
+                    array_push($all_subfolders_within_the_folder_as_an_array, $subfolder_inside_the_folder);
+                }
             }
 
-
+            echo "<br><br>all subfolders as an array for later use:";
+            foreach($all_subfolders_within_the_folder_as_an_array as $array_subfolder_key=>$array_subfolder_value){
+                echo"<br>".$array_subfolder_value;
+            }
+            echo "<br><br>";
 
             $retrieve_all_subfolders_inside_the_folder_query->free_result();
         }
 
     
-        if($leave_folders_alone==true){
+        if($leave_folders_in_database_alone==true){
             echo "<br>More than 1 user with bookmarks was found for a subfolder, delete only the bookmark user references (and possibly bookmarks) for all the subfolders";
-            foreach($all_subfolders_as_an_array as $subfolder_key=>$subfolder_name){
-                $delete_subfolder_bookmarks_for_the_user_query=$connection->prepare("DELETE FROM bookmarksofusers WHERE tags_id=(SELECT tags_id FROM tagsofbookmarks WHERE tags=?");
-                $delete_subfolder_bookmarks_for_the_user_query=$connection->bind_param("s",$subfolder_name);
+            foreach($all_subfolders_within_the_folder_as_an_array as $subfolder_key=>$subfolder_name){
+                $delete_subfolder_bookmarks_for_the_user_query=$connection->prepare("DELETE FROM bookmarksofusers WHERE username=? AND tags_id=(SELECT tags_id FROM tagsofbookmarks WHERE tags=?)");
+                $delete_subfolder_bookmarks_for_the_user_query->bind_param("ss",$_SESSION["username"], $subfolder_name);
 
                 $delete_subfolder_bookmarks_for_the_user_query->execute();
                 
@@ -95,7 +103,7 @@ if(isset($_POST["delete_current_bookmark_folder_structure_from_top"]) && isset($
         else{
             echo "<br>only 1 user found for all the subfolders (the current user), it is safe to delete folders first";
             //cascade handles deletion automatically for bookmarksofusers
-            foreach($all_subfolders_as_an_array as $subfolder_key=>$subfolder_name){
+            foreach($all_subfolders_within_the_folder_as_an_array as $subfolder_key=>$subfolder_name){
                 
                 $retrieve_redundant_bookmarks_to_delete_query=$connection->prepare("SELECT url FROM bookmarksofusers WHERE tags_id=(SELECT tags_id FROM tagsofbookmarks WHERE tags=?) AND username=?");
                 $retrieve_redundant_bookmarks_to_delete_query->bind_param("ss",$subfolder_name,$_SESSION["username"]);
@@ -136,7 +144,8 @@ if(isset($_POST["delete_current_bookmark_folder_structure_from_top"]) && isset($
     }catch(Exception $e){
         //database error
         echo $e;
-        header('Location: ../index.php?page=bookmarks_page&bookmark_folder_deleted_status=no');
+        exit();
+        header('Location: ../../index.php?page=bookmarks_page&bookmark_folder_deleted_status=no');
     }
 
 
