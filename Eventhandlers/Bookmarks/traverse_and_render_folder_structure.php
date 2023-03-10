@@ -39,7 +39,7 @@
                     $get_users_bookmarks_for_folder_query->bind_result($user_bookmark_url,$user_bookmark_name,$user_bookmark_tags, $user_bookmark_tags_id, $user_bookmark_url_database_creation_date,$user_bookmark_url_database_last_modified_date);
                     echo "<table class=\"bookmarksinsubfolderdata\">";
                     while($get_users_bookmarks_for_folder_query->fetch()){
-                        if($_SESSION["current_folder_structure_from_top"]==$user_bookmark_tags){
+                        if($_SESSION["current_folder_structure_from_top"]==$user_bookmark_tags && $user_bookmark_url != "DUMMY_BOOKMARK_FOR_PRESERVING_EMPTY_FOLDERS"){
                             //echo "<br>current folder starting from top and retrieved tags match: ".$user_bookmark_tags." for the link: ".$user_bookmark_url;
                             //echo "<br>SESSION data for current folder from top: ".$_SESSION["current_folder_structure_from_top"];
                             

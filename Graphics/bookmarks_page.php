@@ -24,23 +24,30 @@
         if($get_users_bookmarks_query->execute()){
             $get_users_bookmarks_query->store_result();
             $get_users_bookmarks_query->bind_result($user_bookmark_urls,$user_bookmark_names,$user_bookmark_tags, $user_bookmark_tags_id, $user_bookmark_url_database_creation_dates,$user_bookmark_url_database_last_modified_dates);
+            $dummy_bookmark_for_preserving_empty_folders="DUMMY_BOOKMARK_FOR_PRESERVING_EMPTY_FOLDERS";
+            $get_non_dummy_bookmarks_count_query=$connection->prepare("SELECT COUNT(url) FROM bookmarksofusers WHERE url=? AND username=?");
+            $get_non_dummy_bookmarks_count_query->bind_param("ss",$dummy_bookmark_for_preserving_empty_folders,$_SESSION["username"]);
+            if($get_non_dummy_bookmarks_count_query->execute()){
+                $get_non_dummy_bookmarks_count_query->store_result();
+                $get_non_dummy_bookmarks_count_query->bind_result($dummy_bookmarks_count);
+                echo "<p><span class=\"paragraphtitle\">".$get_users_bookmarks_query->num_rows()-$dummy_bookmarks_count." bookmarks in total</span></p>";
+                //TODO: experimenting with folder generation
+                require_once('Eventhandlers/Bookmarks/generate_bookmark_folder_array.php');
+                //$user_bookmark_tags_as_array=explode(' ',$user_bookmark_tags);
+                echo "<ul class=\"bookmarklist\">";
             
-            echo "<p><span class=\"paragraphtitle\">".$get_users_bookmarks_query->num_rows()." bookmarks in total</span></p>";
-            //TODO: experimenting with folder generation
-            require_once('Eventhandlers/Bookmarks/generate_bookmark_folder_array.php');
-            //$user_bookmark_tags_as_array=explode(' ',$user_bookmark_tags);
-            echo "<ul class=\"bookmarklist\">";
+                //generate_bookmark_folder_array($connection, $user_bookmark_tags_as_array);
+                $bookmark_folder_structure=generate_bookmark_folder_array($connection);
+                //echo "<br><br>iterating recursively over bookmark folders:<br><br>";
             
-            //generate_bookmark_folder_array($connection, $user_bookmark_tags_as_array);
-            $bookmark_folder_structure=generate_bookmark_folder_array($connection);
-            //echo "<br><br>iterating recursively over bookmark folders:<br><br>";
-            
-            require_once('Eventhandlers/Bookmarks/traverse_and_render_folder_structure.php');
+                require_once('Eventhandlers/Bookmarks/traverse_and_render_folder_structure.php');
         
-            $iterator= new RecursiveArrayIterator($bookmark_folder_structure);
-            iterator_apply($iterator,"traverse_and_render_folder_structure",array($iterator, $connection));
+                $iterator= new RecursiveArrayIterator($bookmark_folder_structure);
+                iterator_apply($iterator,"traverse_and_render_folder_structure",array($iterator, $connection));
+                $get_non_dummy_bookmarks_count_query->free_result();
+            }
             $get_users_bookmarks_query->free_result();
-
+                
         }
         
         //generate_bookmark_folders($connection, $user_bookmark_tags, $user_bookmark_tags_as_array);
