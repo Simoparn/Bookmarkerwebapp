@@ -8,12 +8,6 @@
     <li><a href="./index.php?page=categorypage_2"><p class="paragraphtitle">Category 2</p></a></li>
     <a href="./index.php?page=categorypage_2"><p><img class="productslinkimage" src="" alt="Category 2 products image"/></p></a>
     <p>category 2 </p>
-    <li><a href="./index.php?page=categorypage_3"><p class="paragraphtitle">Category 3</p></a></li>
-    <a href="./index.php?page=categorypage_3"><p><img class="productslinkimage" src="" alt="Category 3 products image"></img></p></a>
-    <p>category 3</p>
-    <li><a href="./index.php?page=categorypage_4"><p class="paragraphtitle">Category 4</p></a></li>
-    <a href="./index.php?page=categorypage_4"><p class="paragraphtitle"><img class="productslinkimage" src="" alt="Category 4 products image"></img></p></a>
-    <p>cateogyr 4</p>
   </ul>
 </div>
         

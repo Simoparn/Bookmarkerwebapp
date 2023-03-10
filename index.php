@@ -82,16 +82,6 @@
                 require_once('Graphics/categorypage_2.php');
                 break;
             
-            case 'categorypage_3':
-                require_once('Graphics/Notifications/categories/Notifications_categorypage_3.php');
-                require_once('Graphics/categorypage_3.php');
-                break;
-            
-            case 'categorypage_4':
-                require_once('Graphics/Notifications/categories/Notifications_categorypage_4.php');
-                require_once('Graphics/categorypage_4.php');
-                break;
-            
             case 'about_us':
                 require_once('Graphics/Notifications/Notifications_about_us.php');
                 require_once('Graphics/about_us.php');

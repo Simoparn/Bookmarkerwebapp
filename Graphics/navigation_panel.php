@@ -12,8 +12,6 @@
               <ul class="submenu">
                 <li><a href="./index.php?page=categorypage_1" <?php if($currentpage == 'categorypage_1'){echo 'id="here"';}?>>Categorypage 1</a></li>
                 <li><a href="./index.php?page=categorypage_2" <?php if($currentpage == 'categorypage_2'){echo 'id="here"';}?>>Categorypage 2</a></li>
-                <li><a href="./index.php?page=categorypage_3" <?php if($currentpage == 'categorypage_3'){echo 'id="here"';}?>>Categorypage 3</a></li>
-                <li><a href="./index.php?page=categorypage_4" <?php if($currentpage == 'categorypage_4'){echo 'id="here"';}?>>Categorypage 4</a></li>
               </ul>	
             </li>
             <!--<li><a href="./index.php?page=about_us" <?php if($currentpage == 'about_us'){echo 'id="here"';}?>>About us</a></li>-->

@@ -9,7 +9,7 @@
 
 ## Background
 
-ENGLISH: Experimental browser bookmarking web application service. Part of Omnia's web programming (Web-ohjelmointi) course (autumn 2022).
+ENGLISH: Experimental browser bookmarking web application service.
 
 Part of the Omnia web programming course (autumn 2022-spring 2023). Server platform is [XAMPP](https://www.apachefriends.org/). Utilizes PHPMailer library and [Twilio Sendgrid](https://app.sendgrid.com/) or [Mailtrap](https://mailtrap.io) services for contact emails and password changes with SMTP, SendGrid can send the email to the real SMTP server. Utilizes [shaarli/shaarli/netscape-bookmark-parse](https://packagist.org/packages/shaarli/netscape-bookmark-parser) and [kafene/netscape-bookmark-parser](https://packagist.org/packages/kafene/netscape-bookmark-parser) packages for netscape bookmark file parsing. Database MySQL/MariaDB. Database handling with mySQLi.
 
@@ -41,7 +41,9 @@ Expired tokens are deleted from the database if any page is opened while logged 
 -Error notification if opening the forgotten password change link is attempted without a valid link
 #### Notifications for email
 -Error notification if attempting to use any email service besides Mailtrap or Sendgrid. 
-### Database structure
+### Database
+#### Security
+Protected against SQL injections with MySQL prepared statements.
 #### Database structure for user management
 Several users can have the same address (family members etc.)
 
@@ -181,24 +183,21 @@ Make sure that the PHP server allows uploading of bookmarks files -> XAMPP Contr
 Also make sure that the PHP server allows uploading of sufficiently large files -> XAMPP Control Panel -> Apache -> config -> php.ini -> upload_max_filesize=40M
 ## TODO
 
-### navigation and navigation panel modularization 
-    -Is it possible to remove all notifications out of index.php without breaking the app?
 
 ### User_management
     -Remember me (authentication-token/cookie for automatic login even if the browser is opened and reopened) ->
-        -still unable to show error message, when failing to automatically login with remember ,e
+        -still unable to show error message, when failing to automatically login with remember me
         -If the cookie is has been saved to the computer, the app still logs in automatically after reopening the browser, even if the user logged off during the last session.
          
         
-
 ### Notifications
+    -Notification statuses from $_GET to $_SESSION
     -Notification if attempting to open login form and user has already logged in -> Doesn't show the error message if already logged in
     and the authentication token cookie is still active.
     
 ### Email sending
 
 ### Database
-    -SQL injection prevention (Prepared statements) -> DONE
 ### Assignment 22.09.2022: 
     email sending to admin with feedback form
             Mailtrap->tested for feedback
