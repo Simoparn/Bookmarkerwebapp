@@ -182,18 +182,27 @@ try{
                                 $save_bookmark_to_database_query->bind_param("ssss",$current_url,$current_name,$current_description,$current_creation_date);
                                 
                                 if($save_bookmark_to_database_query->execute()){
-                                    require_once('create_tags_and_set_user_for_the_bookmark.php');
-                                    $create_tags_and_set_user_status=create_tags_and_set_user_for_the_bookmark($connection, $current_url, $current_tags);
-                                    if($create_tags_and_set_user_status == true){
-                                        $successfully_loaded_bookmark_count+=1;
-                                        continue;
+                                    $save_bookmark_to_database_query->store_result();
+                                    //remember to create a special dummy invisible bookmark for preserving empty folders if it doesn't already exist in database
+                                    $dummy_bookmark_for_preserving_empty_folders="DUMMY_BOOKMARK_FOR_PRESERVING_EMPTY_FOLDERS";
+                                    $insert_dummy_bookmark_query=$connection->prepare("INSERT IGNORE INTO bookmark (url,name, description, creation_date) VALUES (?,?,?,?)");
+                                    $insert_dummy_bookmark_query->bind_param("ssss", $dummy_bookmark_for_preserving_empty_folders,$dummy_bookmark_for_preserving_empty_folders,$dummy_bookmark_for_preserving_empty_folders,$dummy_bookmark_for_preserving_empty_folders);
+                                    if($insert_dummy_bookmark_query->execute()){
+                                        $insert_dummy_bookmark_query->store_result();
+                                        require_once('create_tags_and_set_user_for_the_bookmark.php');
+                                        $create_tags_and_set_user_status=create_tags_and_set_user_for_the_bookmark($connection, $current_url, $current_tags);
+                                        if($create_tags_and_set_user_status == true){
+                                            echo "CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: TRUE\n";
+                                            $successfully_loaded_bookmark_count+=1;
+                                            continue;
+                                        }
+                                        else{
+                                            echo "CREATE TAGS AND SET USER STATUS: FALSE";
+                                            header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                                        }
+                                        $insert_dummy_bookmark_query->free_result();
                                     }
-                                    else{
-                                        //    echo "<br>CREATE TAGS AND SET USER STATUS: FALSE";
-                                        header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
-                                    }
-                                    
-                                    
+                                    $save_bookmark_to_database_query->free_result();
                                 
                                 }
                                 else{
@@ -204,18 +213,25 @@ try{
                             }
                             else{
                                 //If an identical bookmark (url) already exists in the database, check and define (if needed) the folder-bookmark combination for the user regardless
-                                require_once('create_tags_and_set_user_for_the_bookmark.php');
-                                
-
-                                $create_tags_and_set_user_status=create_tags_and_set_user_for_the_bookmark($connection, $current_url, $current_tags);
-                                if($create_tags_and_set_user_status == true){
-                                    echo "<br>CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: TRUE";
-                                    $successfully_loaded_bookmark_count+=1;
-                                    continue;
-                                }
-                                else{
-                                    echo "<br>CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: FALSE";
+                                //remember to create a special dummy invisible bookmark for preserving empty folders if it doesn't already exist in database
+                                $dummy_bookmark_for_preserving_empty_folders="DUMMY_BOOKMARK_FOR_PRESERVING_EMPTY_FOLDERS";
+                                $insert_dummy_bookmark_query=$connection->prepare("INSERT IGNORE INTO bookmark (url,name, description, creation_date) VALUES (?,?,?,?)");
+                                $insert_dummy_bookmark_query->bind_param("ssss", $dummy_bookmark_for_preserving_empty_folders,$dummy_bookmark_for_preserving_empty_folders,$dummy_bookmark_for_preserving_empty_folders,$dummy_bookmark_for_preserving_empty_folders);
+                                if($insert_dummy_bookmark_query->execute()){
+                                    $insert_dummy_bookmark_query->store_result();
+                                    require_once('create_tags_and_set_user_for_the_bookmark.php');
+                                    $create_tags_and_set_user_status=create_tags_and_set_user_for_the_bookmark($connection, $current_url, $current_tags);
+                                    if($create_tags_and_set_user_status == true){
+                                        echo "CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: TRUE\n";
+                                        $successfully_loaded_bookmark_count+=1;
+                                        continue;
+                                    }
+                                    else{
+                                        echo "CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: FALSE\n";
+                                        header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
                                     
+                                    }
+                                    $insert_dummy_bookmark_query->free_result();
                                 }
                                 
                             }
@@ -247,6 +263,7 @@ try{
     //exit();
     $_SESSION["successfully_loaded_bookmark_count"]=$successfully_loaded_bookmark_count;
     //Redirect with success if no error redirection
+    exit();
     header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=yes');
     exit();
 
