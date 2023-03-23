@@ -178,6 +178,8 @@ try{
                                 //    $current_description=$bookmark_value["description"];
                                 //}
                                 //$current_creation_date=$bookmark_value["dateCreated"];
+
+                                echo "\nBOOKMARK COUNT 0";
                                 $save_bookmark_to_database_query=$connection->prepare("INSERT INTO bookmark(url, name, description, creation_date) VALUES (?,?,?,?)");
                                 $save_bookmark_to_database_query->bind_param("ssss",$current_url,$current_name,$current_description,$current_creation_date);
                                 
@@ -192,12 +194,13 @@ try{
                                         require_once('create_tags_and_set_user_for_the_bookmark.php');
                                         $create_tags_and_set_user_status=create_tags_and_set_user_for_the_bookmark($connection, $current_url, $current_tags);
                                         if($create_tags_and_set_user_status == true){
-                                            echo "CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: TRUE\n";
+                                            echo "\nCREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: TRUE\n";
                                             $successfully_loaded_bookmark_count+=1;
                                             continue;
                                         }
                                         else{
-                                            echo "CREATE TAGS AND SET USER STATUS: FALSE";
+                                            echo "\nCREATE TAGS AND SET USER STATUS: FALSE";
+                                            exit();
                                             header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
                                             exit();
                                             
@@ -208,12 +211,15 @@ try{
                                     $save_bookmark_to_database_query->free_result();             
                                 }
                                 else{
+                                    echo "\nSAVING BOOKMARK TO DATABASE FAILED";
+                                    exit();
                                     header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
                                     exit();
                                 }
                                 
                             }
                             else{
+                                echo "\nBOOKMARK COUNT 1 AND OVER";
                                 //If an identical bookmark (url) already exists in the database, check and define (if needed) the folder-bookmark combination for the user regardless
                                 //remember to create a special dummy invisible bookmark for preserving empty folders if it doesn't already exist in database
                                 $dummy_bookmark_for_preserving_empty_folders="DUMMY_BOOKMARK_FOR_PRESERVING_EMPTY_FOLDERS";
@@ -229,7 +235,8 @@ try{
                                         continue;
                                     }
                                     else{
-                                        echo "CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: FALSE\n";
+                                        echo "\nCREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: FALSE";
+                                        exit();
                                         header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
                                         exit();
                                         
@@ -238,6 +245,8 @@ try{
                                     $insert_dummy_bookmark_query->free_result();
                                 }
                                 else{
+                                    echo "\nINSERTING DUMMY BOOKMARK FAILED";
+                                    exit();
                                     header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
                                     exit();
                                 }
@@ -282,6 +291,7 @@ try{
 }catch(Exception $e){
     //Database error
     echo $e;
+    exit();
     header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
     exit();
 }
