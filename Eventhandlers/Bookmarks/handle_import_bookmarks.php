@@ -137,7 +137,7 @@ try{
     if($some_folder_paths_are_too_long == false){
         foreach($bookmarks_panel_items as $bookmark_key=>$bookmark_value){
         
-        
+            
 
             //order when printing highest level item values: bookmark, image header, url, tags (as an array), description, creation date, publicity (possible values atleast public)
             foreach($bookmark_value as $bmv_key=>$bmv_value){
@@ -199,11 +199,13 @@ try{
                                         else{
                                             echo "CREATE TAGS AND SET USER STATUS: FALSE";
                                             header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                                            exit();
+                                            
+                                            
                                         }
                                         $insert_dummy_bookmark_query->free_result();
                                     }
-                                    $save_bookmark_to_database_query->free_result();
-                                
+                                    $save_bookmark_to_database_query->free_result();             
                                 }
                                 else{
                                     header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
@@ -229,9 +231,15 @@ try{
                                     else{
                                         echo "CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: FALSE\n";
                                         header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
-                                    
+                                        exit();
+                                        
+                                        
                                     }
                                     $insert_dummy_bookmark_query->free_result();
+                                }
+                                else{
+                                    header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                                    exit();
                                 }
                                 
                             }
@@ -254,16 +262,16 @@ try{
         
         }
 
+
+            
     }
     else{
         header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=some_folder_paths_too_long');
         exit();
     }
 
-    //exit();
     $_SESSION["successfully_loaded_bookmark_count"]=$successfully_loaded_bookmark_count;
     //Redirect with success if no error redirection
-    exit();
     header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=yes');
     exit();
 
@@ -274,8 +282,8 @@ try{
 }catch(Exception $e){
     //Database error
     echo $e;
-    exit();
     header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+    exit();
 }
 
 

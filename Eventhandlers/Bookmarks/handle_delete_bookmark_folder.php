@@ -96,8 +96,9 @@ if(isset($_POST["delete_current_bookmark_folder_structure_from_top"]) && isset($
                 $_SESSION["successfully_deleted_total_bookmark_count"]=$_SESSION["successfully_deleted_total_bookmark_count"]+1;
             
             }
-            exit();
+            //exit();
             header('Location: ../../index.php?page=bookmarks_page&bookmark_folder_deleted_status=yes');
+            exit();
         }
 
         else{
@@ -131,13 +132,14 @@ if(isset($_POST["delete_current_bookmark_folder_structure_from_top"]) && isset($
                     }
                     
                     $retrieve_redundant_bookmarks_to_delete_query->free_result();
-                    exit();
+                    //exit();
                 }
 
             }
 
             
             header('Location: ../../index.php?page=bookmarks_page&bookmark_folder_deleted_status=yes');
+            exit();
         }
 
 

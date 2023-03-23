@@ -30,6 +30,7 @@
             if($get_non_dummy_bookmarks_count_query->execute()){
                 $get_non_dummy_bookmarks_count_query->store_result();
                 $get_non_dummy_bookmarks_count_query->bind_result($dummy_bookmarks_count);
+                $get_non_dummy_bookmarks_count_query->fetch();
                 echo "<p><span class=\"paragraphtitle\">".$get_users_bookmarks_query->num_rows()-$dummy_bookmarks_count." bookmarks in total</span></p>";
                 //TODO: experimenting with folder generation
                 require_once('Eventhandlers/Bookmarks/generate_bookmark_folder_array.php');

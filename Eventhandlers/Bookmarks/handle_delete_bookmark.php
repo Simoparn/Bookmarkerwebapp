@@ -66,7 +66,7 @@ if(isset($_POST["delete_bookmark"]) && isset($_POST["delete_bookmark_url"]) && i
 
 
                                 
-                                //TODO:untested
+                                //TODO:tested for one user
                                 //don't remove empty folder here
                                 //Bookmark itself and bookmark-folder combination exists for the user only, it is safe to consider the folder for the user empty (of links, not necessarily subfolders)
                                 
