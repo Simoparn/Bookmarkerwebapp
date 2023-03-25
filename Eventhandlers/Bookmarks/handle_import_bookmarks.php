@@ -141,7 +141,8 @@ try{
 
             //order when printing highest level item values: bookmark, image header, url, tags (as an array), description, creation date, publicity (possible values atleast public)
             foreach($bookmark_value as $bmv_key=>$bmv_value){
-                
+                    //echo "\nbmv_value:";
+                    //print_r($bmv_value);
                 
                     //search for url, folder structure of each bookmark is described with the tags array
                     if($bmv_key =="url"){
@@ -179,74 +180,99 @@ try{
                                 //}
                                 //$current_creation_date=$bookmark_value["dateCreated"];
 
-                                echo "\nBOOKMARK COUNT 0";
+                                //echo "\n\nBOOKMARK COUNT 0";
                                 $save_bookmark_to_database_query=$connection->prepare("INSERT INTO bookmark(url, name, description, creation_date) VALUES (?,?,?,?)");
                                 $save_bookmark_to_database_query->bind_param("ssss",$current_url,$current_name,$current_description,$current_creation_date);
                                 
                                 if($save_bookmark_to_database_query->execute()){
+                                    //echo "\nSAVING BOOKMARK TO DATABASE SUCCEEDED";
                                     $save_bookmark_to_database_query->store_result();
                                     //remember to create a special dummy invisible bookmark for preserving empty folders if it doesn't already exist in database
                                     $dummy_bookmark_for_preserving_empty_folders="DUMMY_BOOKMARK_FOR_PRESERVING_EMPTY_FOLDERS";
                                     $insert_dummy_bookmark_query=$connection->prepare("INSERT IGNORE INTO bookmark (url,name, description, creation_date) VALUES (?,?,?,?)");
                                     $insert_dummy_bookmark_query->bind_param("ssss", $dummy_bookmark_for_preserving_empty_folders,$dummy_bookmark_for_preserving_empty_folders,$dummy_bookmark_for_preserving_empty_folders,$dummy_bookmark_for_preserving_empty_folders);
                                     if($insert_dummy_bookmark_query->execute()){
+                                        //echo "\nINSERTING DUMMY BOOKMARK SUCCEEDED";
                                         $insert_dummy_bookmark_query->store_result();
-                                        require_once('create_tags_and_set_user_for_the_bookmark.php');
-                                        $create_tags_and_set_user_status=create_tags_and_set_user_for_the_bookmark($connection, $current_url, $current_tags);
-                                        if($create_tags_and_set_user_status == true){
-                                            echo "\nCREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: TRUE\n";
-                                            $successfully_loaded_bookmark_count+=1;
-                                            continue;
+                                        require_once('create_tags_and_set_tags_for_user.php');
+                                        $create_tags_and_set_tags_for_user_status=create_tags_and_set_tags_for_user($connection, $current_tags);
+                                        if($create_tags_and_set_tags_for_user_status==true){
+                                            //echo "\nCREATE TAGS AND SET TAGS FOR USER STATUS: TRUE";
+                                            require_once('set_user_for_the_bookmark.php');
+                                            $set_bookmark_user_status=set_user_for_the_bookmark($connection, $current_url, $current_tags);
+                                            if($set_bookmark_user_status == true){
+                                                //echo "\nSET USER STATUS FOR THE BOOKMARK: TRUE\n";
+                                                $successfully_loaded_bookmark_count+=1;
+                                                continue;
+                                                //exit();
+                                            }
+                                            else{
+                                                //echo "\nSET USER STATUS FOR THE BOOKMARK: FALSE";
+                                                //exit();
+                                                header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                                                exit();   
+                                            }
                                         }
                                         else{
-                                            echo "\nCREATE TAGS AND SET USER STATUS: FALSE";
-                                            exit();
+                                            //echo "\nCREATE TAGS AND SET TAGS FOR USER STATUS: FALSE";
+                                            //exit();
                                             header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
                                             exit();
-                                            
-                                            
                                         }
                                         $insert_dummy_bookmark_query->free_result();
                                     }
                                     $save_bookmark_to_database_query->free_result();             
                                 }
                                 else{
-                                    echo "\nSAVING BOOKMARK TO DATABASE FAILED";
-                                    exit();
+                                    //echo "\nSAVING BOOKMARK TO DATABASE FAILED";
+                                    //exit();
                                     header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
                                     exit();
                                 }
                                 
                             }
                             else{
-                                echo "\nBOOKMARK COUNT 1 AND OVER";
+                                //echo "\nBOOKMARK COUNT 1 AND OVER";
                                 //If an identical bookmark (url) already exists in the database, check and define (if needed) the folder-bookmark combination for the user regardless
                                 //remember to create a special dummy invisible bookmark for preserving empty folders if it doesn't already exist in database
                                 $dummy_bookmark_for_preserving_empty_folders="DUMMY_BOOKMARK_FOR_PRESERVING_EMPTY_FOLDERS";
                                 $insert_dummy_bookmark_query=$connection->prepare("INSERT IGNORE INTO bookmark (url,name, description, creation_date) VALUES (?,?,?,?)");
                                 $insert_dummy_bookmark_query->bind_param("ssss", $dummy_bookmark_for_preserving_empty_folders,$dummy_bookmark_for_preserving_empty_folders,$dummy_bookmark_for_preserving_empty_folders,$dummy_bookmark_for_preserving_empty_folders);
                                 if($insert_dummy_bookmark_query->execute()){
+                                    //echo "\nINSERTING DUMMY BOOKMARK SUCCEEDED;";
                                     $insert_dummy_bookmark_query->store_result();
-                                    require_once('create_tags_and_set_user_for_the_bookmark.php');
-                                    $create_tags_and_set_user_status=create_tags_and_set_user_for_the_bookmark($connection, $current_url, $current_tags);
-                                    if($create_tags_and_set_user_status == true){
-                                        echo "CREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: TRUE\n";
-                                        $successfully_loaded_bookmark_count+=1;
-                                        continue;
+                                    require_once('create_tags_and_set_tags_for_user.php');
+                                    $create_tags_and_set_tags_for_user_status=create_tags_and_set_tags_for_user($connection, $current_tags);
+                                    if($create_tags_and_set_tags_for_user_status == true){
+                                        //echo "\nCREATE TAGS AND SET TAGS FOR USER STATUS: TRUE";
+                                        require_once('set_user_for_the_bookmark.php');
+                                    
+                                        $set_bookmark_user_status=set_user_for_the_bookmark($connection, $current_url, $current_tags);
+                                        if($set_bookmark_user_status == true){
+                                            //echo "\nSET USER STATUS FOR THE BOOKMARK: TRUE";
+                                            $successfully_loaded_bookmark_count+=1;
+                                            continue;
+                                            //exit();
+                                        }
+                                        else{
+                                            //echo "\nSET USER STATUS FOR THE BOOKMARK: FALSE";
+                                            //exit();
+                                            header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
+                                            exit();   
+                                        
+                                        }
                                     }
                                     else{
-                                        echo "\nCREATE TAGS AND SET USER STATUS FOR THE BOOKMARK: FALSE";
-                                        exit();
+                                        //echo "\nCREATE TAGS AND SET TAGS FOR USER STATUS: FALSE";
+                                        //exit();
                                         header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
                                         exit();
-                                        
-                                        
                                     }
                                     $insert_dummy_bookmark_query->free_result();
                                 }
                                 else{
-                                    echo "\nINSERTING DUMMY BOOKMARK FAILED";
-                                    exit();
+                                    //echo "\nINSERTING DUMMY BOOKMARK FAILED";
+                                    //exit();
                                     header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
                                     exit();
                                 }
@@ -278,7 +304,8 @@ try{
         header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=some_folder_paths_too_long');
         exit();
     }
-
+    //exit();
+    //echo "\nIMPORTING BOOKMARKS SUCCEEDED";
     $_SESSION["successfully_loaded_bookmark_count"]=$successfully_loaded_bookmark_count;
     //Redirect with success if no error redirection
     header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=yes');
@@ -290,8 +317,8 @@ try{
 
 }catch(Exception $e){
     //Database error
-    echo $e;
-    exit();
+    //echo $e;
+    //exit();
     header('Location: ../../index.php?page=bookmarks_page&bookmarks_file_upload_status=no&error=database_error');
     exit();
 }
